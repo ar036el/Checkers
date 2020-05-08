@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starting Player"
+        style="?android:attr/listSeparatorTextViewStyle"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageButton
+            android:id="@+id/newGameDialog_SelectPlayerButton_WhitePlayer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:contentDescription="White player"
+            android:scaleType="centerInside"
+            android:src="@drawable/piece_red_king"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/newGameDialog_SelectPlayerButton_BlackPlayer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/newGameDialog_SelectPlayerButton_BlackPlayer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:contentDescription="Black player"
+            android:scaleType="centerInside"
+            android:src="@drawable/piece_black_pawn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/newGameDialog_SelectPlayerButton_Random"
+            app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_WhitePlayer"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/newGameDialog_SelectPlayerButton_Random"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:contentDescription="Random"
+            android:scaleType="centerInside"
+            android:src="@drawable/piece_red_king"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_BlackPlayer"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game type"
+        style="?android:attr/listSeparatorTextViewStyle">
+
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layoutDirection="locale"
+        >
+
+        <Button
+            android:id="@+id/newGameDialog_GameType_singlePlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="Single Player"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/buttonNotSelected">
+        </Button>
+
+<!--        <Button-->
+<!--            android:id="@+id/newGameDialog_GameType_Medium"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="12dp"-->
+<!--            android:text="Medium"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:backgroundTint="@color/buttonNotSelected">-->
+<!--        </Button>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/newGameDialog_GameType_Hard"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Hard"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:backgroundTint="@color/buttonNotSelected">-->
+<!--        </Button>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/difficulty_select"
+            android:layout_gravity="center"/>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawSelectorOnTop="true"
+            android:entries="@array/difficulty_items" />
+<!--        <RadioGroup-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <RadioButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="easy"/>-->
+<!--            <RadioButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="medium"/>-->
+<!--            <RadioButton-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="hard"/>-->
+<!--        </RadioGroup>-->
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/newGameDialog_GameType_twoPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Two Players - Offline"
+        android:backgroundTint="@color/buttonNotSelected">
+    </Button>
+
+
+<!--    android:drawableTop="@drawable/math"-->
+
+
+
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:text="Easy"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:theme="@android:style/Holo.ButtonBar">-->
+<!--    </Button>-->
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:text="Medium"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:theme="@android:style/Holo.ButtonBar">-->
+<!--    </Button>-->
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:text="Hard"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:theme="@android:style/Holo.ButtonBar">-->
+<!--    </Button>-->
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:text="Two Playessssssrs"-->
+<!--        android:layout_gravity="center">-->
+<!--    </Button>-->
+
+</LinearLayout>
+
+

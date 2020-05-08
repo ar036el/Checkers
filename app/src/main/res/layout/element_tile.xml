@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/tile"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:alpha="0.4"/>
+<!--    TODO is there any id that's just written without "@+id/"?-->
+    <ImageView
+        android:id="@+id/tileHighlightBottom"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:background="#aaa44a"
+        android:alpha="0"/>
+
+</FrameLayout>

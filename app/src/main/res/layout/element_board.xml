@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layoutDirection="ltr">
+
+<!--    app:layout_constraintDimensionRatio="1:1"-->
+
+    <ImageView
+        android:id="@+id/boardBackground"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:src="@drawable/background_board_theme1"
+        android:scaleType="centerCrop"/>
+    <GridLayout
+        android:id="@+id/board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    </GridLayout>
+    <FrameLayout
+        android:id="@+id/boardPiecesContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    </FrameLayout>
+    <GridLayout
+        android:id="@+id/boardCover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:secondaryProgressTint="@color/colorPrimary">
+    </GridLayout>
+
+</FrameLayout>

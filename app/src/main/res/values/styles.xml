@@ -1,0 +1,33 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowFullscreen">true</item>
+
+    </style>
+
+    <style name="mainActivity" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/darkBackground</item>
+    </style>
+
+    <style name="onboardingActivity" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- TODo is this style really necessary? the sidebar can get the darkActionBarDirectly -->
+    <style name="toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- Color used for the title of the Toolbar - as long as not overridden -->
+        <item name="android:textColorPrimary">#d1afa1</item>
+        <!-- Used to color back button and three dots -->
+        <item name="android:background">?colorPrimary</item>
+    </style>
+
+
+
+
+</resources>
