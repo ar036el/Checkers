@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -35,36 +36,45 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var prefs: SharedPreferences
 
-    lateinit var player2CaptureStack: LinearLayout
+    lateinit var drawer: DrawerLayout
+
+    lateinit var titleBar: Toolbar
+    lateinit var titleBarMenu: Menu
+    lateinit var menuButtonTop: ImageButton
+    lateinit var undoButtonTop: MenuItem
+    lateinit var redoButtonTop: MenuItem
+    lateinit var refreshButtonTop: MenuItem
+    lateinit var settingsButtonTop: MenuItem
+    lateinit var progressBarTop: ProgressBar
+
+
+
+    lateinit var sideBar: LinearLayout
+    lateinit var menuButtonSide: ImageButton
+    lateinit var undoButtonSide: ImageButton
+    lateinit var redoButtonSide: ImageButton
+    lateinit var refreshButtonSide: ImageButton
+    lateinit var settingsButtonSide: ImageButton
+    lateinit var progressBarSide: ProgressBar
 
     lateinit var undoButtonFab: FloatingActionButton
     lateinit var redoButtonFab: FloatingActionButton
 
+    lateinit var captureBoxTop: LinearLayout
+    lateinit var captureBoxBottom: LinearLayout
+    lateinit var captureBoxStart: LinearLayout
+    lateinit var captureBoxEnd: LinearLayout
+    lateinit var captureBoxTopLayout: ConstraintLayout
+    lateinit var captureBoxBottomLayout: ConstraintLayout
+    lateinit var captureBoxStartLayout: ConstraintLayout
+    lateinit var captureBoxEndLayout: ConstraintLayout
 
-    lateinit var drawer: DrawerLayout
-    lateinit var titleBar: Toolbar
-    var titlebarMenu: Menu? = null
-    lateinit var sideBar: LinearLayout
-
-
-    lateinit var menuButtonSide: ImageButton
-    lateinit var progressBarSide: ProgressBar
-    lateinit var toolbarSide: LinearLayout
-
-    lateinit var menuButtonTop: ImageButton
-    lateinit var progressBarTop: ProgressBar
 
     lateinit var board: GridLayout
     lateinit var boardCover: GridLayout
     lateinit var boardBackground: ImageView
     lateinit var piecesContainer: FrameLayout
 
-
-
-    var windowHeight = -1
-    var windowWidth = -1
-
-    var captureStackWidth = -1
 
 
 
@@ -85,13 +95,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         //if (findViewById<Toolbar>(R.id.toolbar_top) != null) {
         menuInflater.inflate(R.menu.toolbar_top, menu)
-        this.titlebarMenu = menu
-        //}
-        //undoButtonMenuItem = menu?.findItem(R.id.RedoButton)!!
+        this.titleBarMenu = menu
+
+        undoButtonTop =  menu.findItem(R.id.undo_menu_item)
+        redoButtonTop = menu.findItem(R.id.redo_menu_item)
+        refreshButtonTop =  menu.findItem(R.id.refresh_menu_item)
+        settingsButtonTop =  menu.findItem(R.id.settings_menu_item)
         return true
     }
 
@@ -99,27 +112,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.undo_item -> {
-                Toast.makeText(this, "Action clicked", Toast.LENGTH_LONG).show()
-                updatePlayer2CaptureStack(McapturePieces++)
-            }
-            R.id.redo_item -> {
-                Toast.makeText(this, "Refereshed", Toast.LENGTH_LONG).show()
-                drawMode = !drawMode
-            }
-            R.id.refresh_item -> {
-                showNewGameDialog()
-            }
-            R.id.settings_item -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-            }
+            R.id.undo_menu_item -> undoClicked()
+            R.id.redo_menu_item -> redoClicked()
+            R.id.refresh_menu_item -> newGameClicked()
+            R.id.settings_menu_item -> settingsClicked()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    var initWhenLocationValuesAreAvailable_Invoked = false
-    fun initWhenLocationValuesAreAvailable() {
-        if (initWhenLocationValuesAreAvailable_Invoked) {
+    var initForLocationDependentOperations_Invoked = false
+    fun initForLocationDependentOperations() {
+        if (initForLocationDependentOperations_Invoked) {
             return
         }
 
@@ -127,28 +130,17 @@ class MainActivity : AppCompatActivity() {
         redoButtonFab.y = undoButtonFab.y + (undoButtonFab.height - redoButtonFab.height)/2
         redoButtonFab.elevation = undoButtonFab.elevation - 1
 
-        captureStackWidth = player2CaptureStack.width
 
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(DisplayMetrics())
-        windowHeight = displayMetrics.heightPixels
-        windowWidth = displayMetrics.widthPixels
+        initProgressBar()
+        initCaptureBoxes()
 
-        val remainder = progressBarSide.height.toFloat()
-        progressBarSide.layoutParams.width = windowHeight
-        progressBarSide.pivotX = remainder
-        progressBarSide.pivotY = 0f
-        progressBarSide.rotation = 90f
-        progressBarSide.x = if (isDirectionRTL) toolbarSide.x + toolbarSide.width else toolbarSide.x - remainder
-        progressBarSide.y += remainder
-
-        initWhenLocationValuesAreAvailable_Invoked = true
+        initForLocationDependentOperations_Invoked = true
     }
 
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        initWhenLocationValuesAreAvailable()
+        initForLocationDependentOperations()
     }
 
     private fun findViews() {
@@ -157,16 +149,28 @@ class MainActivity : AppCompatActivity() {
         menuButtonSide = findViewById(R.id.menuButton_sidebar)
         menuButtonTop = findViewById(R.id.menuButton_titlebar)
         drawer = findViewById(R.id.drawerLayout)
-        toolbarSide = findViewById(R.id.toolbar_side)
+        sideBar = findViewById(R.id.toolbar_side)
         progressBarTop = findViewById(R.id.progressBarTop)
         progressBarSide = findViewById(R.id.progressBar_side)
-        player2CaptureStack = findViewById(R.id.player2CaptureStack)
+        captureBoxTop = findViewById(R.id.captureBoxTop)
+        captureBoxBottom = findViewById(R.id.captureBoxBottom)
+        captureBoxStart = findViewById(R.id.captureBoxStart)
+        captureBoxEnd = findViewById(R.id.captureBoxEnd)
+        captureBoxTopLayout = findViewById(R.id.captureBoxTopLayout)
+        captureBoxBottomLayout = findViewById(R.id.captureBoxBottomLayout)
+        captureBoxStartLayout = findViewById(R.id.captureBoxStartLayout)
+        captureBoxEndLayout = findViewById(R.id.captureBoxEndLayout)
         titleBar = findViewById(R.id.toolbar_top)
         sideBar = findViewById(R.id.toolbar_side)
         board = findViewById(R.id.board)
         boardCover = findViewById(R.id.boardCover)
         boardBackground = findViewById(R.id.boardBackground)
         piecesContainer = findViewById(R.id.boardPiecesContainer)
+        undoButtonSide = findViewById(R.id.undoButton_sidebar)
+        redoButtonSide = findViewById(R.id.redoButton_sidebar)
+        refreshButtonSide = findViewById(R.id.refreshButton_sidebar)
+        settingsButtonSide = findViewById(R.id.settingsButton_sidebar)
+
     }
 
 
@@ -194,19 +198,54 @@ class MainActivity : AppCompatActivity() {
         OpenCheckersApplication.counter++
     }
 
-    fun initButtons() {
-        menuButtonTop.setOnClickListener { openSideDrawer() }
-        menuButtonSide.setOnClickListener { openSideDrawer() }
-        undoButtonFab.setOnClickListener {
-            crapToggleRedoButton()
-        }
-        redoButtonFab.setOnClickListener {
-            if (staticIsRedoEnabled) {
-                getToast("whoa" + prefs.getString("reply121", "not found"))
-            }
-        }
+    fun initProgressBar() {
+        //TOdo it has a little dent on top. fix it?
+        val h = progressBarSide.height.toFloat()
+        progressBarSide.scaleX = sideBar.height.toFloat() / progressBarSide.width
+        progressBarSide.pivotX = h
+        progressBarSide.pivotY = 0f
+        progressBarSide.rotation = 90f
+        progressBarSide.x = if (isDirectionRTL) sideBar.x + sideBar.width else sideBar.x - h
+        progressBarSide.y += h
+
+        progressBarSide.invalidate()
+        progressBarSide.requestLayout()
     }
 
+    fun initCaptureBoxes() {
+    }
+
+    fun initButtons() {
+        menuButtonTop.setOnClickListener { openSideDrawer() }
+
+        menuButtonSide.setOnClickListener { openSideDrawer() }
+        undoButtonSide.setOnClickListener { undoClicked() }
+        redoButtonSide.setOnClickListener { redoClicked() }
+        refreshButtonSide.setOnClickListener { newGameClicked() }
+        settingsButtonSide.setOnClickListener { settingsClicked() }
+
+        undoButtonFab.setOnClickListener { undoClicked() }
+        redoButtonFab.setOnClickListener { redoClicked() }
+
+    }
+
+    //TODO new dialog dont fit on landscape
+
+    fun undoClicked() {
+        crapToggleRedoButton()
+        Toast.makeText(this, "Action clicked", Toast.LENGTH_LONG).show()
+        updatePlayer2CaptureBox(McapturePieces++)
+    }
+    fun redoClicked() {
+        Toast.makeText(this, "Refereshed", Toast.LENGTH_LONG).show()
+        drawMode = !drawMode
+    }
+    fun newGameClicked() {
+        showNewGameDialog()
+    }
+    fun settingsClicked() {
+        startActivity(Intent(this, SettingsActivity::class.java))
+    }
 
     fun initBoard() {
         val tilesInBoard = OpenCheckersApplication.counter;
@@ -248,8 +287,8 @@ class MainActivity : AppCompatActivity() {
 
             tileBottomHighlight.setOnClickListener {
 
-                progressBarTop.visibility = if (progressBarTop.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
-                progressBarSide.visibility = if (progressBarSide.visibility == View.VISIBLE) View.INVISIBLE else View.VISIBLE
+                progressBarTop.visibility = if (progressBarTop.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                progressBarSide.visibility = if (progressBarSide.visibility == View.VISIBLE) View.GONE else View.VISIBLE
                 crapEnableDisable()
                 counter++
 
@@ -357,7 +396,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun crapEnableDisable() {
-        val redoItem: MenuItem? = titlebarMenu?.findItem(R.id.redo_item)
+        val redoItem: MenuItem? = titleBarMenu?.findItem(R.id.redo_menu_item)
         if (redoItem != null) {
             if (counter%2 == 0) {
                 redoItem.isEnabled = true;
@@ -432,16 +471,37 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun updatePlayer2CaptureStack(capturedPieces: Int) = updateCaptureStack(player2CaptureStack, capturedPieces)
+    fun updatePlayer2CaptureBox(capturedPieces: Int) {
+        updateCaptureBox(captureBoxTop, capturedPieces)
+        updateCaptureBox(captureBoxEnd, capturedPieces, true)
+        updateCaptureBox(captureBoxBottom, capturedPieces)
+        updateCaptureBox(captureBoxStart, capturedPieces, true)
+    }
 
-    fun updateCaptureStack(captureStack: LinearLayout, capturedPieces: Int) {
-        captureStack.removeAllViews();
+    fun updateCaptureBox(captureBox: LinearLayout, capturedPieces: Int, applyVertically: Boolean = false) {
+        captureBox.removeAllViews();
 
-        val capturedPieceMaxSize = resources.getDimensionPixelOffset(R.dimen.capturedPieceMaxSize)
-        val capturedPieceMaxPadding = resources.getDimensionPixelOffset(R.dimen.capturedPieceMaxPadding)
-        val piecesMaxWidth = capturedPieces * (capturedPieceMaxSize + capturedPieceMaxPadding)
-        val pieceSize = DoubleToIntCorrector(capturedPieceMaxSize * captureStackWidth.toDouble() / piecesMaxWidth)
-        val piecePadding = DoubleToIntCorrector(capturedPieceMaxPadding * captureStackWidth.toDouble() / piecesMaxWidth)
+        val pieceMaxSize = resources.getDimensionPixelOffset(R.dimen.capturedPieceMaxSize)
+        val pieceMaxPadding = resources.getDimensionPixelOffset(R.dimen.capturedPieceMaxPadding)
+        val captureBoxLength = if (applyVertically) captureBox.height else captureBox.width
+        val piecesStackMaxLength = capturedPieces * (pieceMaxSize + pieceMaxPadding)
+
+        val pieceSizeCorrector = DoubleToIntCorrector(pieceMaxSize * captureBoxLength.toDouble() / piecesStackMaxLength)
+        val piecePaddingCorrector = DoubleToIntCorrector(pieceMaxPadding * captureBoxLength.toDouble() / piecesStackMaxLength)
+
+
+        fun pieceSize():  Int =
+            if (piecesStackMaxLength > captureBoxLength)
+                pieceSizeCorrector.getInt()
+            else
+                pieceMaxSize
+
+        fun piecePadding():  Int =
+            if (piecesStackMaxLength > captureBoxLength)
+                piecePaddingCorrector.getInt()
+            else
+                pieceMaxPadding
+
 
 
         for (i in 1..capturedPieces) {
@@ -450,16 +510,27 @@ class MainActivity : AppCompatActivity() {
                 .setImageResource(R.drawable.piece_red_pawn)
 
             val imageView: ImageView = capturedPiece.findViewById(R.id.capturedPiece_image)
-            if (piecesMaxWidth > captureStackWidth) {
-                capturedPiece.setPaddingRelative(piecePadding.getInt(), 0, 0, 0)
-                imageView.layoutParams.width = pieceSize.getInt()
-                imageView.layoutParams.height = pieceSize.getInt()
+            imageView.layoutParams.width = pieceSize()
+            imageView.layoutParams.height = pieceSize()
+
+            if (applyVertically) {
+                capturedPiece.setPaddingRelative(0, 0, 0, piecePadding())
+            } else {
+                capturedPiece.setPaddingRelative(piecePadding(), 0, 0, 0)
             }
-            captureStack.addView(capturedPiece)
+            captureBox.addView(capturedPiece)
         }
-        if (piecesMaxWidth > captureStackWidth) {
-            captureStack.layoutParams.height = pieceSize.getInt()
+
+        if (piecesStackMaxLength > captureBoxLength) {
+            if (applyVertically) {
+                captureBox.layoutParams.width = pieceSizeCorrector.getInt()
+            } else {
+                captureBox.layoutParams.height = pieceSizeCorrector.getInt()
+            }
         }
+
+        captureBox.invalidate()
+        captureBox.requestLayout()
     }
 
 }

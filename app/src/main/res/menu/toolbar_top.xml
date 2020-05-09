@@ -5,25 +5,25 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/undo_item"
+        android:id="@+id/undo_menu_item"
         android:icon="@drawable/ic_undo_24px"
         android:title="Undo"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/redo_item"
+        android:id="@+id/redo_menu_item"
         android:icon="@drawable/ic_redo_24px"
         android:title="Redo"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/refresh_item"
+        android:id="@+id/refresh_menu_item"
         android:icon="@drawable/ic_refresh_24px"
         android:title="User"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/settings_item"
+        android:id="@+id/settings_menu_item"
         android:icon="@drawable/ic_settings_24px"
         android:title="User"
         app:showAsAction="always" />
