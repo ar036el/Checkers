@@ -14,7 +14,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -64,10 +63,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var captureBoxBottom: LinearLayout
     lateinit var captureBoxStart: LinearLayout
     lateinit var captureBoxEnd: LinearLayout
-    lateinit var captureBoxTopLayout: ConstraintLayout
-    lateinit var captureBoxBottomLayout: ConstraintLayout
-    lateinit var captureBoxStartLayout: ConstraintLayout
-    lateinit var captureBoxEndLayout: ConstraintLayout
 
 
     lateinit var board: GridLayout
@@ -156,10 +151,7 @@ class MainActivity : AppCompatActivity() {
         captureBoxBottom = findViewById(R.id.captureBoxBottom)
         captureBoxStart = findViewById(R.id.captureBoxStart)
         captureBoxEnd = findViewById(R.id.captureBoxEnd)
-        captureBoxTopLayout = findViewById(R.id.captureBoxTopLayout)
-        captureBoxBottomLayout = findViewById(R.id.captureBoxBottomLayout)
-        captureBoxStartLayout = findViewById(R.id.captureBoxStartLayout)
-        captureBoxEndLayout = findViewById(R.id.captureBoxEndLayout)
+
         titleBar = findViewById(R.id.toolbar_top)
         sideBar = findViewById(R.id.toolbar_side)
         board = findViewById(R.id.board)
@@ -195,7 +187,7 @@ class MainActivity : AppCompatActivity() {
             titleBar.visibility = View.VISIBLE
             sideBar.visibility = View.GONE
         }
-        OpenCheckersApplication.counter++
+        Application.counter++
     }
 
     fun initProgressBar() {
@@ -235,6 +227,7 @@ class MainActivity : AppCompatActivity() {
         crapToggleRedoButton()
         Toast.makeText(this, "Action clicked", Toast.LENGTH_LONG).show()
         updatePlayer2CaptureBox(McapturePieces++)
+        updatePlayer1CaptureBox(McapturePieces)
     }
     fun redoClicked() {
         Toast.makeText(this, "Refereshed", Toast.LENGTH_LONG).show()
@@ -248,7 +241,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initBoard() {
-        val tilesInBoard = OpenCheckersApplication.counter;
+        val tilesInBoard = Application.counter;
 
 
         //TODo why it's not wotking from windowHeight/windowWidth
@@ -471,11 +464,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun updatePlayer1CaptureBox(capturedPieces: Int) {
+        updateCaptureBox(captureBoxBottom, capturedPieces)
+        updateCaptureBox(captureBoxStart, capturedPieces, true)
+    }
+
     fun updatePlayer2CaptureBox(capturedPieces: Int) {
         updateCaptureBox(captureBoxTop, capturedPieces)
         updateCaptureBox(captureBoxEnd, capturedPieces, true)
-        updateCaptureBox(captureBoxBottom, capturedPieces)
-        updateCaptureBox(captureBoxStart, capturedPieces, true)
     }
 
     fun updateCaptureBox(captureBox: LinearLayout, capturedPieces: Int, applyVertically: Boolean = false) {
