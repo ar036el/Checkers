@@ -48,7 +48,7 @@
                     android:id="@+id/captureBoxTop"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/capturedPieceMaxSize"
-                    android:gravity="end"
+                    android:gravity="start"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -125,7 +125,7 @@
                     android:id="@+id/captureBoxBottom"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/capturedPieceMaxSize"
-                    android:gravity="start"
+                    android:gravity="end"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

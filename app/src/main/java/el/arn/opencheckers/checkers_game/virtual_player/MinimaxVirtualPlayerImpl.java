@@ -2,25 +2,25 @@ package el.arn.opencheckers.checkers_game.virtual_player;
 
 import java.util.*;
 
-public class MinimaxVirtualPlayerImpl implements MinimaxVirtualPlayer {
+public class MinimaxVirtualPlayerImpl<M extends GameState.Move> implements MinimaxVirtualPlayer<M> {
 
     @Override
-    public GameState.Move getMove(GameState gameState, int depthLimit) { //TODO too much "Game." noise
+    public M getMove(GameState gameState, int depthLimit) { //TODO too much "Game." noise
         Set<GameState.Move> possibleMoves = gameState.getPossibleMoves();
         if (possibleMoves.isEmpty()) {
             return null;
         }
 
-        MinimaxNode root = createGameTree(gameState, null, depthLimit, 0, null);
+        MinimaxNode<M> root = createGameTree(gameState, null, depthLimit, 0, null);
         root = getMinimaxNode(root);
         return (root != null) ? root.rootMove : null;
     }
 
-    private MinimaxNode getMinimaxNode(MinimaxNode root) {
+    private MinimaxNode getMinimaxNode(MinimaxNode<M> root) {
         return getMinOrMaxNode(root, false);
     }
 
-    private MinimaxNode getMinOrMaxNode(MinimaxNode root, boolean isMin) {
+    private MinimaxNode getMinOrMaxNode(MinimaxNode<M> root, boolean isMin) {
         Set<MinimaxNode> nodes = new HashSet<>();
         for (MinimaxNode node : root.getChildren()) {
             nodes.add(getMinOrMaxNode(node, !isMin));

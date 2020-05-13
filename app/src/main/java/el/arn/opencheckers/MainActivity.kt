@@ -3,10 +3,8 @@ package el.arn.opencheckers
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.graphics.Color
+import android.os.AsyncTask
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,16 +18,18 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import el.arn.opencheckers.checkers_game.game_core.structs.Piece
+import el.arn.opencheckers.checkers_game.game_core.structs.Player
+import el.arn.opencheckers.checkers_game.virtual_player.CheckersGameState
+import el.arn.opencheckers.checkers_game.virtual_player.CheckersMove
 
 
-class MainActivity : AppCompatActivity() {
+const val ALPHA_ICON_ENABLED = 255
+const val ALPHA_ICON_DISABLED = 130
+
+class MainActivity : AppCompatActivity(), Board.Delegate {
 
     var counter = 0;
-    companion object {
-        var staticIsRedoEnabled = false
-    }
-    var McapturePieces = 0
-    var drawMode = false
 
 
 
@@ -64,31 +64,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var captureBoxStart: LinearLayout
     lateinit var captureBoxEnd: LinearLayout
 
-
-    lateinit var board: GridLayout
-    lateinit var boardCover: GridLayout
-    lateinit var boardBackground: ImageView
-    lateinit var piecesContainer: FrameLayout
+    lateinit var boardLayout: FrameLayout
 
 
 
 
-    val isDirectionRTL
+    private val isDirectionRTL
         get() =  resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
     private val isLandscapeMode: Boolean
         get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE //TODO also put screen size
 
-    fun getRedoButtonFabCurrentX(): Float {
-        return if (staticIsRedoEnabled) {
-            if (isDirectionRTL) {
-                undoButtonFab.x - redoButtonFab.width - resources.getDimension(R.dimen.fab_spacing)
-            } else {
-                undoButtonFab.x + undoButtonFab.width + resources.getDimension(R.dimen.fab_spacing)
-            }
-        } else {
-            undoButtonFab.x + (undoButtonFab.width - redoButtonFab.width) / 2
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -107,8 +92,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.undo_menu_item -> undoClicked()
-            R.id.redo_menu_item -> redoClicked()
+            R.id.undo_menu_item -> board.undo()
+            R.id.redo_menu_item -> board.redo()
             R.id.refresh_menu_item -> newGameClicked()
             R.id.settings_menu_item -> settingsClicked()
         }
@@ -121,15 +106,58 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        redoButtonFab.x = getRedoButtonFabCurrentX()
         redoButtonFab.y = undoButtonFab.y + (undoButtonFab.height - redoButtonFab.height)/2
         redoButtonFab.elevation = undoButtonFab.elevation - 1
 
 
-        initProgressBar()
-        initCaptureBoxes()
+        initSideProgressBar()
+
+        if (board.gameData != null) {
+            board.initWhenLocationRelatedValuesAreAvailable()
+            board.enableSelection()
+            updatePlayer1CaptureBox(board.gameData.player1CapturedPieces)
+            updatePlayer2CaptureBox(board.gameData.player2CapturedPieces)
+            updateHistoryButtons(false)
+        }
+
+
 
         initForLocationDependentOperations_Invoked = true
+    }
+
+    fun updateHistoryButtons(animateFab: Boolean) {
+        val redoButtonCurrentX =
+            if (board.hasRedo) {
+                if (isDirectionRTL) {
+                    undoButtonFab.x - redoButtonFab.width - resources.getDimension(R.dimen.fab_spacing)
+                } else {
+                    undoButtonFab.x + undoButtonFab.width + resources.getDimension(R.dimen.fab_spacing)
+                }
+            } else {
+                undoButtonFab.x + (undoButtonFab.width - redoButtonFab.width) / 2
+            }
+        if (animateFab) {
+            redoButtonFab.animate().x(redoButtonCurrentX)
+                .setInterpolator(FastOutSlowInInterpolator()).setDuration(200)
+        } else {
+            redoButtonFab.x = redoButtonCurrentX
+        }
+
+
+        val isUndoEnabled = (board.hasUndo == true)
+        undoButtonTop.icon.alpha = if (isUndoEnabled) ALPHA_ICON_ENABLED else ALPHA_ICON_DISABLED//this effects all instances of this icon
+        undoButtonTop.isEnabled = isUndoEnabled
+        undoButtonSide.isEnabled = isUndoEnabled
+        undoButtonFab.isEnabled = isUndoEnabled
+
+        val isRedoEnabled = (board.hasRedo == true)
+        redoButtonTop.icon.alpha = if (isRedoEnabled) ALPHA_ICON_ENABLED else ALPHA_ICON_DISABLED//this effects all instances of this icon
+        redoButtonTop.isEnabled = isRedoEnabled
+        redoButtonSide.isEnabled = isRedoEnabled
+        redoButtonFab.isEnabled = isRedoEnabled
+
+        redoButtonFab.elevation = undoButtonFab.elevation - 1
+
     }
 
 
@@ -154,17 +182,16 @@ class MainActivity : AppCompatActivity() {
 
         titleBar = findViewById(R.id.toolbar_top)
         sideBar = findViewById(R.id.toolbar_side)
-        board = findViewById(R.id.board)
-        boardCover = findViewById(R.id.boardCover)
-        boardBackground = findViewById(R.id.boardBackground)
-        piecesContainer = findViewById(R.id.boardPiecesContainer)
         undoButtonSide = findViewById(R.id.undoButton_sidebar)
         redoButtonSide = findViewById(R.id.redoButton_sidebar)
         refreshButtonSide = findViewById(R.id.refreshButton_sidebar)
         settingsButtonSide = findViewById(R.id.settingsButton_sidebar)
 
+        boardLayout = findViewById(R.id.boardLayout)
+
     }
 
+    lateinit var board: Board
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,7 +203,13 @@ class MainActivity : AppCompatActivity() {
 
         initToolbar()
         initButtons()
-        initBoard()
+
+        board = Board(this, boardLayout, Application.gameData!!, this)
+
+
+        progressBarSide.visibility = View.INVISIBLE
+        progressBarTop.visibility = View.INVISIBLE
+
     }
 
     fun initToolbar() {
@@ -187,10 +220,9 @@ class MainActivity : AppCompatActivity() {
             titleBar.visibility = View.VISIBLE
             sideBar.visibility = View.GONE
         }
-        Application.counter++
     }
 
-    fun initProgressBar() {
+    fun initSideProgressBar() {
         //TOdo it has a little dent on top. fix it?
         val h = progressBarSide.height.toFloat()
         progressBarSide.scaleX = sideBar.height.toFloat() / progressBarSide.width
@@ -204,35 +236,23 @@ class MainActivity : AppCompatActivity() {
         progressBarSide.requestLayout()
     }
 
-    fun initCaptureBoxes() {
-    }
-
     fun initButtons() {
         menuButtonTop.setOnClickListener { openSideDrawer() }
 
         menuButtonSide.setOnClickListener { openSideDrawer() }
-        undoButtonSide.setOnClickListener { undoClicked() }
-        redoButtonSide.setOnClickListener { redoClicked() }
+        undoButtonSide.setOnClickListener { board.undo() }
+        redoButtonSide.setOnClickListener { board.redo() }
         refreshButtonSide.setOnClickListener { newGameClicked() }
         settingsButtonSide.setOnClickListener { settingsClicked() }
 
-        undoButtonFab.setOnClickListener { undoClicked() }
-        redoButtonFab.setOnClickListener { redoClicked() }
+        undoButtonFab.setOnClickListener { board.undo() }
+        redoButtonFab.setOnClickListener { board.redo() }
 
     }
+
+    
 
     //TODO new dialog dont fit on landscape
-
-    fun undoClicked() {
-        crapToggleRedoButton()
-        Toast.makeText(this, "Action clicked", Toast.LENGTH_LONG).show()
-        updatePlayer2CaptureBox(McapturePieces++)
-        updatePlayer1CaptureBox(McapturePieces)
-    }
-    fun redoClicked() {
-        Toast.makeText(this, "Refereshed", Toast.LENGTH_LONG).show()
-        drawMode = !drawMode
-    }
     fun newGameClicked() {
         showNewGameDialog()
     }
@@ -240,134 +260,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, SettingsActivity::class.java))
     }
 
-    fun initBoard() {
-        val tilesInBoard = Application.counter;
-
-
-        //TODo why it's not wotking from windowHeight/windowWidth
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val boardSize = displayMetrics.heightPixels.coerceAtMost(displayMetrics.widthPixels)
-
-        boardBackground.layoutParams = FrameLayout.LayoutParams(boardSize, boardSize)
-        piecesContainer.layoutParams = FrameLayout.LayoutParams(boardSize, boardSize)
-        board.columnCount = tilesInBoard;
-        board.rowCount = tilesInBoard;
-        boardCover.columnCount = tilesInBoard;
-        boardCover.rowCount = tilesInBoard;
-
-
-        val tileSize = boardSize.toDouble() / tilesInBoard;
-
-        //crap
-        val pieceLayoutCrap: View = layoutInflater.inflate(R.layout.element_piece, null)
-        val specialCrapPiece: ImageView = pieceLayoutCrap.findViewById(R.id.piece)
-        specialCrapPiece.layoutParams = FrameLayout.LayoutParams(tileSize.toInt(), tileSize.toInt())
-        specialCrapPiece.setImageResource(R.drawable.winner_message_white)
-        piecesContainer.addView(pieceLayoutCrap)
-
-
-        var pieceCounter = 0
-        fun addTile(color: String, tileLengthInPx: Int) {
-            val tileLayout: View = layoutInflater.inflate(R.layout.element_tile, null)
-
-            val tile: ImageView = tileLayout.findViewById(R.id.tile)
-            tile.setBackgroundColor(Color.parseColor(color))
-            tile.layoutParams = FrameLayout.LayoutParams(tileLengthInPx, tileLengthInPx)
-
-            val tileBottomHighlight: ImageView = tileLayout.findViewById(R.id.tileHighlightBottom)
-            tileBottomHighlight.layoutParams = FrameLayout.LayoutParams(tileLengthInPx, tileLengthInPx)
-
-            tileBottomHighlight.setOnClickListener {
-
-                progressBarTop.visibility = if (progressBarTop.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                progressBarSide.visibility = if (progressBarSide.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                crapEnableDisable()
-                counter++
-
-                if (drawMode) {
-                    piecesContainer.setLayoutParams(FrameLayout.LayoutParams(boardSize, boardSize))
-
-                    val piece: View = layoutInflater.inflate(R.layout.element_piece, null)
-                    //pieceLayout.setPadding(330, 100, 0, 0)
-                    val pieceImage: ImageView = piece.findViewById(R.id.piece)
-                    pieceImage.layoutParams = FrameLayout.LayoutParams(tileSize.toInt(), tileSize.toInt())
-                    pieceCounter++
-                    pieceImage.setImageResource(when {
-                        pieceCounter % 4 == 0 -> R.drawable.piece_black_king
-                        pieceCounter % 3 == 0 -> R.drawable.piece_black_pawn
-                        pieceCounter % 2 == 0 -> R.drawable.piece_red_king
-                        else  -> R.drawable.piece_red_pawn
-                    })
-                    piecesContainer.addView(piece)
-
-                    val loc = intArrayOf(1, 2)
-                    it.getLocationInWindow(loc)
-
-                    piece.translationX = loc[0].toFloat()
-                    piece.y = loc[1].toFloat()
-
-                    getToast("yo seeing this? ${ loc[0]} ${ loc[1]}")
-                } else {
-                    it.alpha = 0.7f
-                    val loc = intArrayOf(1, 2)
-                    it.getLocationInWindow(loc)
-                    val boardLoc = intArrayOf(1, 2)
-                    boardBackground.getLocationInWindow(boardLoc)
-                    specialCrapPiece.animate().translationX((loc[0] - boardLoc[0]).toFloat())
-                        .translationY((loc[1] - boardLoc[1]).toFloat()).setDuration(300)
-                }
-            }
-
-            board.addView(tileLayout)
-
-
-            val tileTopLayout: View = layoutInflater.inflate(R.layout.element_tile_cover, null)
-            val tileTopHighlight: View = tileTopLayout.findViewById(R.id.tileHighlightTop)
-            tileTopHighlight.layoutParams = FrameLayout.LayoutParams(tileLengthInPx, tileLengthInPx)
-            boardCover.addView(tileTopLayout)
-        } //TODo it gets creates it every time it flips. do something with it
-
-
-        val tileSizeCorrectorForX = DoubleToIntCorrector(tileSize)
-        val tileSizeCorrectorForY = DoubleToIntCorrector(tileSize)
-
-        for (x in 1..tilesInBoard) {
-            for (y in 1..tilesInBoard) {
-
-                val tileLengthFixed =
-                    if (x == 1)
-                        tileSizeCorrectorForY.getInt()
-                    else if (y == 1)
-                        tileSizeCorrectorForX.getInt()
-                    else tileSize.toInt()
-
-                val color = if (x % 2 == y % 2) "#dfd23a" else "#a33222"
-                addTile(color, tileLengthFixed);
-            }
-        }
-
-
-
-        boardBackground.invalidate() //TODO do it everywhere the width is being changed!! https://stackoverflow.com/questions/35279374/why-is-requestlayout-being-called-directly-after-invalidate/40402309
-        boardBackground.requestLayout()
-        piecesContainer.invalidate() //TODO do it everywhere the width is being changed!! https://stackoverflow.com/questions/35279374/why-is-requestlayout-being-called-directly-after-invalidate/40402309
-        piecesContainer.requestLayout()
-        boardCover.invalidate() //TOdo neseccary here?
-        boardCover.requestLayout()
-    }
-
-
-    fun getToast(message: String) {
-        Toast.makeText(
-            applicationContext,
-            message,
-            Toast.LENGTH_SHORT
-        )
-            .show()
-    }
-
-    fun openSideDrawer() {
+    private fun openSideDrawer() {
         if (!drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.openDrawer(GravityCompat.START)
         }
@@ -375,38 +268,8 @@ class MainActivity : AppCompatActivity() {
 
     //Todo the dialogs will be dismissed when screen rotates
 
-    fun dpToPx(dp: Int) =
-        TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            resources.displayMetrics
-        )
 
-    fun crapToggleRedoButton() {
-        staticIsRedoEnabled = !staticIsRedoEnabled
-        redoButtonFab.animate().x(getRedoButtonFabCurrentX()).setInterpolator(FastOutSlowInInterpolator()).setDuration(200)
-        redoButtonFab.elevation = undoButtonFab.elevation - 1
-    }
-
-    fun crapEnableDisable() {
-        val redoItem: MenuItem? = titleBarMenu?.findItem(R.id.redo_menu_item)
-        if (redoItem != null) {
-            if (counter%2 == 0) {
-                redoItem.isEnabled = true;
-                redoItem.icon.alpha = 255;
-            } else {
-                // disabled
-                redoItem.isEnabled = false;
-                redoItem.icon.alpha = 130;
-            }
-        } else {
-            Toast.makeText(this, "not found", Toast.LENGTH_LONG).show()
-
-        }
-    }
-
-
-    fun initSingleSelectionButtonSet(buttons: Set<View>, applyToSelected: (View) -> Unit, applyToUnselected: (View) -> Unit) {
+    private fun turnButtonsIntoSingleSelection(buttons: Set<View>, applyToSelected: (View) -> Unit, applyToUnselected: (View) -> Unit) {
         val selectionApplier = SingleSelectionApplier()
         for (button in buttons) {
             button.setOnClickListener{ btn ->
@@ -435,7 +298,7 @@ class MainActivity : AppCompatActivity() {
         //.setIcon(android.R.drawable.ic_dialog_alert)
 
 
-        initSingleSelectionButtonSet(
+        turnButtonsIntoSingleSelection(
             setOf (
                 dialogContentLayout.findViewById(R.id.newGameDialog_SelectPlayerButton_WhitePlayer),
                 dialogContentLayout.findViewById(R.id.newGameDialog_SelectPlayerButton_BlackPlayer),
@@ -446,9 +309,9 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        val spinner = dialogContentLayout.findViewById<Spinner>(R.id.spinner)!!
+        val spinner = dialogContentLayout.findViewById<Spinner>(R.id.spinner)
 
-        initSingleSelectionButtonSet(
+        turnButtonsIntoSingleSelection(
             setOf (
                 dialogContentLayout.findViewById(R.id.newGameDialog_GameType_singlePlayer),
                 dialogContentLayout.findViewById(R.id.newGameDialog_GameType_twoPlayers)
@@ -463,24 +326,32 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
+    var player1capturedPieces: List<Piece> = listOf()
+    var player2capturedPieces: List<Piece> = listOf()
 
-    fun updatePlayer1CaptureBox(capturedPieces: Int) {
-        updateCaptureBox(captureBoxBottom, capturedPieces)
-        updateCaptureBox(captureBoxStart, capturedPieces, true)
+    fun updatePlayer1CaptureBox(capturedPieces: List<Piece>) {
+        if (player1capturedPieces.size != capturedPieces.size) {
+            player1capturedPieces = capturedPieces.toList()
+            updateCaptureBox(captureBoxBottom, capturedPieces)
+            updateCaptureBox(captureBoxStart, capturedPieces, true)
+        }
     }
 
-    fun updatePlayer2CaptureBox(capturedPieces: Int) {
-        updateCaptureBox(captureBoxTop, capturedPieces)
-        updateCaptureBox(captureBoxEnd, capturedPieces, true)
+    fun updatePlayer2CaptureBox(capturedPieces: List<Piece>) {
+        if (player2capturedPieces.size != capturedPieces.size) {
+            player2capturedPieces = capturedPieces.toList()
+            updateCaptureBox(captureBoxTop, capturedPieces.asReversed())
+            updateCaptureBox(captureBoxEnd, capturedPieces.asReversed(), true)
+        }
     }
 
-    fun updateCaptureBox(captureBox: LinearLayout, capturedPieces: Int, applyVertically: Boolean = false) {
+    fun updateCaptureBox(captureBox: LinearLayout, capturedPieces: List<Piece>, applyVertically: Boolean = false) {
         captureBox.removeAllViews();
 
         val pieceMaxSize = resources.getDimensionPixelOffset(R.dimen.capturedPieceMaxSize)
         val pieceMaxPadding = resources.getDimensionPixelOffset(R.dimen.capturedPieceMaxPadding)
         val captureBoxLength = if (applyVertically) captureBox.height else captureBox.width
-        val piecesStackMaxLength = capturedPieces * (pieceMaxSize + pieceMaxPadding)
+        val piecesStackMaxLength = capturedPieces.size * (pieceMaxSize + pieceMaxPadding)
 
         val pieceSizeCorrector = DoubleToIntCorrector(pieceMaxSize * captureBoxLength.toDouble() / piecesStackMaxLength)
         val piecePaddingCorrector = DoubleToIntCorrector(pieceMaxPadding * captureBoxLength.toDouble() / piecesStackMaxLength)
@@ -500,10 +371,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        for (i in 1..capturedPieces) {
+        for (i in 0..capturedPieces.lastIndex) {
             val capturedPiece: View = layoutInflater.inflate(R.layout.element_captured_piece, null)
             capturedPiece.findViewById<ImageView>(R.id.capturedPiece_image)
-                .setImageResource(R.drawable.piece_red_pawn)
+                .setImageResource(getPieceImageResource(capturedPieces[i]))
 
             val imageView: ImageView = capturedPiece.findViewById(R.id.capturedPiece_image)
             imageView.layoutParams.width = pieceSize()
@@ -529,6 +400,76 @@ class MainActivity : AppCompatActivity() {
         captureBox.requestLayout()
     }
 
+    //TODo the mimpap doesnt take a possibility of passing a turn
+
+    fun showProgressBar() {
+        progressBarTop.visibility = View.VISIBLE
+        progressBarSide.visibility = View.VISIBLE
+    }
+
+    fun hideProgressBar() {
+        progressBarTop.visibility = View.GONE
+        progressBarSide.visibility = View.GONE
+    }
+
+
+    class MakeAMoveByVirtualPlayer( //Todo cancel when activity is destoryes
+        private val board: Board,
+        private val showProgressBar: () -> Unit,
+        private val hideProgressBar: () -> Unit
+    ) : AsyncTask<Unit, Unit, CheckersMove>() {
+
+        override fun onPreExecute() = showProgressBar()
+
+        override fun doInBackground(vararg params: Unit): CheckersMove? =
+            Application.virtualPlayer.getMove(CheckersGameState(board.gameData.game, Player.Black), 3)
+
+
+        override fun onPostExecute(result: CheckersMove?) {
+            hideProgressBar()
+
+            if (result == null) {
+                if  (board.gameData.game.winner != Player.White) { throw InternalError() }
+                return
+            }
+
+            val from = result.fromTile
+            val to = result.move.to
+            board.makeAMoveManually(from.x, from.y, to.x, to.y)
+        }
+    }
+
+    override fun boardDelegateMadeAMove() {
+        updateHistoryButtons(true)
+    }
+
+    override fun boardDelegateFinishedTurn(currentPlayer: Player?, player1CapturedPieces: List<Piece>, player2CapturedPieces: List<Piece>) {
+        updatePlayer1CaptureBox(player1CapturedPieces)
+        updatePlayer2CaptureBox(player2CapturedPieces)
+        if (currentPlayer == Player.White) {
+            board.saveSnapshotToHistory()
+            board.enableSelection()
+            updateHistoryButtons(true)
+        } else if (currentPlayer == Player.Black) {
+            MakeAMoveByVirtualPlayer(board, ::showProgressBar, ::hideProgressBar).execute()
+        }
+    }
+
+    override fun boardDelegateSnapshotWasLoadedFromHistory(player1CapturedPieces: List<Piece>, player2CapturedPieces: List<Piece>) {
+        updatePlayer1CaptureBox(player1CapturedPieces)
+        updatePlayer2CaptureBox(player2CapturedPieces)
+        updateHistoryButtons(true)
+    }
+
+
+    fun getToast(message: String) {
+        Toast.makeText(
+            applicationContext,
+            message,
+            Toast.LENGTH_SHORT
+        )
+            .show()
+    }
 }
 
 class DoubleToIntCorrector(private val const: Double) {
@@ -550,3 +491,4 @@ class SingleSelectionApplier() {
         lastSelected = selected
     }
 }
+

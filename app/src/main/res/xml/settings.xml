@@ -1,60 +1,112 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/settings_category_game_rules">
 
-        <EditTextPreference
-            android:id="@+id/dododo"
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <Preference
-            android:id="@+id/daaaododo"
-            app:key="signature"
-            app:title="@string/signature_title"
+        <ListPreference
+            app:entries="@array/king_behaviour_entries"
+            app:entryValues="@array/king_behaviour_entryValues"
+            app:defaultValue="noFlyingKings"
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_king_behaviour"
+            app:title="@string/king_behaviour"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
+            app:entries="@array/can_man_capture_backwards_entries"
+            app:entryValues="@array/can_man_capture_backwards_entryValues"
+            app:defaultValue="never"
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_can_man_capture_backwards"
+            app:title="@string/can_man_capture_backwards"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:defaultValue="false"
+            app:key="@string/pref_is_capturing_mandatory"
+            app:title="@string/is_capturing_mandatory" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/settings_category_game_style">
+
+        <ListPreference
+            app:entries="@array/board_size_entries"
+            app:entryValues="@array/board_size_entryValues"
+            app:defaultValue="8"
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_board_size"
+            app:title="@string/board_size"
+            app:useSimpleSummaryProvider="true" />
+
+        <el.arn.opencheckers.BoardThemeSelectorPreference
+            android:key="@string/pref_board_theme"
+            android:title="@string/board_theme"
+            app:iconSpaceReserved="false" />
+
+        <el.arn.opencheckers.PlayerThemeSelectorPreference
+            android:key="@string/pref_player_theme"
+            android:title="@string/player_theme"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/settings_category_custom">
+
+        <SwitchPreferenceCompat
+            app:iconSpaceReserved="false"
+            app:defaultValue="false"
+            app:key="@string/pref_enable_custom_settings"
+            app:title="@string/enable_custom_settings" />
+
+        <ListPreference
+            app:entries="@array/custom_board_size_entries"
+            app:entryValues="@array/custom_board_size_entryValues"
+            app:defaultValue="8"
+            app:iconSpaceReserved="false"
+            app:isPreferenceVisible="false"
+            app:key="@string/pref_custom_board_size"
+            app:title="@string/custom_board_size"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:defaultValue="repddddly1"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply121"
-            app:title="@string/reply_title"
+            app:isPreferenceVisible="false"
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_custom_starting_rows"
+            app:title="@string/starting_rows"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
-        <el.arn.opencheckers.ThemeSelectorPreference
-            app:dependency="sync"
-            android:key="pref_theme"
-            android:title="Theme"
-            android:defaultValue="light" />
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
+    <!--    <PreferenceCategory app:title="@string/sync_header">-->
+    <!--    <el.arn.opencheckers.BoardThemeSelectorPreference-->
+    <!--        android:defaultValue="light"-->
+    <!--        android:key="pref_theme"-->
+    <!--        android:title="Theme"-->
+    <!--        app:dependency="sync" />-->
+    <!--        <SwitchPreferenceCompat-->
+    <!--            app:key="sync"-->
+    <!--            app:title="@string/sync_title" />-->
 
-        <SwitchPreferenceCompat
-            android:icon="@android:drawable/ic_popup_sync"
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+    <!--        <SwitchPreferenceCompat-->
+    <!--            android:icon="@android:drawable/ic_popup_sync"-->
+    <!--            app:dependency="sync"-->
+    <!--            app:key="attachment"-->
+    <!--            app:summaryOff="@string/attachment_summary_off"-->
+    <!--            app:summaryOn="@string/attachment_summary_on"-->
+    <!--            app:title="@string/attachment_title" />-->
 
-    </PreferenceCategory>
+    <!--    </PreferenceCategory>-->
 
-<!--    app:allowDividerAbove="false"-->
-<!--    app:iconSpaceReserved="true"-->
+    <!--    app:allowDividerAbove="false"-->
+    <!--    app:iconSpaceReserved="true"-->
 
 
 </PreferenceScreen>

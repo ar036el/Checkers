@@ -16,7 +16,7 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
     private final PlayableBoard board;
     private final int boardSize;
     private final GameLogicConfig config;
-    private final GameLogicDelegate delegate;
+    private GameLogicDelegate delegate;
 
     private Player currentPlayer;
     private Player opponentPlayer;
@@ -62,12 +62,12 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
     }
 
     @Override
-    public Piece makeAMove(int xFrom, int yFrom, int xTo, int yTo) throws GameException {
+    public Tile makeAMove(int xFrom, int yFrom, int xTo, int yTo) throws GameException {
         if (flagBoardWasChangedUnexpectedly) {
             refreshGameBecauseSomethingChangedWhileWaitingForNextMove();
         }
         checkForExplicitIllegalMoves(xFrom, yFrom, xTo, yTo);
-        Piece captured = tryToMakeAMove(xFrom, yFrom, xTo, yTo);
+        Tile captured = tryToMakeAMove(xFrom, yFrom, xTo, yTo);
 
         if (!tryToGetAnExtraTurn()) {
             endTurn();
@@ -102,6 +102,11 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
     }
 
     @Override
+    public void setDelegate(GameLogicDelegate delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
     public int getBoardSize() {
         return boardSize;
     }
@@ -112,8 +117,8 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
     }
 
     @Override
-    public Set<Tile> getAllPiecesOfPlayer(Player player) {
-        return board.getAllPiecesOfPlayer(player);
+    public Set<Tile> getAllPiecesForPlayer(Player player) {
+        return board.getAllPiecesForPlayer(player);
     }
 
     @Override
@@ -167,8 +172,8 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
         if (winner != null) {
             return;
         }
-        int whitePieces = board.getAllPiecesOfPlayer(Player.White).size();
-        int blackPieces = board.getAllPiecesOfPlayer(Player.Black).size();
+        int whitePieces = board.getAllPiecesForPlayer(Player.White).size();
+        int blackPieces = board.getAllPiecesForPlayer(Player.Black).size();
 
         if (whitePieces + blackPieces <= 0) {
             throw new InternalError();
@@ -249,14 +254,14 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
         return null;
     }
 
-    private Piece tryToMakeAMove(int xFrom, int yFrom, int xTo, int yTo) throws PointIsOutOfBoardBoundsException, TileIsNotPlayableException, PieceWasNotSelectedException, TileIsAlreadyOccupiedException, IllegalMoveException, CannotPassTurn {
+    private Tile tryToMakeAMove(int xFrom, int yFrom, int xTo, int yTo) throws PointIsOutOfBoardBoundsException, TileIsNotPlayableException, PieceWasNotSelectedException, TileIsAlreadyOccupiedException, IllegalMoveException, CannotPassTurn {
         Move move = getMoveIfAvailable(xFrom, yFrom, xTo, yTo);
         if (move == null) {
             throw new IllegalMoveException();
         }
-        Piece captured = null;
+        Tile captured = null;
         if (move.capture != null) {
-            captured = board.getPiece(move.capture.x, move.capture.y);
+            captured = new Tile(move.capture.x, move.capture.y, board.getPiece(move.capture.x, move.capture.y));
             capture(xFrom, yFrom, move.capture.x, move.capture.y, xTo, yTo);
         } else {
             jump(xFrom, yFrom, xTo, yTo);
@@ -330,7 +335,7 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
 
     private AvailableMoves getAvailableMovesForPlayer(Player player) {
         AvailableMoves availableMoves = new AvailableMoves(boardSize);
-        Set<Tile> tiles = board.getAllPiecesOfPlayer(player);
+        Set<Tile> tiles = board.getAllPiecesForPlayer(player);
         boolean onlyCaptureMovesAllowed = false;
 
         for (Tile tile : tiles) {
@@ -429,6 +434,11 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
         }
 
         return !availableMovesForPiece.isEmpty() ? availableMovesForPiece : null;
+    }
+
+    @Override
+    public ReadableBoard getBoard() {
+        return board;
     }
 
 

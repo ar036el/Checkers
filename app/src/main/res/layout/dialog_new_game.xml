@@ -117,7 +117,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/difficulty_select"
+            android:text="@string/select_difficulty"
             android:layout_gravity="center"/>
 
         <Spinner
@@ -126,7 +126,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawSelectorOnTop="true"
-            android:entries="@array/difficulty_items" />
+            android:entries="@array/difficulty_entries"
+
+            />
 <!--        <RadioGroup-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->

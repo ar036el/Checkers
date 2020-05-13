@@ -52,7 +52,7 @@ public class CheckersGameState implements GameState<CheckersMove> {
         }
         Game gameCopy = new GameImpl((GameImpl) checkersGame);
         try {
-            gameCopy.makeAMove(move.tile.x, move.tile.y, move.move.to.x, move.move.to.y);
+            gameCopy.makeAMove(move.fromTile.x, move.fromTile.y, move.move.to.x, move.move.to.y);
         } catch (GameException e) {
             throw new InternalError();
         }
@@ -76,7 +76,7 @@ public class CheckersGameState implements GameState<CheckersMove> {
 
     private void calculateHeuristicValuesForPlayer(Player player) {
         int incOrDecFactor = (this.player == player) ? 1 : -1;
-        for (Tile tile : checkersGame.getAllPiecesOfPlayer(player)) {
+        for (Tile tile : checkersGame.getAllPiecesForPlayer(player)) {
             heuristicValue += incOrDecFactor * getHeuristicValue(tile.piece.getType());
             secondaryHeuristicValue += incOrDecFactor * getSecondaryHeuristicValue(tile.x, tile.y);
         }

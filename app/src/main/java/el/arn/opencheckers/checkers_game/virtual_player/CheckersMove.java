@@ -5,11 +5,11 @@ import el.arn.opencheckers.checkers_game.game_core.structs.Tile;
 
 public class CheckersMove implements GameState.Move {
 
-    public final Tile tile;
+    public final Tile fromTile;
     public final Move move;
 
-    CheckersMove(Tile tile, Move move) {
-        this.tile = tile;
+    CheckersMove(Tile fromTile, Move move) {
+        this.fromTile = fromTile;
         this.move = move;
     }
 }

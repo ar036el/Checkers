@@ -11,5 +11,5 @@ import java.util.Set;
 public interface ReadableBoard {
     int getBoardSize();
     Piece getPiece(int x, int y) throws PointIsOutOfBoardBoundsException, TileIsNotPlayableException;
-    Set<Tile> getAllPiecesOfPlayer(Player player);
+    Set<Tile> getAllPiecesForPlayer(Player player);
 }

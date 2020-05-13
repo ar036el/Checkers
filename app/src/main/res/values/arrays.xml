@@ -1,18 +1,46 @@
 <resources>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
-    </string-array>
 
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
-    </string-array>
-
-    <string-array name="difficulty_items">
+    <string-array name="difficulty_entryValues">
         <item>easy</item>
         <item>medium</item>
         <item>hard</item>
     </string-array>
+
+    <string-array name="can_man_capture_backwards_entryValues">
+        <item>always</item>
+        <item>onlyWhenMultiCapture</item>
+        <item>never</item>
+    </string-array>
+
+    <string-array name="king_behaviour_entryValues">
+        <item>flyingKing</item>
+        <item>landsAfterCapture</item>
+        <item>noFlyingKings</item>
+    </string-array>
+
+    <string-array name="board_size_entryValues">
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="custom_board_size_entryValues">
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>20</item>
+        <item>22</item>
+        <item>24</item>
+    </string-array>
+
+
+
+
+
+
 </resources>

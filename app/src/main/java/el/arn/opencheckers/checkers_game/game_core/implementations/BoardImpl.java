@@ -115,7 +115,7 @@ public class BoardImpl implements PlayableBoard {
     }
 
     @Override
-    public Set<Tile> getAllPiecesOfPlayer(Player player) {
+    public Set<Tile> getAllPiecesForPlayer(Player player) {
         return getTilesFor(player);
     }
 

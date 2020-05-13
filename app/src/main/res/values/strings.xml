@@ -1,37 +1,129 @@
 <resources>
     <string name="app_name">Open Checkers</string>
 
-    <string name="difficulty_select">Difficulty:</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="settings_category_game_rules">Game Rules</string>
+    <string name="settings_category_game_style">Game Style</string>
+    <string name="settings_category_custom">Custom Game Setting</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="can_man_capture_backwards">Can man capture backwards</string>
+    <string name="can_man_capture_backwards_question">Can man (normal piece) capture backwards?</string>
+    <string-array name="can_man_capture_backwards_entries">
+        <item>Always</item>
+        <item>Only when capturing multiple pieces</item>
+        <item>Never</item>
+    </string-array>
 
 
-    <string-array name="difficulties">
+    <string name="king_behaviour">King\'s behaviour</string>
+    <string name="king_behaviour_question">How kings moves?</string>
+    <string name="king_behaviour_flying_kings_desc">Can move by any distance</string>
+    <string name="king_behaviour_lands_after_capture_desc">Can jump by any distance, but when capturing, it must land after the captured piece</string>
+    <string name="king_behaviour_no_flying_kings_desc">like normal soldier- moves or captures by nearest tile</string>
+    <string-array name="king_behaviour_entries">
+        <item>Flying kings</item>
+        <item>Lands after capture</item>
+        <item>No flying kings</item>
+    </string-array>
+
+
+
+    <string name="is_capturing_mandatory">Is capturing mandatory</string>
+    <string name="is_capturing_mandatory_question">Is capturing mandatory?</string>
+    <string name="is_capturing_mandatory_yes">Mandatory</string>
+    <string name="is_capturing_mandatory_no">Not mandatory</string>
+    <string name="is_capturing_mandatory_no_desc">Passing extra turns is also allowed</string>
+
+
+
+
+    <string name="board_size">Board size</string>
+    <string-array name="board_size_entries">
+        <item>8x8</item>
+        <item>10x10</item>
+        <item>12x12</item>
+    </string-array>
+
+
+
+    <string name="enable_custom_settings">Enable custom settings</string>
+
+    <string name="custom_board_size">Custom board size</string>
+    <string-array name="custom_board_size_entries">
+        <item>4x4</item>
+        <item>6x6</item>
+        <item>8x8</item>
+        <item>10x10</item>
+        <item>12x12</item>
+        <item>14x14</item>
+        <item>16x16</item>
+        <item>18x18</item>
+        <item>20x20</item>
+        <item>22x22</item>
+        <item>24x24</item>
+    </string-array>
+
+    <string name="starting_rows">Starting soldier rows for each player</string>
+
+    <string name="board_theme">Board theme</string>
+    <string name="player_theme">Player theme</string>
+
+
+
+    <string name="select_starting_player_title">Starting player</string>
+    <string name="select_difficulty">Difficulty:</string>
+    <string name="select_player_title">Player</string>
+
+
+
+
+    <string-array name="difficulty_entries">
         <item>Easy</item>
         <item>Medium</item>
         <item>Hard</item>
     </string-array>
+
 
     <string name="onboarding_btn_next">Next</string>
     <string name="onboarding_btn_prev">Back</string>
     <string name="onboarding_btn_finish">Get Started</string>
 
 
+
     <string name="prefFile_onboarding">onboarding</string>
     <string name="pref_hasCompletedOnboarding">hasCompletedOnboarding</string>
+
+    <string name="prefFile_settings">settings</string>
+
+    <string name="pref_king_behaviour">kingBehaviour</string>
+    <string name="pref_king_behaviour_defValue">flyingKing</string>
+
+    <string name="pref_can_man_capture_backwards">canManCaptureBackwards</string>
+    <string name="pref_can_man_capture_backwards_defValue">never</string>
+
+    <string name="pref_is_capturing_mandatory">isCapturingMandatory</string>
+    <bool name="pref_is_capturing_mandatory_defValue">true</bool>
+
+    <string name="pref_board_theme">boardTheme</string>
+    <string name="pref_board_theme_defValue">1</string>
+
+    <string name="pref_player_theme">playerTheme</string>
+    <string name="pref_player_theme_defValue">1</string>
+
+    <string name="pref_board_size">boardSize</string>
+    <string name="pref_board_size_defValue">8</string>
+
+
+    <string name="pref_enable_custom_settings">enableCustomSettings</string>
+    <bool name="pref_enable_custom_settings_defValue">false</bool>
+
+    <string name="pref_custom_starting_rows">startingRows</string>
+    <string name="pref_custom_starting_rows_defValue">3</string>
+
+    <string name="pref_custom_board_size">customBoardSize</string>
+    <string name="pref_custom_board_size_defValue">8</string>
 
 
 

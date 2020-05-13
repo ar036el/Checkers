@@ -1,6 +1,7 @@
 package el.arn.opencheckers.checkers_game.game_core.structs;
 
 public class Move {
+
     public final Point capture, to;
 
     public Move(int xCapture, int yCapture, int xTo, int yTo) {

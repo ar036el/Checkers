@@ -11,10 +11,20 @@
     <color name="buttonSelected">#4965FB</color>
     <color name="buttonPressed">#49BDFB</color>
 
-    <color name="transparent">#FFFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
 
     <color name="gradient_start_color">#42A5F5</color>
     <color name="gradient_end_color">#4260F5</color>
     <color name="tab_indicator_gray">#939393</color>
+
+    <color name="tile_light">#dfd23a</color>
+    <color name="tile_dark">#a33222</color>
+
+    <color name="tileHighlight_available">#FF9800</color>
+    <color name="tileHighlight_selected">#03A9F4</color>
+    <color name="tileHighlight_canLand">#4CAF50</color>
+    <color name="tileHighlightBottom_canCapture">#FF5722</color>
+
+
 
 </resources>

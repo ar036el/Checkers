@@ -4,15 +4,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-class MinimaxNode {
+class MinimaxNode<M extends GameState.Move> {
     //private final Game game;
-    final GameState.Move move;
-    final GameState.Move rootMove;
+    final M move;
+    final M rootMove;
     final int heuristicValue;
     final int secondaryHeuristicValue;
     private final Set<MinimaxNode> children;
 
-    public MinimaxNode(GameState.Move move, int heuristicValue, int secondaryHeuristicValue, GameState.Move rootMove) {
+    public MinimaxNode(M move, int heuristicValue, int secondaryHeuristicValue, M rootMove) {
         this.heuristicValue = heuristicValue;
         this.secondaryHeuristicValue = secondaryHeuristicValue;
         this.move = move;

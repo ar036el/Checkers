@@ -2,7 +2,7 @@ package el.arn.opencheckers.checkers_game.virtual_player;
 
 import java.util.Set;
 
-interface GameState<M extends GameState.Move> {
+public interface GameState<M extends GameState.Move> {
 
     /**Returns a new game state after the given Move has applied to it. the turn is switched to the other player.<br>
      *Returns {@code null} if move is not available.<br/>
