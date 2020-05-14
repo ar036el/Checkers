@@ -107,10 +107,10 @@
     <bool name="pref_is_capturing_mandatory_defValue">true</bool>
 
     <string name="pref_board_theme">boardTheme</string>
-    <string name="pref_board_theme_defValue">1</string>
+    <integer name="pref_board_theme_defValue">1</integer>
 
     <string name="pref_player_theme">playerTheme</string>
-    <string name="pref_player_theme_defValue">1</string>
+    <integer name="pref_player_theme_defValue">1</integer>
 
     <string name="pref_board_size">boardSize</string>
     <string name="pref_board_size_defValue">8</string>

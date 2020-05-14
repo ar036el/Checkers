@@ -47,11 +47,13 @@
         <el.arn.opencheckers.BoardThemeSelectorPreference
             android:key="@string/pref_board_theme"
             android:title="@string/board_theme"
+            app:defaultValue="0"
             app:iconSpaceReserved="false" />
 
         <el.arn.opencheckers.PlayerThemeSelectorPreference
             android:key="@string/pref_player_theme"
             android:title="@string/player_theme"
+            app:defaultValue="0"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>

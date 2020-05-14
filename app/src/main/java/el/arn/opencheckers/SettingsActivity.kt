@@ -4,9 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MenuItem
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.*
 import el.arn.opencheckers.checkers_game.game_core.configurations.BoardConfig
+
+const val ALPHA_INACTIVE = 0.6f
+const val ALPHA_DISABLED = 0.38f
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,9 +120,13 @@ class PlayerThemeSelectorPreference@JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.preferenceStyle,
     defStyleRes: Int = 0
-) : ImageSelectorPreference(imageViewsIDs, context, attrs, defStyleAttr, defStyleRes) {
+) : ImageSelectorPreference(imageViewsIDs, 0, context, attrs, defStyleAttr, defStyleRes) {
     companion object {
-        val imageViewsIDs = intArrayOf(1, 2, 3)
+        val imageViewsIDs = intArrayOf(
+            R.drawable.board_theme_1,
+            R.drawable.board_theme_2,
+            R.drawable.board_theme_3,
+            R.drawable.board_theme_4)
     }
 }
 
@@ -127,33 +135,80 @@ class BoardThemeSelectorPreference@JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.preferenceStyle,
     defStyleRes: Int = 0
-) : ImageSelectorPreference(imageViewsIDs, context, attrs, defStyleAttr, defStyleRes) {
+) : ImageSelectorPreference(imageViewsIDs, 0, context, attrs, defStyleAttr, defStyleRes) {
     companion object {
-        val imageViewsIDs = intArrayOf(1, 2, 3)
+        val imageViewsIDs = intArrayOf(
+            R.drawable.board_theme_1,
+            R.drawable.board_theme_2,
+            R.drawable.board_theme_3,
+            R.drawable.board_theme_4)
     }
 }
 
 open class ImageSelectorPreference @JvmOverloads constructor(
-    private val imageViewsIDs: IntArray,
+    private val imagesResId: IntArray,
+    private val defaultValue: Int,
     context: Context?,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.preferenceStyle,
     defStyleRes: Int = 0
-) :
-    Preference(context, attrs, defStyleAttr, defStyleRes) {
-    override fun onBindViewHolder(holder: PreferenceViewHolder) {
-        super.onBindViewHolder(holder)
-        //holder.itemView.setClickable(false); // disable parent click
-        val button = holder.findViewById(R.id.theme_light)
-        button.isClickable = true // enable custom view click
-        button.setOnClickListener {
-            // persist your value here
-        }
+) : Preference(context, attrs, defStyleAttr, defStyleRes) {
 
-        // the rest of the click binding
-    }
+    private lateinit var prev: ImageButton
+    private lateinit var next: ImageButton
+    private lateinit var image: ImageButton
 
     init {
-        widgetLayoutResource = R.layout.element_pref_theme_switch_widget
+        widgetLayoutResource = R.layout.element_pref_image_selector
     }
+
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
+        super.onBindViewHolder(holder)
+        holder.itemView.isClickable = false; // disable parent click
+
+        prev = holder.findViewById(R.id.imageSelectorPrefWidget_back) as ImageButton
+        next = holder.findViewById(R.id.imageSelectorPrefWidget_next) as ImageButton
+        image = holder.findViewById(R.id.imageSelectorPrefWidget_image) as ImageButton
+        prev.setOnClickListener { prev() }
+        next.setOnClickListener { next() }
+        image.setOnClickListener { next() }
+
+        if (value < 0 || value > imagesResId.lastIndex) {
+            value = defaultValue
+        }
+
+        updateElements()
+    }
+
+    private fun updateElements() {
+        prev.isClickable = hasPrev()
+        prev.alpha = if (hasPrev()) 1f else ALPHA_DISABLED
+
+        next.isClickable = hasNext()
+        next.alpha = if (hasNext()) 1f else ALPHA_DISABLED
+
+        image.isClickable = hasNext()
+        image.setImageResource(imagesResId[value])
+    }
+
+    private fun hasNext() = (value != imagesResId.lastIndex)
+    private fun next() {
+        value++
+        updateElements()
+    }
+
+    private fun hasPrev() = (value != 0)
+    private fun prev() {
+        val currentImageIndex = sharedPreferences.getInt(key, defaultValue)
+        value--
+        updateElements()
+    }
+
+    private var value
+        get() = sharedPreferences.getInt(key, defaultValue)
+        set(value) = with (sharedPreferences.edit()) {
+            putInt(key, value)
+            commit()
+        }
+
 }
