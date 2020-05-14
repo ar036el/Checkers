@@ -15,14 +15,15 @@ import kotlin.math.abs
 //TOdo when rotating when virtual player is playing- bug
 
 
-class Board(
+class BoardView(
     private val activity: Activity,
     boardLayout: FrameLayout,
-    val gameData: GameData,
+    val gameData: GameData?,
+    tilesInBoard: Int,
     var delegate: Delegate? = null
 ) {
 
-    private val tiles = Tiles(gameData.game.boardSize)
+    private val tiles = Tiles(tilesInBoard)
     private val tileSize: Int
 
     private val board: GridLayout = boardLayout.findViewById(R.id.board)
@@ -31,12 +32,15 @@ class Board(
     private val piecesContainer: FrameLayout = boardLayout.findViewById(R.id.boardPiecesContainer)
 
     private var isEnabled = false
+    
+    private var selectedTile: Tile? = null
+    private val availableTiles = mutableSetOf<Tile>()
+    private val activatedTilesForSelectedTile = mutableSetOf<Tile>()
 
     init {
         val displayMetrics = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
         val boardSize = displayMetrics.heightPixels.coerceAtMost(displayMetrics.widthPixels)
-        val tilesInBoard = gameData.game.boardSize
 
         boardBackground.layoutParams = FrameLayout.LayoutParams(boardSize, boardSize)
         piecesContainer.layoutParams = FrameLayout.LayoutParams(boardSize, boardSize)
@@ -48,6 +52,8 @@ class Board(
         val tileSize = boardSize.toDouble() / tilesInBoard;
         this.tileSize = tileSize.toInt()
 
+        board.removeAllViews()
+        boardCover.removeAllViews()
         createTiles(tileSize, tilesInBoard)
 
         boardBackground.invalidate() //TODO do it everywhere the width is being changed https://stackoverflow.com/questions/35279374/why-is-requestlayout-being-called-directly-after-invalidate/40402309
@@ -58,35 +64,40 @@ class Board(
         boardCover.requestLayout()
     }
 
-    fun initWhenLocationRelatedValuesAreAvailable() {
-        updateBoardPieces()
+
+
+    fun initGamePieces() {
+        if (gameData == null) { throw IllegalStateException("game was not created yet") }
+        putPiecesOnBoard()
     }
 
     fun enableSelection() {
+        if (gameData == null) throw IllegalStateException("game was not created yet")
         isEnabled = true
         updateAvailableTiles()
     }
 
     val hasUndo
-        get() = gameData.gameHistory.hasUndo
+        get() = (gameData?.gameHistory?.hasUndo == true)
     val hasRedo
-        get() = gameData.gameHistory.hasRedo
+        get() = (gameData?.gameHistory?.hasRedo == true)
 
     fun undo() {
-        if (!gameData.gameHistory.hasUndo) throw IllegalStateException()
+        if (!hasUndo || gameData == null) throw IllegalStateException()
         if (isEnabled) {
             loadSnapshotFromHistory(false)
         }
     }
 
     fun redo() {
-        if (!gameData.gameHistory.hasRedo) throw IllegalStateException()
+        if (!hasRedo || gameData == null) throw IllegalStateException()
         if (isEnabled) {
             loadSnapshotFromHistory(true)
         }
     }
 
     fun saveSnapshotToHistory() {
+        if (gameData == null) throw IllegalStateException("game was not created yet")
         gameData.gameHistory.saveEntry(
             gameData.game,
             gameData.player1CapturedPieces,
@@ -95,6 +106,7 @@ class Board(
     }
 
     fun makeAMoveManually(xFrom: Int, yFrom: Int, xTo: Int, yTo: Int) {
+        if (gameData == null) throw IllegalStateException("game was not created yet")
         val fromTile = tiles.get(xFrom, yFrom)
         val toTile = tiles.get(xTo, yTo)
         makeAMove(fromTile, toTile)
@@ -103,8 +115,9 @@ class Board(
     private fun createTiles(tileSize: Double, tilesInBoard: Int) {
         val tileSizeCorrectorForX = DoubleToIntCorrector(tileSize)
         val tileSizeCorrectorForY = DoubleToIntCorrector(tileSize)
-        for (y in tilesInBoard - 1 downTo 0) {
-            for (x in tilesInBoard - 1 downTo 0) {
+        val boardDirection = if (gameData?.player1 == Player.White) (tilesInBoard - 1 downTo 0) else (0 until tilesInBoard)
+        for (y in boardDirection) {
+            for (x in boardDirection) {
                 val tileLengthFixed =
                     if (x == tilesInBoard - 1)
                         tileSizeCorrectorForX.getInt()
@@ -145,12 +158,12 @@ class Board(
     }
 
     private fun loadSnapshotFromHistory(isRedo: Boolean) {
-        val entry = if (isRedo) gameData.gameHistory.redo() else gameData.gameHistory.undo()
+        val entry = if (isRedo) gameData!!.gameHistory.redo() else gameData!!.gameHistory.undo()
         gameData.loadFromHistory(entry)
         closeAvailableTiles()
         unselectPieceAndCloseRelatedTiles()
 
-        updateBoardPieces()
+        putPiecesOnBoard()
         updateAvailableTiles()
 
         delegate?.boardDelegateSnapshotWasLoadedFromHistory(
@@ -161,13 +174,13 @@ class Board(
 
     private fun activateTilesForSelectedPiece(tile: Tile) {
         if (tile.state != Tile.State.Selected) throw IllegalStateException()
-        gameData.activatedTilesForSelectedTile.clear()
+        activatedTilesForSelectedTile.clear()
 
-        for (move in gameData.game.getAvailableMovesForPiece(tile.x, tile.y)) {
+        for (move in gameData!!.game.getAvailableMovesForPiece(tile.x, tile.y)) {
             val tileToLand = tiles.get(move.to.x, move.to.y)
             if (tileToLand.state != Tile.State.Default) throw IllegalStateException("expected ${Tile.State.Default} but was ${tileToLand.state}") //Todo use this pattern!
             tileToLand.state = Tile.State.CanLand
-            gameData.activatedTilesForSelectedTile.add(tileToLand)
+            activatedTilesForSelectedTile.add(tileToLand)
 
             if (move.capture != null) {
                 val tileToCapture = tiles.get(move.capture.x, move.capture.y)
@@ -175,7 +188,7 @@ class Board(
                     throw IllegalStateException()
                 }
                 tileToCapture.state = Tile.State.CanCapture
-                gameData.activatedTilesForSelectedTile.add(tileToCapture)
+                activatedTilesForSelectedTile.add(tileToCapture)
             }
 
             if (gameData.game.isExtraTurn) {
@@ -186,30 +199,30 @@ class Board(
 
     private fun selectPieceAndOpenRelatedTiles(tile: Tile) {
         if (tile.pieceType == null) throw InternalError()
-        gameData.selectedTile = tile
+        selectedTile = tile
         tile.state = Tile.State.Selected
         activateTilesForSelectedPiece(tile)
     }
 
     private fun unselectPieceAndCloseRelatedTiles() {
-        gameData.selectedTile?.state = Tile.State.Default
-        gameData.selectedTile = null
-        gameData.activatedTilesForSelectedTile.forEach { it.state = Tile.State.Default }
-        gameData.activatedTilesForSelectedTile.clear()
+        selectedTile?.state = Tile.State.Default
+        selectedTile = null
+        activatedTilesForSelectedTile.forEach { it.state = Tile.State.Default }
+        activatedTilesForSelectedTile.clear()
     }
 
     private fun openAvailableTiles() {
-        gameData.availableTiles.forEach { it.state = Tile.State.Available }
+        availableTiles.forEach { it.state = Tile.State.Available }
     }
 
     private fun closeAvailableTiles() {
-        gameData.availableTiles.forEach { it.state = Tile.State.Default }
+        availableTiles.forEach { it.state = Tile.State.Default }
     }
 
     private fun makeAMove(fromTile: Tile, toTile: Tile) {
         isEnabled = false
 
-        val player = gameData.game.currentPlayer
+        val player = gameData!!.game.currentPlayer
         val captured = gameData.game.makeAMove(fromTile.x, fromTile.y, toTile.x, toTile.y)
         val pieceAtDest = gameData.game.getPiece(toTile.x, toTile.y)
         notifyDelegateAMoveWasMade()
@@ -219,14 +232,14 @@ class Board(
             capturedPieces.add(captured.piece)
         }
         val capturedTile = if (captured != null) tiles.get(captured.x, captured.y) else null
-        fromTile.movePieceTo(toTile, capturedTile, pieceAtDest) {
+        fromTile.movePiece(toTile, capturedTile, pieceAtDest) {
             notifyDelegateTurnWasFinished()
         }
     }
 
     private fun notifyDelegateTurnWasFinished() {
         delegate?.boardDelegateFinishedTurn(
-            if (gameData.game.winner == null) gameData.game.currentPlayer else null,
+            if (gameData!!.game.winner == null) gameData.game.currentPlayer else null,
             gameData.player1CapturedPieces,
             gameData.player2CapturedPieces
         )
@@ -235,7 +248,7 @@ class Board(
     private fun notifyDelegateAMoveWasMade() = delegate?.boardDelegateMadeAMove()
 
     private fun passTurn() {
-        gameData.game.passTurn()
+        gameData!!.game.passTurn()
         notifyDelegateAMoveWasMade()
         notifyDelegateTurnWasFinished()
     }
@@ -254,11 +267,11 @@ class Board(
                 openAvailableTiles()
             }
             Tile.State.CanLand -> {
-                makeAMove(gameData.selectedTile!!, tile)
+                makeAMove(selectedTile!!, tile)
                 unselectPieceAndCloseRelatedTiles()
             }
             Tile.State.Default -> {
-                if (gameData.selectedTile != null) {
+                if (selectedTile != null) {
                     unselectPieceAndCloseRelatedTiles()
                     openAvailableTiles()
                 }
@@ -273,24 +286,24 @@ class Board(
     }
 
     private fun updateAvailableTiles() {
-        gameData.availableTiles.clear()
-        gameData.activatedTilesForSelectedTile.clear()
+        availableTiles.clear()
+        activatedTilesForSelectedTile.clear()
 
-        for (tileData in gameData.game.availablePieces) {
+        for (tileData in gameData!!.game.availablePieces) {
             val tile = tiles.get(tileData.x, tileData.y)
             if (tile.state != Tile.State.Default) throw java.lang.IllegalStateException("tile state is not default")
-            gameData.availableTiles.add(tile)
+            availableTiles.add(tile)
         }
         openAvailableTiles()
     }
 
 
-    private fun updateBoardPieces() {
+    private fun putPiecesOnBoard() {
         piecesContainer.removeAllViews()
         tiles.traversePlayableTiles { it.removePiece() }
 
         val piecesOnBoard =
-            gameData.game.getAllPiecesForPlayer(Player.White) + gameData.game.getAllPiecesForPlayer(
+            gameData!!.game.getAllPiecesForPlayer(Player.White) + gameData.game.getAllPiecesForPlayer(
                 Player.Black
             )
         for (tileData in piecesOnBoard) {
@@ -316,8 +329,8 @@ class Board(
     }
 
 
-    class Tiles(private val boardSize: Int) {
-        private val array = Array(boardSize) { Array<Tile?>(boardSize) { null } }
+    class Tiles(private val tilesInBoard: Int) {
+        private val array = Array(tilesInBoard) { Array<Tile?>(tilesInBoard) { null } }
 
         fun get(x: Int, y: Int): Tile {
             return array[x][y]!!
@@ -331,7 +344,7 @@ class Board(
             tileHighlightBottom: ImageView
         ) {
             array[x][y] =
-                Tile(x, y, tileImageView, tileHighlightTop, tileHighlightBottom, boardSize)
+                Tile(x, y, tileImageView, tileHighlightTop, tileHighlightBottom, tilesInBoard)
         }
 
         fun traversePlayableTiles(apply: (playableTile: Tile) -> Unit) {
@@ -368,7 +381,7 @@ class Tile(
     var tileImageView: ImageView,
     var tileHighlightTop: ImageView,
     var tileHighlightBottom: ImageView,
-    var boardSize: Int
+    private var tilesInBoard: Int
 ) {
 
     var pieceLayout: FrameLayout? = null
@@ -414,7 +427,7 @@ class Tile(
             field = state
         }
 
-    fun movePieceTo(
+    fun movePiece(
         destinationTile: Tile,
         capturedTile: Tile? = null,
         newPieceType: Piece,
@@ -432,7 +445,7 @@ class Tile(
         (pieceLayout!!.parent as ViewGroup).getLocationInWindow(containerStartLoc)
 
         val distance = abs(x - destinationTile.x)
-        val maxDistance = boardSize - 1
+        val maxDistance = tilesInBoard - 1
         val duration = 300L + 450 / (maxDistance / distance)
 
         movePieceByAnimation(

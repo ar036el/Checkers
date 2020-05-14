@@ -1,9 +1,12 @@
 package el.arn.opencheckers
 
+import android.app.Activity
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.os.AsyncTask
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -16,18 +19,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import el.arn.opencheckers.checkers_game.game_core.structs.Piece
 import el.arn.opencheckers.checkers_game.game_core.structs.Player
-import el.arn.opencheckers.checkers_game.virtual_player.CheckersGameState
-import el.arn.opencheckers.checkers_game.virtual_player.CheckersMove
 
 
-const val ALPHA_ICON_ENABLED = 255
+const val ALPHA_FULL = 255
 const val ALPHA_ICON_DISABLED = 130
 
-class MainActivity : AppCompatActivity(), Board.Delegate {
+class MainActivity : AppCompatActivity(), BoardView.Delegate {
 
     var counter = 0;
 
@@ -92,8 +92,8 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.undo_menu_item -> board.undo()
-            R.id.redo_menu_item -> board.redo()
+            R.id.undo_menu_item -> boardView.undo()
+            R.id.redo_menu_item -> boardView.redo()
             R.id.refresh_menu_item -> newGameClicked()
             R.id.settings_menu_item -> settingsClicked()
         }
@@ -102,32 +102,29 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
 
     var initForLocationDependentOperations_Invoked = false
     fun initForLocationDependentOperations() {
-        if (initForLocationDependentOperations_Invoked) {
-            return
-        }
+        if (initForLocationDependentOperations_Invoked) { return }
+        initForLocationDependentOperations_Invoked = true
 
         redoButtonFab.y = undoButtonFab.y + (undoButtonFab.height - redoButtonFab.height)/2
         redoButtonFab.elevation = undoButtonFab.elevation - 1
 
 
         initSideProgressBar()
+        updateHistoryButtons(false)
 
-        if (board.gameData != null) {
-            board.initWhenLocationRelatedValuesAreAvailable()
-            board.enableSelection()
-            updatePlayer1CaptureBox(board.gameData.player1CapturedPieces)
-            updatePlayer2CaptureBox(board.gameData.player2CapturedPieces)
-            updateHistoryButtons(false)
+        if (boardView.gameData != null ) {
+            isNewGame = true
         }
 
+    }
 
-
-        initForLocationDependentOperations_Invoked = true
+    private fun isCurrentPlayerPlayable(): Boolean {
+        return (boardView.gameData?.game?.currentPlayer == boardView.gameData?.player1)
     }
 
     fun updateHistoryButtons(animateFab: Boolean) {
         val redoButtonCurrentX =
-            if (board.hasRedo) {
+            if (boardView.hasRedo) {
                 if (isDirectionRTL) {
                     undoButtonFab.x - redoButtonFab.width - resources.getDimension(R.dimen.fab_spacing)
                 } else {
@@ -144,14 +141,14 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
         }
 
 
-        val isUndoEnabled = (board.hasUndo == true)
-        undoButtonTop.icon.alpha = if (isUndoEnabled) ALPHA_ICON_ENABLED else ALPHA_ICON_DISABLED//this effects all instances of this icon
+        val isUndoEnabled = (boardView.hasUndo)
+        undoButtonTop.icon.alpha = if (isUndoEnabled) ALPHA_FULL else ALPHA_ICON_DISABLED//this effects all instances of this icon
         undoButtonTop.isEnabled = isUndoEnabled
         undoButtonSide.isEnabled = isUndoEnabled
         undoButtonFab.isEnabled = isUndoEnabled
 
-        val isRedoEnabled = (board.hasRedo == true)
-        redoButtonTop.icon.alpha = if (isRedoEnabled) ALPHA_ICON_ENABLED else ALPHA_ICON_DISABLED//this effects all instances of this icon
+        val isRedoEnabled = (boardView.hasRedo)
+        redoButtonTop.icon.alpha = if (isRedoEnabled) ALPHA_FULL else ALPHA_ICON_DISABLED//this effects all instances of this icon
         redoButtonTop.isEnabled = isRedoEnabled
         redoButtonSide.isEnabled = isRedoEnabled
         redoButtonFab.isEnabled = isRedoEnabled
@@ -161,9 +158,24 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
     }
 
 
+    var isNewGame = false
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         initForLocationDependentOperations()
+
+        if (isNewGame) {
+            isNewGame = false
+            boardView = BoardView(this, boardLayout, Application.gameData, Application.boardConfig.boardSize,  this)
+            boardView.initGamePieces()
+            updatePlayer1CaptureBox(boardView.gameData!!.player1CapturedPieces)
+            updatePlayer2CaptureBox(boardView.gameData!!.player2CapturedPieces)
+            if (isCurrentPlayerPlayable()) {
+                boardView.enableSelection()
+            }
+        }
+
+        Application.settingThatRequiresANewGameManager.showDialogIfTriggered(this)
     }
 
     private fun findViews() {
@@ -191,25 +203,37 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
 
     }
 
-    lateinit var board: Board
+    private lateinit var boardView: BoardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //this.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN) //todo save practice?
         setContentView(R.layout.activity_main)
         findViews()
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
         setSupportActionBar(titleBar)
 
         initToolbar()
         initButtons()
 
-        board = Board(this, boardLayout, Application.gameData!!, this)
+        setProgressBarsVisibilityByVirtualPlayerCurrentState()
+        Application.virtualPlayer?.delegate = virtualPlayerDelegate
 
 
-        progressBarSide.visibility = View.INVISIBLE
-        progressBarTop.visibility = View.INVISIBLE
+        boardView = BoardView(this, boardLayout, Application.gameData, Application.boardConfig.boardSize,  this)
 
+        //MakeAMoveByVirtualPlayerAsyncTask.boardView = boardView
+        //MakeAMoveByVirtualPlayerAsyncTask.updateProgressBarsFunc = ::setProgressBarsVisibilityByVirtualPlayerCurrentState
+
+    }
+
+    private val virtualPlayerDelegate = object : VirtualPlayer.Delegate {
+        override fun virtualPlayerDelegateStateHasChanged() {
+            setProgressBarsVisibilityByVirtualPlayerCurrentState()
+        }
+
+        override fun choseAMove(xFrom: Int, yFrom: Int, xTo: Int, yTo: Int) {
+            boardView.makeAMoveManually(xFrom, yFrom, xTo, yTo)
+        }
     }
 
     fun initToolbar() {
@@ -240,13 +264,13 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
         menuButtonTop.setOnClickListener { openSideDrawer() }
 
         menuButtonSide.setOnClickListener { openSideDrawer() }
-        undoButtonSide.setOnClickListener { board.undo() }
-        redoButtonSide.setOnClickListener { board.redo() }
+        undoButtonSide.setOnClickListener { boardView.undo() }
+        redoButtonSide.setOnClickListener { boardView.redo() }
         refreshButtonSide.setOnClickListener { newGameClicked() }
         settingsButtonSide.setOnClickListener { settingsClicked() }
 
-        undoButtonFab.setOnClickListener { board.undo() }
-        redoButtonFab.setOnClickListener { board.redo() }
+        undoButtonFab.setOnClickListener { boardView.undo() }
+        redoButtonFab.setOnClickListener { boardView.redo() }
 
     }
 
@@ -269,7 +293,7 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
     //Todo the dialogs will be dismissed when screen rotates
 
 
-    private fun turnButtonsIntoSingleSelection(buttons: Set<View>, applyToSelected: (View) -> Unit, applyToUnselected: (View) -> Unit) {
+    private fun turnButtonsIntoSingleSelection(buttons: Set<View>, applyToSelected: (View) -> Unit, applyToUnselected: (View) -> Unit): SingleSelectionApplier {
         val selectionApplier = SingleSelectionApplier()
         for (button in buttons) {
             button.setOnClickListener{ btn ->
@@ -280,48 +304,72 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
                 )
             }
         }
+        return selectionApplier
     }
 
+    fun getRandomPlayer(): Player {
+        return if (Math.random() > 0.5) Player.White else Player.Black
+    }
 
-    private fun showNewGameDialog(): Unit {
+    enum class GameType { SinglePlayer, Multiplayer }
+
+    fun showNewGameDialog(): Unit {
         val dialogContentLayout = layoutInflater.inflate(R.layout.dialog_new_game, null)
         val builder = AlertDialog.Builder(this)
             .setTitle("Delete entry")
             .setView(dialogContentLayout)
 //            .setMessage("Are you sure you want to delete this entry?") // Specifying a listener allows you to take an action before dismissing the dialog.
-            // The dialog is automatically dismissed when a dialog button is clicked.
-            .setPositiveButton("Start Game!",
-                { dialog, which ->
-                    // Continue with delete operation
-                }) // A null listener allows the button to dismiss the dialog and take no further action.
             .setNegativeButton("Cancel", null)
-        //.setIcon(android.R.drawable.ic_dialog_alert)
 
-
-        turnButtonsIntoSingleSelection(
-            setOf (
-                dialogContentLayout.findViewById(R.id.newGameDialog_SelectPlayerButton_WhitePlayer),
-                dialogContentLayout.findViewById(R.id.newGameDialog_SelectPlayerButton_BlackPlayer),
-                dialogContentLayout.findViewById(R.id.newGameDialog_SelectPlayerButton_Random)
+        val statingPlayer = SingleSelectionButtonSet(
+            arrayOf(
+                R.id.newGameDialog_SelectPlayerButton_WhitePlayer,
+                R.id.newGameDialog_SelectPlayerButton_BlackPlayer,
+                R.id.newGameDialog_SelectPlayerButton_Random
             ),
+            arrayOf(
+                Player.White,
+                Player.Black,
+                getRandomPlayer()
+            ),
+            0,
             { it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonSelected) },
-            { it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonNotSelected) }
+            { it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonNotSelected) },
+            resources.getString(R.string.pref_starting_player),
+            dialogContentLayout,
+            applicationContext
+
         )
+
+        builder.setPositiveButton("Start Game!"
+        ) { dialog, which ->
+            Application.instance.createANewSinglePlayerGame(statingPlayer.selectedValue, Difficulty.Easy, virtualPlayerDelegate)
+            boardView = BoardView(this, boardLayout, Application.gameData, Application.boardConfig.boardSize,  this)
+            isNewGame = true
+        } // A null listener allows the button to dismiss the dialog and take no further action.
 
 
         val spinner = dialogContentLayout.findViewById<Spinner>(R.id.spinner)
 
-        turnButtonsIntoSingleSelection(
-            setOf (
-                dialogContentLayout.findViewById(R.id.newGameDialog_GameType_singlePlayer),
-                dialogContentLayout.findViewById(R.id.newGameDialog_GameType_twoPlayers)
+        val gametype = SingleSelectionButtonSet(
+            arrayOf(
+                R.id.newGameDialog_GameType_singlePlayer,
+                R.id.newGameDialog_GameType_twoPlayers
             ),
+            arrayOf(
+                GameType.SinglePlayer,
+                GameType.Multiplayer
+            ),
+            1,
             {
                 it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonSelected)
                 spinner.isEnabled = it.id == R.id.newGameDialog_GameType_singlePlayer
             },
-            { it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonNotSelected) })
-
+            { it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonNotSelected) },
+            resources.getString(R.string.pref_game_type),
+            dialogContentLayout,
+            this
+        )
 
         builder.show()
     }
@@ -400,42 +448,20 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
         captureBox.requestLayout()
     }
 
+
     //TODo the mimpap doesnt take a possibility of passing a turn
 
-    fun showProgressBar() {
-        progressBarTop.visibility = View.VISIBLE
-        progressBarSide.visibility = View.VISIBLE
-    }
+    private fun setProgressBarsVisibilityByVirtualPlayerCurrentState() {
+        val visibility = if (Application.isVirtualPlayerCalculatingMove) View.VISIBLE else View.INVISIBLE
+        progressBarTop.visibility = visibility
+        progressBarSide.visibility = visibility
 
-    fun hideProgressBar() {
-        progressBarTop.visibility = View.GONE
-        progressBarSide.visibility = View.GONE
-    }
-
-
-    class MakeAMoveByVirtualPlayer( //Todo cancel when activity is destoryes
-        private val board: Board,
-        private val showProgressBar: () -> Unit,
-        private val hideProgressBar: () -> Unit
-    ) : AsyncTask<Unit, Unit, CheckersMove>() {
-
-        override fun onPreExecute() = showProgressBar()
-
-        override fun doInBackground(vararg params: Unit): CheckersMove? =
-            Application.virtualPlayer.getMove(CheckersGameState(board.gameData.game, Player.Black), 3)
-
-
-        override fun onPostExecute(result: CheckersMove?) {
-            hideProgressBar()
-
-            if (result == null) {
-                if  (board.gameData.game.winner != Player.White) { throw InternalError() }
-                return
-            }
-
-            val from = result.fromTile
-            val to = result.move.to
-            board.makeAMoveManually(from.x, from.y, to.x, to.y)
+        if (isLandscapeMode) {
+            progressBarTop.visibility = View.INVISIBLE
+            progressBarSide.visibility = visibility
+        } else {
+            progressBarTop.visibility = visibility
+            progressBarSide.visibility = View.INVISIBLE
         }
     }
 
@@ -446,12 +472,28 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
     override fun boardDelegateFinishedTurn(currentPlayer: Player?, player1CapturedPieces: List<Piece>, player2CapturedPieces: List<Piece>) {
         updatePlayer1CaptureBox(player1CapturedPieces)
         updatePlayer2CaptureBox(player2CapturedPieces)
-        if (currentPlayer == Player.White) {
-            board.saveSnapshotToHistory()
-            board.enableSelection()
+        if (currentPlayer != null && currentPlayer == boardView.gameData?.player1) {
+            boardView.saveSnapshotToHistory()
+            boardView.enableSelection()
             updateHistoryButtons(true)
-        } else if (currentPlayer == Player.Black) {
-            MakeAMoveByVirtualPlayer(board, ::showProgressBar, ::hideProgressBar).execute()
+        } else if (currentPlayer == boardView.gameData?.player2) {
+            Application.virtualPlayer!!.chooseAMove()
+        } else if (currentPlayer == null) {
+            boardView.saveSnapshotToHistory()
+            boardView.enableSelection()
+            updateHistoryButtons(true)
+            updateWinnerMessage()
+        }
+    }
+
+    private fun updateWinnerMessage() {
+        val winner = boardView.gameData!!.game.winner
+        if (winner != null) {
+            val winnerMessage: ImageView = findViewById(R.id.winnerMessage)
+            winnerMessage.animate().alpha(1f).setDuration(300)
+        } else {
+            val winnerMessage: ImageView = findViewById(R.id.winnerMessage)
+            winnerMessage.animate().alpha(0f).setDuration(0)
         }
     }
 
@@ -459,6 +501,7 @@ class MainActivity : AppCompatActivity(), Board.Delegate {
         updatePlayer1CaptureBox(player1CapturedPieces)
         updatePlayer2CaptureBox(player2CapturedPieces)
         updateHistoryButtons(true)
+        updateWinnerMessage()
     }
 
 
@@ -484,11 +527,63 @@ class DoubleToIntCorrector(private val const: Double) {
 
 
 class SingleSelectionApplier() {
-    private var lastSelected: View? = null
+    var selected: View? = null
+        private set
     fun select(selected: View, applyToSelected: (View) -> Unit, applyToUnselected: (View) -> Unit) {
-        lastSelected?.let { applyToUnselected(it) }
+        this.selected?.let { applyToUnselected(it) }
         applyToSelected(selected)
-        lastSelected = selected
+        this.selected = selected
+    }
+}
+
+class SingleSelectionButtonSet<T>(
+    private val buttonsId: Array<Int>,
+    private val values: Array<T>,
+    private val defaultValueIndex: Int,
+    private val applyToSelectedButton: (View) -> Unit,
+    private val applyToUnselectedButton: (View) -> Unit,
+    private val prefKey: String,
+    context: View,
+    private val applicationContext: Context
+) {
+
+    var selectedValue: T
+        private set
+
+    private val sharedPref = applicationContext.getSharedPreferences(
+        applicationContext.resources.getString(R.string.prefFile_settings), Context.MODE_PRIVATE)
+
+    private var selected: View? = null
+
+    private fun getIndexFromPref(): Int {
+        return sharedPref.getInt(prefKey, defaultValueIndex)
+    }
+
+    private fun writeIndexToPref(index: Int) {
+        with (sharedPref.edit()) {
+            putInt(prefKey, index)
+            apply()
+        }
+    }
+
+
+    init {
+        selectedValue = values[getIndexFromPref()]
+        if (buttonsId.size != values.size) { throw InternalError() }
+        for (buttonId in buttonsId) {
+            context.findViewById<View>(buttonId).setOnClickListener{ select(it) }
+        }
+        val defaultButtonId = buttonsId[getIndexFromPref()]
+        select(context.findViewById(defaultButtonId))
+    }
+
+    private fun select(button: View) {
+        this.selected?.let { applyToUnselectedButton(it) }
+        applyToSelectedButton(button)
+        this.selected = button
+        val index = buttonsId.indexOf(button.id)
+        selectedValue = values[index]
+        writeIndexToPref(index)
     }
 }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,80 +9,104 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Starting Player"
-        style="?android:attr/listSeparatorTextViewStyle"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/newGameDialog_startingPlayerContainer"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp">
+        android:layoutDirection="locale"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/newGameDialog_gameTypeTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
-        <ImageButton
-            android:id="@+id/newGameDialog_SelectPlayerButton_WhitePlayer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintDimensionRatio="1:1"
-            android:contentDescription="White player"
-            android:scaleType="centerInside"
-            android:src="@drawable/piece_red_king"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/newGameDialog_SelectPlayerButton_BlackPlayer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/newGameDialog_startingPlayerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Starting Player"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_gravity="center"/>
 
-        <ImageButton
-            android:id="@+id/newGameDialog_SelectPlayerButton_BlackPlayer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintDimensionRatio="1:1"
-            android:contentDescription="Black player"
-            android:scaleType="centerInside"
-            android:src="@drawable/piece_black_pawn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/newGameDialog_SelectPlayerButton_Random"
-            app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_WhitePlayer"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/newGameDialog_startingPlayerButtonsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/newGameDialog_startingPlayerTitle"
+            app:layout_constraintBottom_toTopOf="@id/newGameDialog_gameTypeTitle"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <ImageButton
-            android:id="@+id/newGameDialog_SelectPlayerButton_Random"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintDimensionRatio="1:1"
-            android:contentDescription="Random"
-            android:scaleType="centerInside"
-            android:src="@drawable/piece_red_king"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_BlackPlayer"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/newGameDialog_SelectPlayerButton_WhitePlayer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintDimensionRatio="1:1"
+                android:contentDescription="White player"
+                android:scaleType="centerInside"
+                android:src="@drawable/piece_red_king"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/newGameDialog_SelectPlayerButton_BlackPlayer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/newGameDialog_SelectPlayerButton_BlackPlayer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintDimensionRatio="1:1"
+                android:contentDescription="Black player"
+                android:scaleType="centerInside"
+                android:src="@drawable/piece_black_pawn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/newGameDialog_SelectPlayerButton_Random"
+                app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_WhitePlayer"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/newGameDialog_SelectPlayerButton_Random"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintDimensionRatio="1:1"
+                android:contentDescription="Random"
+                android:scaleType="centerInside"
+                android:src="@drawable/piece_red_king"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_BlackPlayer"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/newGameDialog_gameTypeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Game type"
-        style="?android:attr/listSeparatorTextViewStyle">
+        style="?android:attr/listSeparatorTextViewStyle"
+        app:layout_constraintTop_toBottomOf="@id/newGameDialog_startingPlayerContainer"
+        app:layout_constraintBottom_toTopOf="@id/newGameDialog_GameType_singlePlayerOptionContainer"
+        app:layout_constraintStart_toStartOf="parent">
 
     </TextView>
 
     <LinearLayout
+        android:id="@+id/newGameDialog_GameType_singlePlayerOptionContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:layoutDirection="locale"
+        app:layout_constraintTop_toBottomOf="@id/newGameDialog_gameTypeTitle"
+        app:layout_constraintBottom_toTopOf="@id/newGameDialog_GameType_twoPlayers"
+        app:layout_constraintStart_toStartOf="parent"
         >
 
         <Button
@@ -156,7 +180,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Two Players - Offline"
-        android:backgroundTint="@color/buttonNotSelected">
+        android:backgroundTint="@color/buttonNotSelected"
+        app:layout_constraintTop_toBottomOf="@id/newGameDialog_GameType_singlePlayerOptionContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
     </Button>
 
 
@@ -200,6 +227,6 @@
 <!--        android:layout_gravity="center">-->
 <!--    </Button>-->
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 

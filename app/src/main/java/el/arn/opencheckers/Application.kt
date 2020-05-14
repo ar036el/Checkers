@@ -3,6 +3,7 @@ package el.arn.opencheckers
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
+import androidx.appcompat.app.AlertDialog
 import el.arn.opencheckers.checkers_game.game_core.Game
 import el.arn.opencheckers.checkers_game.game_core.PlayableBoard
 import el.arn.opencheckers.checkers_game.game_core.configurations.BoardConfig
@@ -14,8 +15,6 @@ import el.arn.opencheckers.checkers_game.game_core.implementations.GameImpl
 import el.arn.opencheckers.checkers_game.game_core.implementations.GameLogicConfigImpl
 import el.arn.opencheckers.checkers_game.game_core.structs.Piece
 import el.arn.opencheckers.checkers_game.game_core.structs.Player
-import el.arn.opencheckers.checkers_game.virtual_player.CheckersMove
-import el.arn.opencheckers.checkers_game.virtual_player.MinimaxVirtualPlayerImpl
 
 class GameHistory(game: Game, player1CapturedPieces: List<Piece>, player2CapturedPieces: List<Piece>) {
     private val list = mutableListOf<Entry>()
@@ -48,6 +47,20 @@ class GameHistory(game: Game, player1CapturedPieces: List<Piece>, player2Capture
     }
 }
 
+enum class Difficulty { Easy, Medium, Hard }
+
+fun getStringFromSettingsPref(context: Context, keyId: Int, defValueId: Int): String {
+    val settingPrefs = context.getSharedPreferences(context.resources.getString(R.string.prefFile_settings), Context.MODE_PRIVATE)
+    return settingPrefs.getString(context.resources.getString(keyId), context.resources.getString(defValueId))!!
+}
+
+fun isCustomSettingsEnabled(context: Context): Boolean {
+    val settingPrefs = context.getSharedPreferences(context.resources.getString(R.string.prefFile_settings), Context.MODE_PRIVATE)
+    return settingPrefs.getBoolean(
+        context.resources.getString(R.string.pref_enable_custom_settings),
+        context.resources.getBoolean(R.bool.pref_enable_custom_settings_defValue))
+}
+
 class Application : android.app.Application() {
 
     companion object Obj {
@@ -58,11 +71,12 @@ class Application : android.app.Application() {
         lateinit var gameLogicConfig: GameLogicConfig
         lateinit var boardConfig: BoardConfig
 
-        val player1 = Player.White
-        val player2 = Player.Black
+        var isVirtualPlayerCalculatingMove = false
 
+        var virtualPlayer: VirtualPlayer? = null
 
-        val virtualPlayer = MinimaxVirtualPlayerImpl<CheckersMove>()
+        lateinit var settingThatRequiresANewGameManager: SettingThatRequiresANewGameManager
+
 
         var gameData: GameData? = null
     }
@@ -84,17 +98,28 @@ class Application : android.app.Application() {
             initGameConfigurations()
         }
 
+        settingThatRequiresANewGameManager = SettingThatRequiresANewGameManager(this)
 
 
+    }
+
+    fun createANewSinglePlayerGame(startingPlayer: Player, difficulty: Difficulty, virtualPlayerDelegate: VirtualPlayer.Delegate) {
+
+        if (isCustomSettingsEnabled(this)) {
+            boardConfig.boardSize = getStringFromSettingsPref(this, R.string.pref_board_size, R.string.pref_board_size_defValue).toInt()
+        } else {
+            boardConfig.boardSize = getStringFromSettingsPref(this, R.string.pref_custom_board_size, R.string.pref_custom_board_size_defValue).toInt()
+        }
 
         val board: PlayableBoard = BoardImpl(boardConfig.boardSize, boardConfig.startingRowsForEachPlayer)
-        val game: Game = GameImpl(gameLogicConfig, board, player1, null)
+        val game: Game = GameImpl(gameLogicConfig, board, startingPlayer, null)
         val player1CapturedPieces = mutableListOf<Piece>()
         val player2CapturedPieces = mutableListOf<Piece>()
         val gameHistory = GameHistory(game, player1CapturedPieces, player2CapturedPieces)
-
-        gameData = GameData(gameHistory, player1, player2, game, player1CapturedPieces, player2CapturedPieces)
-
+        gameData = GameData(gameHistory, startingPlayer, game, player1CapturedPieces, player2CapturedPieces)
+        virtualPlayer?.cancelTaskIfRunning()
+        virtualPlayer = VirtualPlayer(gameData!!)
+        virtualPlayer!!.delegate = virtualPlayerDelegate
     }
 
     fun initGameConfigurations() {
@@ -339,14 +364,17 @@ class IntPrefToConfigAdapter(
 
 }
 
+//if (game == null || gameHistory == null) throw IllegalStateException("data has not been initialized")
+
 class GameData(
     val gameHistory: GameHistory,
     val player1: Player,
-    val player2: Player,
     game: Game,
     player1CapturedPieces: MutableList<Piece> = mutableListOf(),
     player2CapturedPieces: MutableList<Piece> = mutableListOf()
 ) {
+
+    val player2 = player1.opponent()
 
     var game = game
         get() { detachFromHistoryIfLoadedFrom(); return field }
@@ -363,10 +391,6 @@ class GameData(
 
     private var didLoadFromHistory = false
 
-    var selectedTile: Tile? = null
-    val availableTiles = mutableSetOf<Tile>()
-    val activatedTilesForSelectedTile = mutableSetOf<Tile>()
-
     fun loadFromHistory(entry: GameHistory.Entry) {
         didLoadFromHistory = true
         game = entry.game
@@ -381,5 +405,90 @@ class GameData(
             player1CapturedPieces = player1CapturedPieces.toMutableList()
             player2CapturedPieces = player2CapturedPieces.toMutableList()
         }
+    }
+}
+
+
+
+class SettingThatRequiresANewGameManager(val context: Context) {
+
+    private var triggered = false
+
+    private lateinit var prefListener: SharedPreferences.OnSharedPreferenceChangeListener
+
+    private val boardSizePrefKey = context.resources.getString(R.string.pref_board_size)
+    private val customBoardSizePrefKey = context.resources.getString(R.string.pref_custom_board_size)
+    private val customStartingRowsPrefKey = context.resources.getString(R.string.pref_custom_starting_rows)
+    private val isCustomEnabledPrefKey = context.resources.getString(R.string.pref_enable_custom_settings)
+
+    init {
+        registerPrefListeners()
+    }
+
+    fun showDialogIfTriggered(activity: MainActivity) { //TODO needs to become Activity and the showNewGameDialogNeedsToBeExctracted
+        if (triggered) {
+            triggered = false
+            showDialog(activity)
+        }
+    }
+
+    private fun registerPrefListeners() {
+        val sharedPrefs = Application.instance.getSharedPreferences(
+            Application.instance.resources.getString(R.string.prefFile_settings),
+            Context.MODE_PRIVATE
+        )
+
+        prefListener = SharedPreferences.OnSharedPreferenceChangeListener { pref, key ->
+            if (key == boardSizePrefKey
+                || key == customBoardSizePrefKey
+                || key == customStartingRowsPrefKey
+                || key == isCustomEnabledPrefKey) {
+
+                val boardSizeHasChanged = markAsTriggeredIfPrefChanged(
+                    sharedPrefs,
+                    boardSizePrefKey,
+                    R.string.pref_board_size_defValue,
+                    Application.boardConfig.boardSize,
+                    false)
+
+                val customBoardSizeHasChanged = markAsTriggeredIfPrefChanged(
+                    sharedPrefs,
+                    customBoardSizePrefKey,
+                    R.string.pref_custom_board_size_defValue,
+                    Application.boardConfig.boardSize,
+                    true)
+
+                val customStartingRowsHasChanged = markAsTriggeredIfPrefChanged(
+                        sharedPrefs,
+                        customStartingRowsPrefKey,
+                        R.string.pref_custom_starting_rows_defValue,
+                        Application.boardConfig.startingRowsForEachPlayer,
+                        true)
+
+                triggered = boardSizeHasChanged || customBoardSizeHasChanged || customStartingRowsHasChanged
+            }
+        }
+        sharedPrefs.registerOnSharedPreferenceChangeListener(prefListener)
+    }
+
+    private fun markAsTriggeredIfPrefChanged(pref: SharedPreferences, key: String, defValueId: Int, currentValue: Int, belongToCustomSetting: Boolean): Boolean {
+        val newBoardSize = pref.getString(
+            key,
+            context.resources.getString(defValueId)
+        )!!.toInt()
+        val isCustomSettingEnabled = pref.getBoolean(
+            isCustomEnabledPrefKey,
+            context.resources.getBoolean(R.bool.pref_enable_custom_settings_defValue)
+        )
+        return (newBoardSize != currentValue && belongToCustomSetting == isCustomSettingEnabled)
+    }
+
+    private fun showDialog(activity: MainActivity) {
+        AlertDialog.Builder(activity)
+//            .setTitle("Delete entry")
+            .setMessage("Are you sure you want to delete this entry?") // Specifying a listener allows you to take an action before dismissing the dialog.
+            .setNegativeButton("continue current game", null)
+            .setPositiveButton("new game") { _, _ -> activity.showNewGameDialog() } //TODo make NewGameDialog(activity)
+            .show()
     }
 }

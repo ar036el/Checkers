@@ -126,5 +126,9 @@
     <string name="pref_custom_board_size_defValue">8</string>
 
 
+    <string name="pref_starting_player">startingPlayer</string>
+    <string name="pref_game_type">gameType</string>
+    <string name="pref_difficulty">difficulty</string>
+
 
 </resources>
