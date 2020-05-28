@@ -14,7 +14,7 @@ class NavigatorActivity : Activity() {
 
     private fun goToMatchingActivity() {
         val hasCompletedOnboarding = applicationContext.getSharedPreferences(
-            resources.getString(R.string.prefFile_onboarding),
+            resources.getString(R.string.prefCategory_onboarding),
             Context.MODE_PRIVATE
         ).getBoolean(resources.getString(R.string.pref_hasCompletedOnboarding), false)
 

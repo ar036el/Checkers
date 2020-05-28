@@ -74,7 +74,7 @@ class OnboardingActivity : AppCompatActivity() {
             if (mPager.currentItem == totalPages - 1) {
                 val sharedPref: SharedPreferences =
                     applicationContext.getSharedPreferences(
-                        resources.getString(R.string.prefFile_onboarding),
+                        resources.getString(R.string.prefCategory_onboarding),
                         Context.MODE_PRIVATE
                     )
                 //getString(R.string.saved_high_score_key) better practice TODO

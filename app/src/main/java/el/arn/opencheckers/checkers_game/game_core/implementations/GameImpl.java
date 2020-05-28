@@ -87,6 +87,11 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
     }
 
     @Override
+    public boolean canPassExtraTurn() {
+        return !config.getIsCapturingMandatory();
+    }
+
+    @Override
     public boolean isExtraTurn() {
         return flagIsExtraTurn;
     }
@@ -129,6 +134,11 @@ public class GameImpl implements Game, BoardDelegate, ConfigDelegate {
     @Override
     public Set<Move> getAvailableMovesForPiece(int x, int y) {
         return availableMovesForCurrentPlayer.getMoves(x, y);
+    }
+
+    @Override
+    public void reloadAvailableMoves() {
+        availableMovesForCurrentPlayer = getAvailableMovesForPlayer(currentPlayer); //TODO not tested!!
     }
 
     @Override

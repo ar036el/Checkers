@@ -46,7 +46,6 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:contentDescription="White player"
                 android:scaleType="centerInside"
-                android:src="@drawable/piece_red_king"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/newGameDialog_SelectPlayerButton_BlackPlayer"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +59,6 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:contentDescription="Black player"
                 android:scaleType="centerInside"
-                android:src="@drawable/piece_black_pawn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/newGameDialog_SelectPlayerButton_Random"
                 app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_WhitePlayer"
@@ -75,7 +73,6 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:contentDescription="Random"
                 android:scaleType="centerInside"
-                android:src="@drawable/piece_red_king"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_BlackPlayer"
@@ -145,7 +142,7 @@
             android:layout_gravity="center"/>
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/newGameDialog_Difficulty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

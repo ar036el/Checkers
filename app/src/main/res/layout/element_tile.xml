@@ -7,13 +7,8 @@
         android:id="@+id/tile"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        android:alpha="0.4"/>
+        android:alpha="0.7"/>
 <!--    TODO is there any id that's just written without "@+id/"?-->
-    <ImageView
-        android:id="@+id/tileHighlightBottom"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:background="@color/transparent" />
     <!--    android:background="#aaa44a"-->
 </FrameLayout>
 

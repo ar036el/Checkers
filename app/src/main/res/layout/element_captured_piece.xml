@@ -6,6 +6,5 @@
     <ImageView
         android:id="@+id/capturedPiece_image"
         android:layout_width="@dimen/capturedPieceMaxSize"
-        android:layout_height="@dimen/capturedPieceMaxSize"
-        android:src="@drawable/piece_red_pawn"/>
+        android:layout_height="@dimen/capturedPieceMaxSize" />
 </LinearLayout>

@@ -1,21 +1,16 @@
 package el.arn.opencheckers
 
-import android.app.Activity
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -100,26 +95,8 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
         return super.onOptionsItemSelected(item)
     }
 
-    var initForLocationDependentOperations_Invoked = false
-    fun initForLocationDependentOperations() {
-        if (initForLocationDependentOperations_Invoked) { return }
-        initForLocationDependentOperations_Invoked = true
-
-        redoButtonFab.y = undoButtonFab.y + (undoButtonFab.height - redoButtonFab.height)/2
-        redoButtonFab.elevation = undoButtonFab.elevation - 1
-
-
-        initSideProgressBar()
-        updateHistoryButtons(false)
-
-        if (boardView.gameData != null ) {
-            isNewGame = true
-        }
-
-    }
-
     private fun isCurrentPlayerPlayable(): Boolean {
-        return (boardView.gameData?.game?.currentPlayer == boardView.gameData?.player1)
+        return (boardView.currentPlayer == boardView.player1)
     }
 
     fun updateHistoryButtons(animateFab: Boolean) {
@@ -157,25 +134,40 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
 
     }
 
+    private fun initFabRedoButtonRestingPosition() {
+        redoButtonFab.y = undoButtonFab.y + (undoButtonFab.height - redoButtonFab.height) / 2
+        redoButtonFab.elevation = undoButtonFab.elevation - 1
+    }
 
-    var isNewGame = false
+    private val initLocationRelatedElements = GatedFunction {
+        initFabRedoButtonRestingPosition()
+        initSideProgressBar()
+        updateHistoryButtons(false)
+    }
+
+
+    private val initLocationRelatedElementsForNewGame = GatedFunction {
+        boardView.initGamePieces()
+        initCaptureBoxes()
+        updateHistoryButtons(false)
+        updateWinnerMessage()
+
+        val virtualPlayer = boardView.currentPlayer?.let { getVirtualPlayerIfCurrentPlayerIsVirtual(it) }
+        if (virtualPlayer == null) {
+            boardView.enableUserInteraction()
+        } else {
+            virtualPlayer.calculateNextMove()
+        }
+    }
+
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        initForLocationDependentOperations()
 
-        if (isNewGame) {
-            isNewGame = false
-            boardView = BoardView(this, boardLayout, Application.gameData, Application.boardConfig.boardSize,  this)
-            boardView.initGamePieces()
-            updatePlayer1CaptureBox(boardView.gameData!!.player1CapturedPieces)
-            updatePlayer2CaptureBox(boardView.gameData!!.player2CapturedPieces)
-            if (isCurrentPlayerPlayable()) {
-                boardView.enableSelection()
-            }
-        }
+        initLocationRelatedElements.invokeIfOpen()
+        initLocationRelatedElementsForNewGame.invokeIfOpen()
 
-        Application.settingThatRequiresANewGameManager.showDialogIfTriggered(this)
+        App.settingsThatRequiresANewGame.showDialogIfTriggered(this)
     }
 
     private fun findViews() {
@@ -203,7 +195,9 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
 
     }
 
+    private var boardViewHasInitialized = false
     private lateinit var boardView: BoardView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -215,25 +209,60 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
         initToolbar()
         initButtons()
 
-        setProgressBarsVisibilityByVirtualPlayerCurrentState()
-        Application.virtualPlayer?.delegate = virtualPlayerDelegate
+        initLocationRelatedElements.giveOneAccess()
 
-
-        boardView = BoardView(this, boardLayout, Application.gameData, Application.boardConfig.boardSize,  this)
-
-        //MakeAMoveByVirtualPlayerAsyncTask.boardView = boardView
-        //MakeAMoveByVirtualPlayerAsyncTask.updateProgressBarsFunc = ::setProgressBarsVisibilityByVirtualPlayerCurrentState
-
+        buildNewBoard()
     }
 
-    private val virtualPlayerDelegate = object : VirtualPlayer.Delegate {
-        override fun virtualPlayerDelegateStateHasChanged() {
-            setProgressBarsVisibilityByVirtualPlayerCurrentState()
-        }
+    private fun buildNewBoard() {
+        createNewBoardView()
+        setVirtualPlayers()
+        updateVirtualPlayerProgressBar()
 
-        override fun choseAMove(xFrom: Int, yFrom: Int, xTo: Int, yTo: Int) {
-            boardView.makeAMoveManually(xFrom, yFrom, xTo, yTo)
+        if (boardView.hasAGame) {
+            initLocationRelatedElementsForNewGame.giveOneAccess()
         }
+    }
+
+    private fun createNewBoardView() {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val boardSizeInPx = displayMetrics.heightPixels.coerceAtMost(displayMetrics.widthPixels)
+
+        if (boardViewHasInitialized) {
+            boardView.delegate = null
+        }
+        boardView = BoardView(
+            boardLayout = boardLayout,
+            gameData = App.gameData,
+            tilesInBoard = App.tilesInBoard,
+            boardSizeInPx = boardSizeInPx,
+            delegate = this)
+        boardViewHasInitialized = true
+    }
+
+
+    private var virtualPlayerBlack: VirtualPlayer? = null
+    private var virtualPlayerWhite: VirtualPlayer? = null
+
+    private fun setVirtualPlayers() {
+        virtualPlayerBlack?.delegate = null
+        virtualPlayerWhite?.delegate = null
+        virtualPlayerBlack = App.virtualPlayerBlack
+        virtualPlayerWhite = App.virtualPlayerWhite
+
+        val delegate = object : VirtualPlayer.Delegate {
+            override fun virtualPlayerDelegateStateHasChanged() {
+                updateVirtualPlayerProgressBar()
+            }
+
+            override fun choseAMove(xFrom: Int, yFrom: Int, xTo: Int, yTo: Int) {
+                boardView.makeAMoveManually(xFrom, yFrom, xTo, yTo)
+            }
+        }
+        virtualPlayerBlack?.delegate = delegate
+        virtualPlayerWhite?.delegate = delegate
+
     }
 
     fun initToolbar() {
@@ -274,6 +303,14 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
 
     }
 
+
+    fun showNewGameDialog() {
+        NewGameDialog(this) {
+            startingPlayer: Player, difficulty: Difficulty ->
+            App.instance.startNewSinglePlayerGame(startingPlayer, startingPlayer.opponent(), difficulty)
+            buildNewBoard()
+        }
+    }
     
 
     //TODO new dialog dont fit on landscape
@@ -292,90 +329,13 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
 
     //Todo the dialogs will be dismissed when screen rotates
 
-
-    private fun turnButtonsIntoSingleSelection(buttons: Set<View>, applyToSelected: (View) -> Unit, applyToUnselected: (View) -> Unit): SingleSelectionApplier {
-        val selectionApplier = SingleSelectionApplier()
-        for (button in buttons) {
-            button.setOnClickListener{ btn ->
-                selectionApplier.select(
-                    btn,
-                    applyToSelected,
-                    applyToUnselected
-                )
-            }
-        }
-        return selectionApplier
-    }
-
-    fun getRandomPlayer(): Player {
-        return if (Math.random() > 0.5) Player.White else Player.Black
-    }
-
-    enum class GameType { SinglePlayer, Multiplayer }
-
-    fun showNewGameDialog(): Unit {
-        val dialogContentLayout = layoutInflater.inflate(R.layout.dialog_new_game, null)
-        val builder = AlertDialog.Builder(this)
-            .setTitle("Delete entry")
-            .setView(dialogContentLayout)
-//            .setMessage("Are you sure you want to delete this entry?") // Specifying a listener allows you to take an action before dismissing the dialog.
-            .setNegativeButton("Cancel", null)
-
-        val statingPlayer = SingleSelectionButtonSet(
-            arrayOf(
-                R.id.newGameDialog_SelectPlayerButton_WhitePlayer,
-                R.id.newGameDialog_SelectPlayerButton_BlackPlayer,
-                R.id.newGameDialog_SelectPlayerButton_Random
-            ),
-            arrayOf(
-                Player.White,
-                Player.Black,
-                getRandomPlayer()
-            ),
-            0,
-            { it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonSelected) },
-            { it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonNotSelected) },
-            resources.getString(R.string.pref_starting_player),
-            dialogContentLayout,
-            applicationContext
-
-        )
-
-        builder.setPositiveButton("Start Game!"
-        ) { dialog, which ->
-            Application.instance.createANewSinglePlayerGame(statingPlayer.selectedValue, Difficulty.Easy, virtualPlayerDelegate)
-            boardView = BoardView(this, boardLayout, Application.gameData, Application.boardConfig.boardSize,  this)
-            isNewGame = true
-        } // A null listener allows the button to dismiss the dialog and take no further action.
-
-
-        val spinner = dialogContentLayout.findViewById<Spinner>(R.id.spinner)
-
-        val gametype = SingleSelectionButtonSet(
-            arrayOf(
-                R.id.newGameDialog_GameType_singlePlayer,
-                R.id.newGameDialog_GameType_twoPlayers
-            ),
-            arrayOf(
-                GameType.SinglePlayer,
-                GameType.Multiplayer
-            ),
-            1,
-            {
-                it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonSelected)
-                spinner.isEnabled = it.id == R.id.newGameDialog_GameType_singlePlayer
-            },
-            { it.backgroundTintList = ContextCompat.getColorStateList(this, R.color.buttonNotSelected) },
-            resources.getString(R.string.pref_game_type),
-            dialogContentLayout,
-            this
-        )
-
-        builder.show()
-    }
-
     var player1capturedPieces: List<Piece> = listOf()
     var player2capturedPieces: List<Piece> = listOf()
+
+    fun initCaptureBoxes() {
+        updatePlayer1CaptureBox(boardView.player1CapturedPieces)
+        updatePlayer2CaptureBox(boardView.player2CapturedPieces)
+    }
 
     fun updatePlayer1CaptureBox(capturedPieces: List<Piece>) {
         if (player1capturedPieces.size != capturedPieces.size) {
@@ -436,12 +396,10 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
             captureBox.addView(capturedPiece)
         }
 
-        if (piecesStackMaxLength > captureBoxLength) {
-            if (applyVertically) {
-                captureBox.layoutParams.width = pieceSizeCorrector.getInt()
-            } else {
-                captureBox.layoutParams.height = pieceSizeCorrector.getInt()
-            }
+        if (applyVertically) {
+            captureBox.layoutParams.width = pieceSize()
+        } else {
+            captureBox.layoutParams.height = pieceSize()
         }
 
         captureBox.invalidate()
@@ -451,8 +409,12 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
 
     //TODo the mimpap doesnt take a possibility of passing a turn
 
-    private fun setProgressBarsVisibilityByVirtualPlayerCurrentState() {
-        val visibility = if (Application.isVirtualPlayerCalculatingMove) View.VISIBLE else View.INVISIBLE
+    private fun updateVirtualPlayerProgressBar() {
+        val visibility =
+            if (virtualPlayerBlack?.isCalculating == true
+                || virtualPlayerWhite?.isCalculating == true)
+                View.VISIBLE else View.INVISIBLE
+
         progressBarTop.visibility = visibility
         progressBarSide.visibility = visibility
 
@@ -472,23 +434,42 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
     override fun boardDelegateFinishedTurn(currentPlayer: Player?, player1CapturedPieces: List<Piece>, player2CapturedPieces: List<Piece>) {
         updatePlayer1CaptureBox(player1CapturedPieces)
         updatePlayer2CaptureBox(player2CapturedPieces)
-        if (currentPlayer != null && currentPlayer == boardView.gameData?.player1) {
+
+        if (currentPlayer == null) {
             boardView.saveSnapshotToHistory()
-            boardView.enableSelection()
-            updateHistoryButtons(true)
-        } else if (currentPlayer == boardView.gameData?.player2) {
-            Application.virtualPlayer!!.chooseAMove()
-        } else if (currentPlayer == null) {
-            boardView.saveSnapshotToHistory()
-            boardView.enableSelection()
+            boardView.enableUserInteraction()
             updateHistoryButtons(true)
             updateWinnerMessage()
+        } else {
+            val virtualPlayer = getVirtualPlayerIfCurrentPlayerIsVirtual(currentPlayer)
+            if (virtualPlayer == null) {
+                boardView.saveSnapshotToHistory()
+                boardView.enableUserInteraction()
+                updateHistoryButtons(true)
+            } else {
+                virtualPlayer.calculateNextMove()
+            }        }
+    }
+
+    private fun getVirtualPlayerIfCurrentPlayerIsVirtual(currentPlayer: Player): VirtualPlayer? {
+        return when (currentPlayer) {
+            virtualPlayerBlack?.player -> virtualPlayerBlack
+            virtualPlayerWhite?.player -> virtualPlayerWhite
+            else -> null
         }
     }
 
+    override fun boardDelegateBoardClickedWhenGameIsNotRunning() { //TODO it's written bad
+        if (boardView.boardGameState != BoardView.BoardGameState.GameIsOn) {
+            showNewGameDialog()
+        }
+    }
+
+    override fun boardDelegateGameHasFinished() {
+    }
+
     private fun updateWinnerMessage() {
-        val winner = boardView.gameData!!.game.winner
-        if (winner != null) {
+        if (boardView.winner != null) {
             val winnerMessage: ImageView = findViewById(R.id.winnerMessage)
             winnerMessage.animate().alpha(1f).setDuration(300)
         } else {
@@ -497,7 +478,7 @@ class MainActivity : AppCompatActivity(), BoardView.Delegate {
         }
     }
 
-    override fun boardDelegateSnapshotWasLoadedFromHistory(player1CapturedPieces: List<Piece>, player2CapturedPieces: List<Piece>) {
+    override fun boardDelegateSnapshotLoadedFromHistory(player1CapturedPieces: List<Piece>, player2CapturedPieces: List<Piece>) {
         updatePlayer1CaptureBox(player1CapturedPieces)
         updatePlayer2CaptureBox(player2CapturedPieces)
         updateHistoryButtons(true)
@@ -536,54 +517,4 @@ class SingleSelectionApplier() {
     }
 }
 
-class SingleSelectionButtonSet<T>(
-    private val buttonsId: Array<Int>,
-    private val values: Array<T>,
-    private val defaultValueIndex: Int,
-    private val applyToSelectedButton: (View) -> Unit,
-    private val applyToUnselectedButton: (View) -> Unit,
-    private val prefKey: String,
-    context: View,
-    private val applicationContext: Context
-) {
-
-    var selectedValue: T
-        private set
-
-    private val sharedPref = applicationContext.getSharedPreferences(
-        applicationContext.resources.getString(R.string.prefFile_settings), Context.MODE_PRIVATE)
-
-    private var selected: View? = null
-
-    private fun getIndexFromPref(): Int {
-        return sharedPref.getInt(prefKey, defaultValueIndex)
-    }
-
-    private fun writeIndexToPref(index: Int) {
-        with (sharedPref.edit()) {
-            putInt(prefKey, index)
-            apply()
-        }
-    }
-
-
-    init {
-        selectedValue = values[getIndexFromPref()]
-        if (buttonsId.size != values.size) { throw InternalError() }
-        for (buttonId in buttonsId) {
-            context.findViewById<View>(buttonId).setOnClickListener{ select(it) }
-        }
-        val defaultButtonId = buttonsId[getIndexFromPref()]
-        select(context.findViewById(defaultButtonId))
-    }
-
-    private fun select(button: View) {
-        this.selected?.let { applyToUnselectedButton(it) }
-        applyToSelectedButton(button)
-        this.selected = button
-        val index = buttonsId.indexOf(button.id)
-        selectedValue = values[index]
-        writeIndexToPref(index)
-    }
-}
-
+enum class GameType { SinglePlayer, Multiplayer }

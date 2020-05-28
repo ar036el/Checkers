@@ -17,14 +17,20 @@
     <color name="gradient_end_color">#4260F5</color>
     <color name="tab_indicator_gray">#939393</color>
 
-    <color name="tile_light">#dfd23a</color>
-    <color name="tile_dark">#a33222</color>
-
     <color name="tileHighlight_available">#FF9800</color>
     <color name="tileHighlight_selected">#03A9F4</color>
     <color name="tileHighlight_canLand">#4CAF50</color>
-    <color name="tileHighlightBottom_canCapture">#FF5722</color>
+    <color name="tileHighlight_canCapture">#FF5722</color>
 
+
+    <color name="tile_playable_1">#a33222</color>
+    <color name="tile_playable_2">#00A2E8</color>
+    <color name="tile_playable_3">#7F7F7F</color>
+    <color name="tile_playable_4">#C3C3C3</color>
+    <color name="tile_notPlayable_1">#dfd23a</color>
+    <color name="tile_notPlayable_2">#B5E61D</color>
+    <color name="tile_notPlayable_3">#C3C3C3</color>
+    <color name="tile_notPlayable_4">#FFAEC9</color>
 
 
 </resources>

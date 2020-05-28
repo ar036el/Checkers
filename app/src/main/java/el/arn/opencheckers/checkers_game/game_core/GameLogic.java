@@ -12,6 +12,8 @@ public interface GameLogic {
 
     void passTurn() throws CannotPassTurn;
     boolean isExtraTurn();
+    boolean canPassExtraTurn();
+
     Player getCurrentPlayer();
 
     /** @return {@code null} if game has not yet ended **/

@@ -8,8 +8,8 @@
     <string name="settings_category_game_style">Game Style</string>
     <string name="settings_category_custom">Custom Game Setting</string>
 
-    <string name="can_man_capture_backwards">Can man capture backwards</string>
-    <string name="can_man_capture_backwards_question">Can man (normal piece) capture backwards?</string>
+    <string name="can_man_capture_backwards">Can Man capture backwards</string>
+    <string name="can_man_capture_backwards_question">Can Man (normal piece) capture backwards?</string>
     <string-array name="can_man_capture_backwards_entries">
         <item>Always</item>
         <item>Only when capturing multiple pieces</item>
@@ -86,49 +86,14 @@
     </string-array>
 
 
+    <string name="newGameDialog_title">New Game</string>
+    <string name="newGameDialog_cancel">Cancel</string>
+    <string name="newGameDialog_confirm">Start Game!</string>
+
+
     <string name="onboarding_btn_next">Next</string>
     <string name="onboarding_btn_prev">Back</string>
     <string name="onboarding_btn_finish">Get Started</string>
-
-
-
-    <string name="prefFile_onboarding">onboarding</string>
-    <string name="pref_hasCompletedOnboarding">hasCompletedOnboarding</string>
-
-    <string name="prefFile_settings">settings</string>
-
-    <string name="pref_king_behaviour">kingBehaviour</string>
-    <string name="pref_king_behaviour_defValue">flyingKing</string>
-
-    <string name="pref_can_man_capture_backwards">canManCaptureBackwards</string>
-    <string name="pref_can_man_capture_backwards_defValue">never</string>
-
-    <string name="pref_is_capturing_mandatory">isCapturingMandatory</string>
-    <bool name="pref_is_capturing_mandatory_defValue">true</bool>
-
-    <string name="pref_board_theme">boardTheme</string>
-    <integer name="pref_board_theme_defValue">1</integer>
-
-    <string name="pref_player_theme">playerTheme</string>
-    <integer name="pref_player_theme_defValue">1</integer>
-
-    <string name="pref_board_size">boardSize</string>
-    <string name="pref_board_size_defValue">8</string>
-
-
-    <string name="pref_enable_custom_settings">enableCustomSettings</string>
-    <bool name="pref_enable_custom_settings_defValue">false</bool>
-
-    <string name="pref_custom_starting_rows">startingRows</string>
-    <string name="pref_custom_starting_rows_defValue">3</string>
-
-    <string name="pref_custom_board_size">customBoardSize</string>
-    <string name="pref_custom_board_size_defValue">8</string>
-
-
-    <string name="pref_starting_player">startingPlayer</string>
-    <string name="pref_game_type">gameType</string>
-    <string name="pref_difficulty">difficulty</string>
 
 
 </resources>

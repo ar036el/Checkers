@@ -4,16 +4,34 @@ import java.util.*;
 
 public class MinimaxVirtualPlayerImpl<M extends GameState.Move> implements MinimaxVirtualPlayer<M> {
 
+    private boolean isCancelled = false;
+    private boolean isComputing = false;
+
+    private MinimaxNode cancelledToken = new MinimaxNode(null, 0, 0, null);
+
     @Override
     public M getMove(GameState gameState, int depthLimit) { //TODO too much "Game." noise
         Set<GameState.Move> possibleMoves = gameState.getPossibleMoves();
-        if (possibleMoves.isEmpty()) {
-            return null;
-        }
+        if (possibleMoves.isEmpty()) { return null; }
 
+        isComputing = true;
         MinimaxNode<M> root = createGameTree(gameState, null, depthLimit, 0, null);
+        if (isCancelled) {
+            return null; }
         root = getMinimaxNode(root);
+        if (isCancelled) {
+            return null; }
+        isComputing = false;
         return (root != null) ? root.rootMove : null;
+    }
+
+    @Override
+    public boolean cancelComputationProcess() {
+        if (!isComputing) {
+            return false;
+        }
+        isCancelled = true;
+        return true;
     }
 
     private MinimaxNode getMinimaxNode(MinimaxNode<M> root) {
@@ -21,9 +39,11 @@ public class MinimaxVirtualPlayerImpl<M extends GameState.Move> implements Minim
     }
 
     private MinimaxNode getMinOrMaxNode(MinimaxNode<M> root, boolean isMin) {
+        if (isCancelled) { return null; }
         Set<MinimaxNode> nodes = new HashSet<>();
         for (MinimaxNode node : root.getChildren()) {
             nodes.add(getMinOrMaxNode(node, !isMin));
+            if (isCancelled) { return null; }
         }
 
         if (nodes.isEmpty()) {
@@ -65,6 +85,7 @@ public class MinimaxVirtualPlayerImpl<M extends GameState.Move> implements Minim
 
     private MinimaxNode createGameTree(GameState gameState, GameState.Move selectedMove, int maxLevel, int level, GameState.Move rootMove) {
         //System.out.println("node level " + level + " created: selectedMove= " + ((selectedMove != null) ? selectedMove.getContent() : "no move"));
+        if (isCancelled) { return null; }
         MinimaxNode node = new MinimaxNode(selectedMove, gameState.getHeuristicValue(), gameState.getSecondaryHeuristicValue(), rootMove);
 
         if (++level <= maxLevel) {
@@ -73,7 +94,9 @@ public class MinimaxVirtualPlayerImpl<M extends GameState.Move> implements Minim
                 if (level == 1) {
                     rootMove = move;
                 }
-                node.addChild(createGameTree(gameState.makeAMove(move), move, maxLevel, level, rootMove));
+                MinimaxNode child = createGameTree(gameState.makeAMove(move), move, maxLevel, level, rootMove);
+                if (isCancelled) { return null; }
+                node.addChild(child);
             }
         }
         return node;

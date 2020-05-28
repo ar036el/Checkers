@@ -7,26 +7,26 @@
 
         <ListPreference
             app:entries="@array/king_behaviour_entries"
-            app:entryValues="@array/king_behaviour_entryValues"
+            app:entryValues="@array/pref_kingBehaviour_entryValues"
             app:defaultValue="noFlyingKings"
             app:iconSpaceReserved="false"
-            app:key="@string/pref_king_behaviour"
+            app:key="@string/pref_kingBehaviour"
             app:title="@string/king_behaviour"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
             app:entries="@array/can_man_capture_backwards_entries"
-            app:entryValues="@array/can_man_capture_backwards_entryValues"
+            app:entryValues="@array/pref_canManCaptureBackwards_entryValues"
             app:defaultValue="never"
             app:iconSpaceReserved="false"
-            app:key="@string/pref_can_man_capture_backwards"
+            app:key="@string/pref_canManCaptureBackwards"
             app:title="@string/can_man_capture_backwards"
             app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:defaultValue="false"
-            app:key="@string/pref_is_capturing_mandatory"
+            app:key="@string/pref_isCapturingMandatory"
             app:title="@string/is_capturing_mandatory" />
 
     </PreferenceCategory>
@@ -37,21 +37,21 @@
 
         <ListPreference
             app:entries="@array/board_size_entries"
-            app:entryValues="@array/board_size_entryValues"
+            app:entryValues="@array/boardSize_entryValues"
             app:defaultValue="8"
             app:iconSpaceReserved="false"
-            app:key="@string/pref_board_size"
+            app:key="@string/pref_boardSize"
             app:title="@string/board_size"
             app:useSimpleSummaryProvider="true" />
 
         <el.arn.opencheckers.BoardThemeSelectorPreference
-            android:key="@string/pref_board_theme"
+            android:key="@string/pref_boardTheme"
             android:title="@string/board_theme"
             app:defaultValue="0"
             app:iconSpaceReserved="false" />
 
         <el.arn.opencheckers.PlayerThemeSelectorPreference
-            android:key="@string/pref_player_theme"
+            android:key="@string/pref_playerTheme"
             android:title="@string/player_theme"
             app:defaultValue="0"
             app:iconSpaceReserved="false" />
@@ -65,23 +65,23 @@
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:defaultValue="false"
-            app:key="@string/pref_enable_custom_settings"
+            app:key="@string/pref_customSettingsEnabled"
             app:title="@string/enable_custom_settings" />
 
         <ListPreference
             app:entries="@array/custom_board_size_entries"
-            app:entryValues="@array/custom_board_size_entryValues"
+            app:entryValues="@array/customBoardSize_entryValues"
             app:defaultValue="8"
             app:iconSpaceReserved="false"
             app:isPreferenceVisible="false"
-            app:key="@string/pref_custom_board_size"
+            app:key="@string/pref_customBoardSize"
             app:title="@string/custom_board_size"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
             app:isPreferenceVisible="false"
             app:iconSpaceReserved="false"
-            app:key="@string/pref_custom_starting_rows"
+            app:key="@string/pref_customStartingRows"
             app:title="@string/starting_rows"
             app:useSimpleSummaryProvider="true" />
 

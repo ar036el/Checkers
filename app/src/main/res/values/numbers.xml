@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <item name="tileAlpha_Default" format="float" type="dimen">0.25</item>
+    <item name="tileAlpha_Highlighted" format="float" type="dimen">0.5</item>
+
+    <integer name="starting_rows_defaultValue">3</integer>
+
+
+</resources>

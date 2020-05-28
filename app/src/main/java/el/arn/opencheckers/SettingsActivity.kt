@@ -37,15 +37,15 @@ class SettingsActivity : AppCompatActivity() {
         lateinit var enableCustomSettingsPref: SwitchPreferenceCompat
 
         private fun findPrefs() {
-            boardSizePref = findPreference(resources.getString(R.string.pref_board_size))!!
-            customBoardSizePref = findPreference(resources.getString(R.string.pref_custom_board_size))!!
-            startingRowsPref = findPreference(resources.getString(R.string.pref_custom_starting_rows))!!
-            kingBehaviourPreference = findPreference(resources.getString(R.string.pref_king_behaviour))!!
-            enableCustomSettingsPref = findPreference(resources.getString(R.string.pref_enable_custom_settings))!!
+            boardSizePref = findPreference(resources.getString(R.string.pref_boardSize))!!
+            customBoardSizePref = findPreference(resources.getString(R.string.pref_customBoardSize))!!
+            startingRowsPref = findPreference(resources.getString(R.string.pref_customStartingRows))!!
+            kingBehaviourPreference = findPreference(resources.getString(R.string.pref_kingBehaviour))!!
+            enableCustomSettingsPref = findPreference(resources.getString(R.string.pref_customSettingsEnabled))!!
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            preferenceManager.sharedPreferencesName = resources.getString(R.string.prefFile_settings)
+            preferenceManager.sharedPreferencesName = resources.getString(R.string.prefCategory_main)
             setPreferencesFromResource(R.xml.settings, rootKey)
             findPrefs()
             initCustomPrefs()
@@ -87,7 +87,7 @@ class SettingsActivity : AppCompatActivity() {
             val isCustomSettingsEnabled =  preferenceManager.sharedPreferences.getBoolean(enableCustomSettingsPref.key, false)
 
             val minStartingRows = BoardConfig.minStartingRowsForEachPlayer
-            val maxStartingRows = Application.boardConfig.maxStartingRowsForEachPlayer(boardSize)
+            val maxStartingRows = App.boardConfig.maxStartingRowsForEachPlayer(boardSize)
             val entries = Array(maxStartingRows - minStartingRows + 1) { (it +  minStartingRows).toString() }
             startingRowsPref.entries = entries
             startingRowsPref.entryValues = entries
@@ -123,10 +123,9 @@ class PlayerThemeSelectorPreference@JvmOverloads constructor(
 ) : ImageSelectorPreference(imageViewsIDs, 0, context, attrs, defStyleAttr, defStyleRes) {
     companion object {
         val imageViewsIDs = intArrayOf(
-            R.drawable.board_theme_1,
-            R.drawable.board_theme_2,
-            R.drawable.board_theme_3,
-            R.drawable.board_theme_4)
+            R.drawable.piece_both_players_1,
+            R.drawable.piece_both_players_2,
+            R.drawable.piece_both_players_3)
     }
 }
 
