@@ -218,7 +218,7 @@ class BoardView(
     private fun registerPrefListenerWhenGameRulesChanges() {
         gameRulesChangedPrefListener = SharedPreferences.OnSharedPreferenceChangeListener { pref, key ->
             if (key == resources.getString(R.string.pref_isCapturingMandatory)
-                || key == Strings.get(R.string.pref_kingBehaviour)
+                || key == StringsRes.get(R.string.pref_kingBehaviour)
                 || key == resources.getString(R.string.pref_canManCaptureBackwards)) {
                 if (gameData != null) {
                     reloadAvailablePieces()

@@ -47,7 +47,7 @@ class NewGameDialog(
                 activity.resources.getString(R.string.newGameDialog_confirm))
                 {    _, _ -> applyWhenConfirmed(startingPlayerPref.value, Difficulty.Hard) }
 
-            it.setNegativeButton(activity.resources.getString(R.string.newGameDialog_cancel), null)
+            it.setNegativeButton(activity.resources.getString(R.string.dialog_cancel), null)
 
             it.show()
         }

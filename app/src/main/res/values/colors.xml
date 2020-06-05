@@ -33,4 +33,7 @@
     <color name="tile_notPlayable_4">#FFAEC9</color>
 
 
+    <color name="rateUsDialog_negativeFeedbackMessage">#F44336</color>
+
+
 </resources>

@@ -1,6 +1,8 @@
 package el.arn.opencheckers
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
@@ -230,22 +232,17 @@ class GatedFunction(startingOpen: Boolean = false, private val func: () -> Unit)
 
 }
 
-
-val View.isOnScreen: Boolean
+val View.activity: Activity?
     get() {
-        if (!this.isShown) return false
-        val actualPosition = Rect().also { getGlobalVisibleRect(it) }
-        val screen = Resources.getSystem().displayMetrics.run {
-            Rect(0, 0, widthPixels, heightPixels)
+    var context: Context = context
+    while (context is ContextWrapper) {
+        if (context is Activity) {
+            return context
         }
-
-        val a: Iterable<*> = listOf("a", "b", "c")
-
-        return actualPosition.intersect(screen)
-
-
+        context = context.baseContext
     }
+    return null
+}
 
-val AppCompatActivity.isAlive: Boolean
-    get() = this.lifecycle.currentState != Lifecycle.State.DESTROYED
-
+val Activity?.isAlive: Boolean
+    get() = (this?.isDestroyed == false)

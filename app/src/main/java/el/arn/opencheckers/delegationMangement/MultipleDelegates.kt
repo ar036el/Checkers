@@ -1,6 +1,6 @@
 package el.arn.opencheckers.delegationMangement
 
-interface DelegatesHolder<D> {
+interface HoldsDelegates<D> {
     fun addDelegate(delegate: D)
     fun addDelegates(vararg delegates: D)
     fun removeDelegate(delegate: D)
@@ -9,7 +9,8 @@ interface DelegatesHolder<D> {
     fun hasDelegate(delegate: D): Boolean
 }
 
-class Delegates<D>(vararg delegates: D) : DelegatesHolder<D> {
+
+class DelegatesManager<D>(vararg delegates: D) : HoldsDelegates<D> {
     private val handler = DelegatesHandlerEngine(*delegates)
 
     override fun addDelegate(delegate: D) = addDelegates(delegate)

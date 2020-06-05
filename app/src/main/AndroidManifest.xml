@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="el.arn.opencheckers">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
     <application
+
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +20,10 @@
         <activity
             android:name=".OnboardingActivity"
             android:theme="@style/onboardingActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SettingsActivity" />
+        <activity
+            android:name=".activities.PurchasePremiumActivity" />
         <activity
             android:name=".NavigatorActivity"
             android:theme="@style/mainActivity">
@@ -26,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

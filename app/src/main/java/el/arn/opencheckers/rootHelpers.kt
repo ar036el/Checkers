@@ -18,8 +18,15 @@ import el.arn.opencheckers.checkers_game.game_core.implementations.GameImpl
 import el.arn.opencheckers.checkers_game.game_core.implementations.GameLogicConfigImpl
 import el.arn.opencheckers.checkers_game.game_core.structs.Piece
 import el.arn.opencheckers.checkers_game.game_core.structs.Player
+import el.arn.opencheckers.feedback_manager.CustomReportSenderFactory
+import el.arn.opencheckers.feedback_manager.FeedbackManager
+import el.arn.opencheckers.kol_minei.ToastMaker
+import el.arn.opencheckers.purchase_manager.PurchasesManager
+import org.acra.ACRA
+import org.acra.annotation.AcraCore
 
-object Strings {
+
+object StringsRes {
     fun get(@StringRes stringRes: Int, vararg formatArgs: Any = emptyArray()): String {
         return App.instance.resources.getString(stringRes, *formatArgs)
     }
@@ -46,6 +53,11 @@ val sharedPrefs
     get() = App.instance.sharedPrefs
 
 
+
+@AcraCore(
+    buildConfigClass = BuildConfig::class,
+    reportSenderFactoryClasses = [CustomReportSenderFactory::class]
+)
 class App : android.app.Application() {
     companion object Obj {
         lateinit var instance: App private set
@@ -69,6 +81,10 @@ class App : android.app.Application() {
 
     lateinit var sharedPrefs: SharedPreferences
 
+    val feedbackManager = FeedbackManager()
+    val purchasesManager = PurchasesManager(this)
+    val toastMaker = ToastMaker(this)
+
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -88,6 +104,11 @@ class App : android.app.Application() {
 
         settingsThatRequiresANewGame = SettingsThatRequiresANewGame(this)
         registerGameLogicConfigurationListener()
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        ACRA.init(this)
     }
 
 

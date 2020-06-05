@@ -87,13 +87,50 @@
 
 
     <string name="newGameDialog_title">New Game</string>
-    <string name="newGameDialog_cancel">Cancel</string>
     <string name="newGameDialog_confirm">Start Game!</string>
 
 
-    <string name="onboarding_btn_next">Next</string>
-    <string name="onboarding_btn_prev">Back</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_ok">OK</string>
+
+
+    <string name="btn_next">Next</string>
+    <string name="btn_prev">Back</string>
     <string name="onboarding_btn_finish">Get Started</string>
+
+
+
+    <string name="noAds_descriptionHeader">Remove All Ads</string>
+    <string name="noAds_feature">Removing all ads, forever!!</string>
+    <string name="noAds_purchaseButton">Remove All Ads - @pr</string>
+
+    <string name="fullVersion_descriptionHeader">Get Full Version</string>
+    <string name="fullVersion_descriptionHeaderaa">With purchasing full version, you will get:</string>
+    <string name="fullVersion_feature_0">Custom board size (4x4 up to 24X24)</string>
+    <string name="fullVersion_feature_1">Custom starting players</string>
+    <string name="fullVersion_feature_2">All board themes</string>
+    <string name="fullVersion_feature_3">All pieces themes</string>
+    <string name="fullVersion_feature_4">Virtual player bonus (Secret!)</string>
+    <string name="fullVersion_purchaseButton">Get Full Version - @pr</string>
+
+
+    <string name="purchaseButtonHint">Purchase once, Lasts forever</string>
+    <string name="alreadyPurchased">Already Purchased</string>
+    <string name="purchasingNotAvailable">Sorries! Purchasing is not available right now.\nCheck your internet connection or try again later</string>
+
+    <string name="sendFeedbackDialog_title">Send Feedback</string>
+    <string name="sendFeedbackDialog_desc">Thanks for giving feedback! Please write it below</string>
+    <string name="sendFeedbackDialog_submitButton">Submit Feedback</string>
+    <string name="sendFeedbackDialog_approved">Feedback was sent!</string>
+
+
+    <string name="rateUsDialog_header">How would you rate our app?</string>
+    <string name="rateUsDialog_button_later">Later</string>
+    <string name="rateUsDialog_button_dontShowAgain">Never</string>
+    <string name="rateUsDialog_button_rateInAppStore">Rate</string>
+    <string name="rateUsDialog_button_sendFeedBack">Send</string>
+    <string name="rateUsDialog_positiveRatingResponse">Thanks! ❤\nCare to rate us in the app store?</string>
+    <string name="rateUsDialog_negativeRatingResponse">We are sorry to hear that ☹\nCan you send us a feedback telling us why?</string>
 
 
 </resources>

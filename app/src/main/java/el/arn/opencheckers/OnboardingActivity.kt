@@ -60,7 +60,7 @@ class OnboardingActivity : AppCompatActivity() {
                     mainBtn.text = getString(R.string.onboarding_btn_finish)
                     tabIndicator.visibility = View.INVISIBLE
                 } else {
-                    mainBtn.text = getString(R.string.onboarding_btn_next)
+                    mainBtn.text = getString(R.string.btn_next)
                     tabIndicator.visibility = View.VISIBLE
                 }
             }

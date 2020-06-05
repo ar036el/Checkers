@@ -4,13 +4,9 @@ import android.content.SharedPreferences
 
 
 
-abstract class PrefsManager(
+abstract class PrefsManagerOLDO(
     private val sharedPreferences: SharedPreferences
 ) {
-
-
-
-
 
     abstract inner class Pref<V>(
         val key: String,
@@ -61,40 +57,40 @@ abstract class PrefsManager(
 
 object Prefs {
     val kingBehaviour = StringPref(
-        Strings.get(R.string.pref_kingBehaviour),
-        Strings.get(R.string.pref_kingBehaviour_defaultValue))
+        StringsRes.get(R.string.pref_kingBehaviour),
+        StringsRes.get(R.string.pref_kingBehaviour_defaultValue))
 
     val canManCaptureBackwards = StringPref(
-        Strings.get(R.string.pref_canManCaptureBackwards),
-        Strings.get(R.string.pref_canManCaptureBackwards_defaultValue))
+        StringsRes.get(R.string.pref_canManCaptureBackwards),
+        StringsRes.get(R.string.pref_canManCaptureBackwards_defaultValue))
 
     val isCapturingMandatory = BooleanPref(
-        Strings.get(R.string.pref_isCapturingMandatory),
+        StringsRes.get(R.string.pref_isCapturingMandatory),
         Booleans.get(R.bool.pref_isCapturingMandatory_defaultValue))
 
     val boardTheme = IntPref(
-        Strings.get(R.string.pref_boardTheme),
+        StringsRes.get(R.string.pref_boardTheme),
         Integers.get(R.integer.pref_boardTheme_defaultValue))
 
     val playerTheme = IntPref(
-        Strings.get(R.string.pref_playerTheme),
+        StringsRes.get(R.string.pref_playerTheme),
         Integers.get(R.integer.pref_playerTheme_defaultValue))
 
     val boardSize = StringPref(
-        Strings.get(R.string.pref_boardSize),
-        Strings.get(R.string.pref_boardSize_defaultValue))
+        StringsRes.get(R.string.pref_boardSize),
+        StringsRes.get(R.string.pref_boardSize_defaultValue))
 
     val isCustomSettingsEnabled = BooleanPref(
-        Strings.get(R.string.pref_customSettingsEnabled),
+        StringsRes.get(R.string.pref_customSettingsEnabled),
         Booleans.get(R.bool.pref_customSettingsEnabled_defaultValue))
 
     val customStartingRows = StringPref(
-        Strings.get(R.string.pref_customStartingRows),
-        Strings.get(R.string.pref_customStartingRows_defaultValue))
+        StringsRes.get(R.string.pref_customStartingRows),
+        StringsRes.get(R.string.pref_customStartingRows_defaultValue))
 
     val customBoardSize = StringPref(
-        Strings.get(R.string.pref_customBoardSize),
-        Strings.get(R.string.pref_customBoardSize_defaultValue))
+        StringsRes.get(R.string.pref_customBoardSize),
+        StringsRes.get(R.string.pref_customBoardSize_defaultValue))
 
 }
 
@@ -144,4 +140,3 @@ class StringEnumConverter<E> {
     fun getString(enumValue: E) = enumToString[enumValue] ?: error("no item found")
 
 }
-
