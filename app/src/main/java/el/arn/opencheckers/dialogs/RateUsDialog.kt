@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import el.arn.opencheckers.R
+import el.arn.opencheckers.dialogs.parts.FiveStarsLayout
 
 class RateUsDialog(
     private val dialogInvoker: RateUsDialogInvoker,
@@ -81,15 +82,17 @@ class RateUsDialog(
         }
     }
 
-    private val ratingLayout = FiveStarsRatingLayout(
-        layout.findViewById<LinearLayout>(R.id.fiveStarsLayout),
-        activity,
-        object : FiveStarsRatingLayout.Delegate {
-            override fun onRatingChanged(rating: Int) {
-                feedbackState = getFeedbackStateFromRating(rating)
+    private val ratingLayout =
+        FiveStarsLayout(
+            layout.findViewById<LinearLayout>(R.id.fiveStarsLayout),
+            activity,
+            object :
+                FiveStarsLayout.Listener {
+                override fun onRatingChanged(rating: Int) {
+                    feedbackState = getFeedbackStateFromRating(rating)
+                }
             }
-        }
-    )
+        )
 
     init {
         dialog = AlertDialog.Builder(activity)

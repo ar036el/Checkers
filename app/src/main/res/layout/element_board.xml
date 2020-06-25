@@ -16,7 +16,7 @@
         android:src="@drawable/background_board_theme1"
         android:scaleType="centerCrop"/>
     <GridLayout
-        android:id="@+id/board"
+        android:id="@+id/boardTilesContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

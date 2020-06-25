@@ -2,10 +2,10 @@ package el.arn.opencheckers.dialogs
 
 import android.app.Activity
 import android.content.Context
-import el.arn.opencheckers.App
-import el.arn.opencheckers.prefs_managers.PrefsManager
+import el.arn.opencheckers.AppRoot
+import el.arn.opencheckers.tools.preferences_managers.PrefsManager
 
-class RateUsDialogInvoker {
+class RateUsDialogInvoker(appRoot: AppRoot) {
     object InvokeAfterXCalls {
         const val FEEDBACK_IS_NEUTRAL_OR_UNSPECIFIED = 3
         const val FEEDBACK_IS_NEGATIVE = 2
@@ -13,7 +13,7 @@ class RateUsDialogInvoker {
         val MAX_VALUE = listOf(FEEDBACK_IS_NEUTRAL_OR_UNSPECIFIED, FEEDBACK_IS_POSITIVE, FEEDBACK_IS_NEGATIVE).max()!!
     }
 
-    private val purchasesPrefsManager = object: PrefsManager(App.instance.getSharedPreferences("rateUsDialog", Context.MODE_PRIVATE)) {
+    private val purchasesPrefsManager = object: PrefsManager(appRoot.getSharedPreferences("rateUsDialog", Context.MODE_PRIVATE)) {
         val callsUntilInvocation = createIntPref("callsUntilPrompt", 0..InvokeAfterXCalls.MAX_VALUE, InvokeAfterXCalls.FEEDBACK_IS_NEUTRAL_OR_UNSPECIFIED)
     }
 

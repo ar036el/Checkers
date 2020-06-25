@@ -183,6 +183,17 @@
         app:layout_constraintBottom_toBottomOf="parent">
     </Button>
 
+    <Button
+        android:id="@+id/newGameDialog_GameType_virtualGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bonus! Virtual Game"
+        android:backgroundTint="@color/buttonNotSelected"
+        app:layout_constraintTop_toBottomOf="@id/newGameDialog_GameType_twoPlayers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+    </Button>
+
 
 <!--    android:drawableTop="@drawable/math"-->
 

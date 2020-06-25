@@ -4,19 +4,19 @@ import android.app.Activity
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
-import el.arn.opencheckers.App
 import el.arn.opencheckers.R
+import el.arn.opencheckers.tools.feedback_manager.FeedbackManager
 
-class FeedbackDialog(private val activity: Activity, private val stars: Int?) {
+class FeedbackDialog(private val activity: Activity, private val feedbackManager: FeedbackManager, private val stars: Int?) {
 
     private fun sendFeedback() {
         val feedback = layout.findViewById<EditText>(R.id.dialogSendFeedback_editText).text.toString()
-        App.instance.feedbackManager.sendFeedback(stars, feedback)
+        feedbackManager.sendFeedback(stars, feedback)
 
     }
 
     private fun sendOnlyStars() {
-        App.instance.feedbackManager.sendFeedback(stars, null)
+        feedbackManager.sendFeedback(stars, null)
     }
 
     private fun showApprovedDialog() {

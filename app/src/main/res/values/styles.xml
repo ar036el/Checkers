@@ -5,18 +5,18 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowFullscreen">true</item>
-
     </style>
 
-    <style name="mainActivity" parent="AppTheme">
+    <style name="FullScreenDark" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/darkBackground</item>
+        <item name="android:windowBackground">@color/black</item>
     </style>
 
-    <style name="onboardingActivity" parent="AppTheme">
+    <style name="fullScreenLight" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <!-- TODo is this style really necessary? the sidebar can get the darkActionBarDirectly -->

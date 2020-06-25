@@ -7,7 +7,7 @@
 
     <application
 
-        android:name=".App"
+        android:name=".AppRoot"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,21 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/mainActivity" />
+            android:name=".activities.MainActivity"
+            android:theme="@style/FullScreenDark" />
         <activity
-            android:name=".OnboardingActivity"
-            android:theme="@style/onboardingActivity" />
+            android:name=".activities.OnboardingActivity"
+            android:theme="@style/fullScreenLight" />
         <activity
-            android:name=".SettingsActivity" />
+            android:name=".activities.SettingsActivity" />
         <activity
-            android:name=".activities.PurchasePremiumActivity" />
+            android:name=".activities.PremiumPlansActivity"
+            android:theme="@style/fullScreenLight" />
         <activity
-            android:name=".NavigatorActivity"
-            android:theme="@style/mainActivity">
+            android:name=".activities.FirstContactActivity"
+            android:theme="@style/FullScreenDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

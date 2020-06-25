@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#7f0000</color>
     <color name="colorAccent">#9c27b0</color>
 
-    <color name="darkBackground">#000000</color>
-    <color name="lightBackground">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
 
     <color name="buttonNotSelected">@android:color/secondary_text_dark_nodisable</color>
     <color name="buttonSelected">#4965FB</color>

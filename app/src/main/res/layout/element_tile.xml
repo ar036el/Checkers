@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="1dp"
+    android:layout_height="1dp">
 
     <ImageView
         android:id="@+id/tile"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:alpha="0.7"/>
 <!--    TODO is there any id that's just written without "@+id/"?-->
     <!--    android:background="#aaa44a"-->

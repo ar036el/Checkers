@@ -44,13 +44,13 @@
             app:title="@string/board_size"
             app:useSimpleSummaryProvider="true" />
 
-        <el.arn.opencheckers.BoardThemeSelectorPreference
+        <el.arn.opencheckers.activities.BoardThemeSelectorPreference
             android:key="@string/pref_boardTheme"
             android:title="@string/board_theme"
             app:defaultValue="0"
             app:iconSpaceReserved="false" />
 
-        <el.arn.opencheckers.PlayerThemeSelectorPreference
+        <el.arn.opencheckers.activities.PlayerThemeSelectorPreference
             android:key="@string/pref_playerTheme"
             android:title="@string/player_theme"
             app:defaultValue="0"
@@ -88,7 +88,7 @@
     </PreferenceCategory>
 
     <!--    <PreferenceCategory app:title="@string/sync_header">-->
-    <!--    <el.arn.opencheckers.BoardThemeSelectorPreference-->
+    <!--    <el.arn.opencheckers.activities.BoardThemeSelectorPreference-->
     <!--        android:defaultValue="light"-->
     <!--        android:key="pref_theme"-->
     <!--        android:title="Theme"-->
