@@ -23,10 +23,10 @@
         <activity
             android:name=".activities.SettingsActivity" />
         <activity
-            android:name=".activities.PremiumPlansActivity"
+            android:name=".activities.BuyPremiumActivity"
             android:theme="@style/fullScreenLight" />
         <activity
-            android:name=".activities.FirstContactActivity"
+            android:name=".activities.StartingActivity"
             android:theme="@style/FullScreenDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -3,11 +3,11 @@ package el.arn.opencheckers.activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import el.arn.opencheckers.*
-import el.arn.opencheckers.widgets.buy_premium_activity.PurchaseButton
+import el.arn.opencheckers.android_widgets.buy_premium_activity.PurchaseButton
 
-class PremiumPlansActivity : AppCompatActivity() {
+class BuyPremiumActivity : AppCompatActivity() {
 
-    val purchasesManager = appRoot.purchasingManager
+    val purchasesManager = appRoot.purchasesManager
 
 
     lateinit var noAdsPurchaseButton: PurchaseButton
@@ -15,7 +15,7 @@ class PremiumPlansActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_purchase_premium)
+        setContentView(R.layout.activity_buy_premium)
 
         noAdsPurchaseButton =
             PurchaseButton(

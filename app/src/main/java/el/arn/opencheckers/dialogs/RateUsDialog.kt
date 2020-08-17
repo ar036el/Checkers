@@ -6,75 +6,83 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import el.arn.opencheckers.R
-import el.arn.opencheckers.dialogs.parts.FiveStarsLayout
+import el.arn.opencheckers.appRoot
+import el.arn.opencheckers.dialogs.composites.FiveStarsLayout
+import el.arn.opencheckers.tools.external_activity_invoker.GooglePlayStoreAppPageInvoker
 
 class RateUsDialog(
     private val dialogInvoker: RateUsDialogInvoker,
     private val activity: Activity
-) {
+) : Dialog {
+
+    override val isShowing: Boolean
+        get() = dialog.isShowing
+    override fun dismiss() {
+        if (dialog.isShowing) {
+            dialog.dismiss()
+        }
+    }
 
     private val layout = activity.layoutInflater.inflate(R.layout.dialog_rate_us, null)
-    private val positiveMessage: TextView = layout.findViewById(R.id.rateUsDialog_positiveMessage)
-    private val negativeMessage: TextView = layout.findViewById(R.id.rateUsDialog_negativeMessage)
-
-
+    private val positiveMessageTextView: TextView = layout.findViewById(R.id.rateUsDialog_positiveMessage)
+    private val negativeMessageTextView: TextView = layout.findViewById(R.id.rateUsDialog_negativeMessage)
     private val dialog: AlertDialog
+
+    private var ratingInStars = 0
 
     enum class FeedbackState { NeutralFeedbackOrUnspecified, NegativeFeedback, PositiveFeedback}
 
     private var feedbackState: FeedbackState = FeedbackState.NeutralFeedbackOrUnspecified
         set(value) {
             when(value) {
-                FeedbackState.NeutralFeedbackOrUnspecified -> setNegativeFeedbackResponse()
-                FeedbackState.NegativeFeedback -> setNeutralFeedbackResponse()
+                FeedbackState.NeutralFeedbackOrUnspecified -> setNeutralOrUnspecifiedFeedbackResponse()
+                FeedbackState.NegativeFeedback -> setNegativeFeedbackResponse()
                 FeedbackState.PositiveFeedback -> setPositiveFeedbackResponse()
             }
             field = value
         }
 
     private fun getFeedbackStateFromRating(rating: Int): FeedbackState {
-        return when {
-            rating in 1..2 -> FeedbackState.NegativeFeedback
-            rating <= 4 -> FeedbackState.PositiveFeedback
+        return when (rating) {
+            in 1..3 -> FeedbackState.NegativeFeedback
+            in 4..5 -> FeedbackState.PositiveFeedback
             else -> FeedbackState.NeutralFeedbackOrUnspecified
         }
     }
 
     private fun setPositiveFeedbackResponse() {
-        positiveMessage.visibility = View.VISIBLE
-        negativeMessage.visibility = View.INVISIBLE
+        positiveMessageTextView.visibility = View.VISIBLE
+        negativeMessageTextView.visibility = View.INVISIBLE
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.rateUsDialog_button_rateInAppStore)
-        feedbackState = FeedbackState.PositiveFeedback
     }
 
     private fun setNegativeFeedbackResponse() {
-        positiveMessage.visibility = View.INVISIBLE
-        negativeMessage.visibility = View.VISIBLE
+        positiveMessageTextView.visibility = View.INVISIBLE
+        negativeMessageTextView.visibility = View.VISIBLE
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.rateUsDialog_button_sendFeedBack)
-        feedbackState = FeedbackState.NegativeFeedback
     }
 
-    private fun setNeutralFeedbackResponse() {
-        positiveMessage.visibility = View.INVISIBLE
-        negativeMessage.visibility = View.INVISIBLE
+    private fun setNeutralOrUnspecifiedFeedbackResponse() {
+        positiveMessageTextView.visibility = View.GONE
+        negativeMessageTextView.visibility = View.GONE
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.dialog_ok)
-        feedbackState = FeedbackState.NeutralFeedbackOrUnspecified
     }
 
     private var feedbackDialogWasOpened = false
     private fun openFeedbackDialog() {
         feedbackDialogWasOpened = true
+        FeedbackDialog(activity, appRoot.userFeedbackManager, ratingInStars)
     }
 
     private fun openAppStore() {
-
+        GooglePlayStoreAppPageInvoker(activity).open()
     }
 
     private fun sendStars() {
-
+        appRoot.userFeedbackManager.sendFeedback(ratingInStars, null)
     }
 
-    private fun actAccordingToState() {
+    private fun actPositiveAccordingToState() {
         when (feedbackState) {
             FeedbackState.NeutralFeedbackOrUnspecified -> sendStars()
             FeedbackState.NegativeFeedback -> openFeedbackDialog()
@@ -89,23 +97,50 @@ class RateUsDialog(
             object :
                 FiveStarsLayout.Listener {
                 override fun onRatingChanged(rating: Int) {
+                    enablePositiveDialogButtonIfDisabled()
+                    ratingInStars = rating
                     feedbackState = getFeedbackStateFromRating(rating)
                 }
             }
         )
 
-    init {
-        dialog = AlertDialog.Builder(activity)
+    private fun enablePositiveDialogButtonIfDisabled() {
+        if (!dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled) {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = true
+        }
+    }
+
+    private fun setToInvokeDialogLater() {
+        dialogInvoker.invokeDialogLater(feedbackState)
+    }
+
+    private fun setToNotInvokeDialogAgain() {
+        dialogInvoker.dontInvokeDialogAgain()
+    }
+
+    private var noButtonWasPressed = true
+
+    private fun createDialog(): AlertDialog {
+        val dialog =  AlertDialog.Builder(activity)
             .setView(layout)
-            .setNegativeButton(R.string.rateUsDialog_button_dontShowAgain) { _,_ -> dialogInvoker.dontInvokeDialogAgain() }
-            .setNeutralButton(R.string.rateUsDialog_button_later) { _,_ -> dialogInvoker.enableInvokingDialogLater(feedbackState) }
-            .setPositiveButton(R.string.rateUsDialog_button_later) { _,_ -> actAccordingToState() }
+            .setNeutralButton(R.string.rateUsDialog_button_dontShowAgain) { _,_ -> setToNotInvokeDialogAgain(); noButtonWasPressed = false }
+            .setNegativeButton(R.string.rateUsDialog_button_later) { _,_ -> setToInvokeDialogLater(); noButtonWasPressed = false }
+            .setPositiveButton(R.string.rateUsDialog_button_rateInAppStore) { _,_ -> actPositiveAccordingToState(); noButtonWasPressed = false }
             .setOnDismissListener {
                 if (!feedbackDialogWasOpened) {
+                    if (noButtonWasPressed) {
+                        setToInvokeDialogLater()
+                    }
                     sendStars()
                 }
             }
             .show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+        return dialog
+    }
+
+    init {
+        dialog = createDialog()
 
         feedbackState = getFeedbackStateFromRating(ratingLayout.rating)
     }

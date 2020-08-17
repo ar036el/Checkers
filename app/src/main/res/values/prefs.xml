@@ -4,14 +4,14 @@
     <string name="pref_kingBehaviour">kingBehaviour</string>
     <string name="pref_kingBehaviour_defaultValue">flyingKing</string>
     <string-array name="pref_kingBehaviour_entryValues">
-        <item>flyingKing</item>
-        <item>landsAfterCapture</item>
+        <item>flyingKings</item>
+        <item>landsRightAfterCapture</item>
         <item>noFlyingKings</item>
     </string-array>
 
-    <string name="pref_canManCaptureBackwards">canManCaptureBackwards</string>
-    <string name="pref_canManCaptureBackwards_defaultValue">never</string>
-    <string-array name="pref_canManCaptureBackwards_entryValues">
+    <string name="pref_canPawnCaptureBackwards">canPawnCaptureBackwards</string>
+    <string name="pref_canPawnCaptureBackwards_defaultValue">never</string>
+    <string-array name="pref_canPawnCaptureBackwards_entryValues">
         <item>always</item>
         <item>onlyWhenMultiCapture</item>
         <item>never</item>
@@ -63,7 +63,7 @@
 
 
 
-    <string name="prefCategory_main">main</string>
+    <string name="prefCategory_game">game</string>
 
     <string name="prefCategory_onboarding">onboarding</string>
     <string name="pref_hasCompletedOnboarding">hasCompletedOnboarding</string>

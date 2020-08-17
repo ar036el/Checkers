@@ -8,43 +8,47 @@
 
     <ImageButton
         android:id="@+id/fiveStarsLayout_1star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:src="@drawable/ic_star_empty_32dpcrap"
         android:background="@color/transparent"
+        android:scaleType="fitXY"
         android:padding="2dp"
         />
+
     <ImageButton
         android:id="@+id/fiveStarsLayout_2stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_star_empty_32dpcrap"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@color/transparent"
         android:padding="2dp"
-
-        />
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_star_empty_32dpcrap" />
     <ImageButton
         android:id="@+id/fiveStarsLayout_3stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:src="@drawable/ic_star_empty_32dpcrap"
         android:background="@color/transparent"
+        android:scaleType="fitXY"
         android:padding="2dp"
         />
     <ImageButton
         android:id="@+id/fiveStarsLayout_4stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:src="@drawable/ic_star_empty_32dpcrap"
         android:background="@color/transparent"
+        android:scaleType="fitXY"
         android:padding="2dp"
         />
     <ImageButton
         android:id="@+id/fiveStarsLayout_5stars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:src="@drawable/ic_star_empty_32dpcrap"
         android:background="@color/transparent"
+        android:scaleType="fitXY"
         android:padding="2dp"
 
         />

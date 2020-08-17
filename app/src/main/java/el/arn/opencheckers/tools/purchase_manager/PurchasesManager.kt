@@ -2,6 +2,7 @@ package el.arn.opencheckers.tools.purchase_manager
 
 import android.content.Context
 import el.arn.opencheckers.tools.purchase_manager.core.GenericPurchasesManager
+import el.arn.opencheckers.tools.purchase_manager.core.PurchaseStatus
 
 class PurchasesManager(
     context: Context
@@ -14,5 +15,8 @@ class PurchasesManager(
 
     val noAds = getPurchasableItem(noAdsSKU)
     val fullVersion = getPurchasableItem(fullVersionSKU)
+
+    val purchasedFullVersion get() = fullVersion.purchaseStatus == PurchaseStatus.Purchased
+    val purchasedNoAds get() = noAds.purchaseStatus == PurchaseStatus.Purchased
 
 }

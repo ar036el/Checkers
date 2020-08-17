@@ -6,13 +6,13 @@
 
     <item
         android:id="@+id/undo_menu_item"
-        android:icon="@drawable/ic_undo_24px"
+        android:icon="@drawable/ic_undo_24px_for_toolbar_top_only"
         android:title="Undo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/redo_menu_item"
-        android:icon="@drawable/ic_redo_24px"
+        android:icon="@drawable/ic_redo_24px_for_toolbar_top_only"
         android:title="Redo"
         app:showAsAction="always" />
 

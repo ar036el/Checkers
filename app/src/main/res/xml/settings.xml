@@ -10,23 +10,23 @@
             app:entryValues="@array/pref_kingBehaviour_entryValues"
             app:defaultValue="noFlyingKings"
             app:iconSpaceReserved="false"
-            app:key="@string/pref_kingBehaviour"
+            app:key="kingBehaviour"
             app:title="@string/king_behaviour"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:entries="@array/can_man_capture_backwards_entries"
-            app:entryValues="@array/pref_canManCaptureBackwards_entryValues"
+            app:entries="@array/can_pawn_capture_backwards_entries"
+            app:entryValues="@array/pref_canPawnCaptureBackwards_entryValues"
             app:defaultValue="never"
             app:iconSpaceReserved="false"
-            app:key="@string/pref_canManCaptureBackwards"
-            app:title="@string/can_man_capture_backwards"
+            app:key="canPawnCaptureBackwards"
+            app:title="@string/can_pawn_capture_backwards"
             app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:defaultValue="false"
-            app:key="@string/pref_isCapturingMandatory"
+            app:key="isCapturingMandatory"
             app:title="@string/is_capturing_mandatory" />
 
     </PreferenceCategory>
@@ -40,19 +40,19 @@
             app:entryValues="@array/boardSize_entryValues"
             app:defaultValue="8"
             app:iconSpaceReserved="false"
-            app:key="@string/pref_boardSize"
+            app:key="boardSizeRegular"
             app:title="@string/board_size"
             app:useSimpleSummaryProvider="true" />
 
-        <el.arn.opencheckers.activities.BoardThemeSelectorPreference
-            android:key="@string/pref_boardTheme"
+        <el.arn.opencheckers.android_widgets.settings_activity.BoardThemeSelectorPreference
+            android:key="boardTheme"
             android:title="@string/board_theme"
             app:defaultValue="0"
             app:iconSpaceReserved="false" />
 
-        <el.arn.opencheckers.activities.PlayerThemeSelectorPreference
-            android:key="@string/pref_playerTheme"
-            android:title="@string/player_theme"
+        <el.arn.opencheckers.android_widgets.settings_activity.PlayerThemeSelectorPreference
+            android:key="playersTheme"
+            android:title="@string/players_theme"
             app:defaultValue="0"
             app:iconSpaceReserved="false" />
 
@@ -65,7 +65,7 @@
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
             app:defaultValue="false"
-            app:key="@string/pref_customSettingsEnabled"
+            app:key="isCustomSettingsEnabled"
             app:title="@string/enable_custom_settings" />
 
         <ListPreference
@@ -74,41 +74,17 @@
             app:defaultValue="8"
             app:iconSpaceReserved="false"
             app:isPreferenceVisible="false"
-            app:key="@string/pref_customBoardSize"
+            app:key="boardSizeCustom"
             app:title="@string/custom_board_size"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
             app:isPreferenceVisible="false"
             app:iconSpaceReserved="false"
-            app:key="@string/pref_customStartingRows"
+            app:key="startingRows"
             app:title="@string/starting_rows"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
-
-    <!--    <PreferenceCategory app:title="@string/sync_header">-->
-    <!--    <el.arn.opencheckers.activities.BoardThemeSelectorPreference-->
-    <!--        android:defaultValue="light"-->
-    <!--        android:key="pref_theme"-->
-    <!--        android:title="Theme"-->
-    <!--        app:dependency="sync" />-->
-    <!--        <SwitchPreferenceCompat-->
-    <!--            app:key="sync"-->
-    <!--            app:title="@string/sync_title" />-->
-
-    <!--        <SwitchPreferenceCompat-->
-    <!--            android:icon="@android:drawable/ic_popup_sync"-->
-    <!--            app:dependency="sync"-->
-    <!--            app:key="attachment"-->
-    <!--            app:summaryOff="@string/attachment_summary_off"-->
-    <!--            app:summaryOn="@string/attachment_summary_on"-->
-    <!--            app:title="@string/attachment_title" />-->
-
-    <!--    </PreferenceCategory>-->
-
-    <!--    app:allowDividerAbove="false"-->
-    <!--    app:iconSpaceReserved="true"-->
-
 
 </PreferenceScreen>

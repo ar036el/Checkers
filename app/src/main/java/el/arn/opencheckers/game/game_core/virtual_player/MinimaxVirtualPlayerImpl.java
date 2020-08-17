@@ -22,7 +22,7 @@ public class MinimaxVirtualPlayerImpl<M extends GameState.Move> implements Minim
         if (isCancelled) {
             return null; }
         isComputing = false;
-        return (root != null) ? root.rootMove : null;
+        return (root != null && !isCancelled) ? root.rootMove : null;
     }
 
     @Override

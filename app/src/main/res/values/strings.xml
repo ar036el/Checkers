@@ -8,13 +8,19 @@
     <string name="settings_category_game_style">Game Style</string>
     <string name="settings_category_custom">Custom Game Setting</string>
 
-    <string name="can_man_capture_backwards">Can Man capture backwards</string>
-    <string name="can_man_capture_backwards_question">Can Man (normal piece) capture backwards?</string>
-    <string-array name="can_man_capture_backwards_entries">
+    <string name="settings_toastMessage_premiumFeature">This feature is available only in premium version. Get it now!</string>
+    <string name="settings_toastMessage_premiumTheme">This theme is available only in premium version. Get it now!</string>
+
+    <string name="can_pawn_capture_backwards">Can Man capture backwards</string>
+    <string name="can_pawn_capture_backwards_question">Can Man (normal piece) capture backwards?</string>
+    <string-array name="can_pawn_capture_backwards_entries">
         <item>Always</item>
         <item>Only when capturing multiple pieces</item>
         <item>Never</item>
     </string-array>
+
+    <string name="mainActivity_sideDrawer_purchasePremiumVersion">Upgrade To Premium</string>
+    <string name="mainActivity_sideDrawer_purchaseNoAds">Remove All Ads</string>
 
 
     <string name="king_behaviour">King\'s behaviour</string>
@@ -68,7 +74,7 @@
     <string name="starting_rows">Starting soldier rows for each player</string>
 
     <string name="board_theme">Board theme</string>
-    <string name="player_theme">Player theme</string>
+    <string name="players_theme">Players theme</string>
 
 
 
@@ -88,6 +94,17 @@
 
     <string name="newGameDialog_title">New Game</string>
     <string name="newGameDialog_confirm">Start Game!</string>
+    <string name="newGameDialog_startingPlayer">Starting Player</string>
+    <string name="newGameDialog_checkbox_userPlaysFirst">User plays first</string>
+
+    <string name="newGameDialog_gameType">Game Type</string>
+    <string name="newGameDialog_gameType_singlePlayer">Single Player</string>
+    <string name="newGameDialog_gameType_multiplayer">Multiplayer</string>
+    <string name="newGameDialog_gameType_bonusVirtualGame">Bonus! Virtual Game</string>
+
+    <string name="configHasChangedWarningDialog_message">Board settings was changed. Start a new game?</string>
+
+
 
 
     <string name="dialog_cancel">Cancel</string>
@@ -124,13 +141,13 @@
     <string name="sendFeedbackDialog_approved">Feedback was sent!</string>
 
 
-    <string name="rateUsDialog_header">How would you rate our app?</string>
+    <string name="rateUsDialog_header">How would you rate the app?</string>
     <string name="rateUsDialog_button_later">Later</string>
     <string name="rateUsDialog_button_dontShowAgain">Never</string>
     <string name="rateUsDialog_button_rateInAppStore">Rate</string>
     <string name="rateUsDialog_button_sendFeedBack">Send</string>
     <string name="rateUsDialog_positiveRatingResponse">Thanks! ❤\nCare to rate us in the app store?</string>
-    <string name="rateUsDialog_negativeRatingResponse">We are sorry to hear that ☹\nCan you send us a feedback telling us why?</string>
+    <string name="rateUsDialog_negativeRatingResponse">We are sorry to hear that ☹\nCan you give us a feedback telling us why?</string>
 
 
 </resources>

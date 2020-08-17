@@ -3,8 +3,8 @@ package el.arn.opencheckers.complementaries.listener_mechanism
 interface HoldsListeners<D> {
     fun addListener(Listener: D)
     fun addListeners(vararg Listeners: D)
-    fun removeListener(Listener: D)
-    fun removeListeners(vararg Listeners: D)
+    fun removeListener(Listener: D): Boolean
+    fun removeListeners(vararg Listeners: D): Boolean
     fun clearListeners()
     fun hasListener(Listener: D): Boolean
 }
@@ -19,8 +19,8 @@ class ListenersManager<D>(vararg Listeners: D) : HoldsListeners<D> {
     }
 
     override fun removeListener(Listener: D) = removeListeners(Listener)
-    override fun removeListeners(vararg Listeners: D) {
-        handler.remove(*Listeners)
+    override fun removeListeners(vararg Listeners: D): Boolean {
+        return handler.remove(*Listeners)
     }
 
     override fun clearListeners() = handler.clear()

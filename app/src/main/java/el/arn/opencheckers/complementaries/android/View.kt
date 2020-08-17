@@ -7,11 +7,11 @@ import android.view.View
 
 val View.locationInWindow: PixelCoordinate
     get() {
-        val Listener = IntArray(2)
-        this.getLocationInWindow(Listener)
+        val loc = IntArray(2)
+        this.getLocationInWindow(loc)
         return PixelCoordinate(
-            Listener[0],
-            Listener[1]
+            loc[0],
+            loc[1]
         )
     }
 

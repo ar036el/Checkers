@@ -6,14 +6,14 @@ import el.arn.opencheckers.appRoot
 import el.arn.opencheckers.complementaries.listener_mechanism.*
 import el.arn.opencheckers.complementaries.NonNullMap
 import el.arn.opencheckers.tools.preferences_managers.Pref
-import el.arn.opencheckers.tools.preferences_managers.PrefsManager
+import el.arn.opencheckers.tools.preferences_managers.PreferencesManager
 
 open class GenericPurchasesManager(
     private val context: Context,
     private val SKUs: Set<String>
 ) {
     private val SKUsWithPurchasableItems: NonNullMap<String, PurchasableItem>
-    private val purchasesPrefsManager: PrefsManager = PrefsManager(appRoot.getSharedPreferences("purchases", Context.MODE_PRIVATE))
+    private val purchasesPreferencesManager: PreferencesManager = PreferencesManager(appRoot.getSharedPreferences("purchases", Context.MODE_PRIVATE))
     private val billingEngine =
         BillingEngine(SKUs)
 
@@ -54,7 +54,7 @@ open class GenericPurchasesManager(
                 PurchasableItemImpl(
                     SKU,
                     billingEngine,
-                    purchasesPrefsManager
+                    purchasesPreferencesManager
                 )
         }
         SKUsWithPurchasableItems = NonNullMap(map.toMap())
@@ -78,9 +78,9 @@ interface PurchasableItem : HoldsListeners<PurchasableItem.Listener> {
 class PurchasableItemImpl(
     override val SKU: String,
     private val billingEngine: BillingEngine,
-    purchasesPrefsManager: PrefsManager,
-    private val delegationMgr: ListenersManager<PurchasableItem.Listener> = ListenersManager()
-): PurchasableItem, HoldsListeners<PurchasableItem.Listener> by delegationMgr {
+    purchasesPreferencesManager: PreferencesManager,
+    private val listenersMgr: ListenersManager<PurchasableItem.Listener> = ListenersManager()
+): PurchasableItem, HoldsListeners<PurchasableItem.Listener> by listenersMgr {
 
 
     override val purchaseStatus: PurchaseStatus
@@ -88,8 +88,8 @@ class PurchasableItemImpl(
     override val price: String
         get() = prefForPrice.value
 
-    private val prefForPurchaseStatus = purchasesPrefsManager.createEnumPref(SKU + "PurchaseStatus", PurchaseStatus.values(), PurchaseStatus.Unspecified)
-    private val prefForPrice = purchasesPrefsManager.createStringPref(SKU + "Price", null, "")
+    private val prefForPurchaseStatus = purchasesPreferencesManager.createEnumPref(SKU + "PurchaseStatus", PurchaseStatus.values(), PurchaseStatus.Unspecified)
+    private val prefForPrice = purchasesPreferencesManager.createStringPref(SKU + "Price", null, "")
 
 
     override fun tryToLaunchBillingFlow(activity: Activity): Boolean {
@@ -99,12 +99,12 @@ class PurchasableItemImpl(
     init {
         prefForPurchaseStatus.addListener( object : Pref.Listener<PurchaseStatus> {
             override fun prefHasChanged(pref: Pref<PurchaseStatus>, value: PurchaseStatus) {
-                delegationMgr.notifyAll { it.purchaseStatusHasChanged(value) }
+                listenersMgr.notifyAll { it.purchaseStatusHasChanged(value) }
             }
         })
         prefForPrice.addListener( object : Pref.Listener<String> {
             override fun prefHasChanged(pref: Pref<String>, value: String) {
-                delegationMgr.notifyAll { it.priceHasChanged(value) }
+                listenersMgr.notifyAll { it.priceHasChanged(value) }
             }
         })
 

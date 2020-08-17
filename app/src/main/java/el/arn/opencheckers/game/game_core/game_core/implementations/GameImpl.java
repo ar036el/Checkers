@@ -141,6 +141,11 @@ public class GameImpl implements Game, BoardListener, ConfigListener {
     }
 
     @Override
+    public Set<Tile> getAllPiecesInBoard() {
+        return board.getAllPiecesInBoard();
+    }
+
+    @Override
     public Set<Tile> getAvailablePieces() {
         return availableMovesForCurrentPlayer.getPieces();
     }

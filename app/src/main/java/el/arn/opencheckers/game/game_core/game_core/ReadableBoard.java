@@ -12,4 +12,5 @@ public interface ReadableBoard {
     int getBoardSize();
     Piece getPiece(int x, int y) throws PointIsOutOfBoardBoundsException, TileIsNotPlayableException;
     Set<Tile> getAllPiecesForPlayer(Player player);
+    Set<Tile> getAllPiecesInBoard();
 }

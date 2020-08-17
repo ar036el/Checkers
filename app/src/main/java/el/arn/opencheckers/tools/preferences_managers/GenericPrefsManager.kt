@@ -4,10 +4,10 @@ import android.content.SharedPreferences
 import el.arn.opencheckers.complementaries.listener_mechanism.*
 import el.arn.opencheckers.complementaries.EnumWithId
 
-open class PrefsManager(
+open class PreferencesManager(
     private val sharedPreferences: SharedPreferences,
-    private val delegationMgr: ListenersManager<Listener> = ListenersManager()
-): HoldsListeners<PrefsManager.Listener> by delegationMgr {
+    private val listenersMgr: ListenersManager<Listener> = ListenersManager()
+): HoldsListeners<PreferencesManager.Listener> by listenersMgr {
 
     private val _prefs = mutableSetOf<Pref<*>>()
 
@@ -15,7 +15,7 @@ open class PrefsManager(
             _: SharedPreferences, prefKey: String ->
         try {
             val changedPref = _prefs.first { it.key == prefKey }
-            delegationMgr.notifyAll { it.prefsHaveChanged(changedPref) }
+            listenersMgr.notifyAll { it.prefsHaveChanged(changedPref) }
         } catch (e: NoSuchElementException) {
             //TODO log: sharedPrefLeak/unhandledPref
         }
@@ -28,7 +28,7 @@ open class PrefsManager(
 
     private fun registerPref(pref: Pref<*>) {
         _prefs.add(pref)
-        delegationMgr.addListener(object : Listener {
+        listenersMgr.addListener(object : Listener {
             override fun prefsHaveChanged(changedPref: Pref<*>) {
                 if (changedPref == pref) {
                     (pref as PrefImpl).notifyListenersPrefHasChanged()
@@ -72,11 +72,9 @@ open class PrefsManager(
         possibleValues: Iterable<Int>?,
         defaultValue: Int
     ): PrefImpl<Int>(key, possibleValues, defaultValue), Pref<Int> {
-        override var value get() = _value
-            set(v) { _value = v}
 
         override fun getValueFromSharedPreferences() = sharedPreferences.getInt(key, defaultValue)
-        override fun writeValueToSharedPreferences() = with(sharedPreferences.edit()) { putInt(key, value); apply() }
+        override fun writeValueToSharedPreferences(value: Int) = with(sharedPreferences.edit()) { putInt(key, value); apply() }
     }
 
     private inner class StringPrefImpl (
@@ -84,21 +82,18 @@ open class PrefsManager(
         possibleValues: Iterable<String>?,
         defaultValue: String
     ): PrefImpl<String>(key, possibleValues, defaultValue), Pref<String> {
-        override var value get() = _value
-            set(v) { _value = v}
 
         override fun getValueFromSharedPreferences() = sharedPreferences.getString(key, defaultValue)!!
-        override fun writeValueToSharedPreferences() = with(sharedPreferences.edit()) { putString(key, value); apply() }
+        override fun writeValueToSharedPreferences(value: String) = with(sharedPreferences.edit()) { putString(key, value); apply() }
     }
 
     private inner class BooleanPrefImpl(
         key: String,
         defaultValue: Boolean
     ): PrefImpl<Boolean>(key, null, defaultValue), Pref<Boolean> {
-        override var value get() = _value
-            set(v) { _value = v}
+
         override fun getValueFromSharedPreferences() = sharedPreferences.getBoolean(key, defaultValue)
-        override fun writeValueToSharedPreferences() = with(sharedPreferences.edit()) { putBoolean(key, value); apply() }
+        override fun writeValueToSharedPreferences(value: Boolean) = with(sharedPreferences.edit()) { putBoolean(key, value); apply() }
     }
 
 
@@ -107,10 +102,16 @@ open class PrefsManager(
         possibleValues: Array<E>,
         defaultValue: E
     ): PrefImpl<E>(key, possibleValues.toList(), defaultValue), Pref<E> {
-        override var value get() = _value
-            set(v) { _value = v}
-        override fun getValueFromSharedPreferences() = possibleValues!!.first { it.id == sharedPreferences.getString(key, defaultValue.id)!! }
-        override fun writeValueToSharedPreferences() = with(sharedPreferences.edit()) { putString(key, value.id); apply() }
+
+        override fun getValueFromSharedPreferences(): E {
+            val a = possibleValues!!.first { it.id == sharedPreferences.getString(key, defaultValue.id)!! }
+            return a
+        }
+        override fun writeValueToSharedPreferences(value: E) {
+            with(sharedPreferences.edit()) { putString(key, value.id); apply() }
+            val a = getValueFromSharedPreferences()
+            val b = 1
+        }
     }
 
 }
@@ -132,23 +133,23 @@ abstract class PrefImpl<V> (
     override val key: String,
     override val possibleValues: Iterable<V>?,
     final override val defaultValue: V,
-    protected val prefDelegationMgr: ListenersManager<Pref.Listener<V>> = ListenersManager()
-): Pref<V>, HoldsListeners<Pref.Listener<V>> by prefDelegationMgr {
+    protected val preflistenersMgr: ListenersManager<Pref.Listener<V>> = ListenersManager()
+): Pref<V>, HoldsListeners<Pref.Listener<V>> by preflistenersMgr {
 
-    abstract override var value: V
     override fun restoreToDefault() {
-        _value = defaultValue
+        value = defaultValue
     }
     fun notifyListenersPrefHasChanged() {
-        prefDelegationMgr.notifyAll { it.prefHasChanged(this, value) }
+        preflistenersMgr.notifyAll { it.prefHasChanged(this, value) }
     }
 
-    protected var _value: V
-        get() = getValueFromSharedPreferences()
-        set(value) {
-            assertValueIsInRange(value)
-            if (this._value != value) {
-                writeValueToSharedPreferences()
+    override var value: V
+        get() =
+            getValueFromSharedPreferences()
+        set(v) {
+            assertValueIsInRange(v)
+            if (this.value != v) {
+                writeValueToSharedPreferences(v)
             }
         }
     private fun assertValueIsInRange(value: V) {
@@ -160,6 +161,6 @@ abstract class PrefImpl<V> (
         assertValueIsInRange(defaultValue)
     }
     protected abstract fun getValueFromSharedPreferences(): V
-    protected abstract fun writeValueToSharedPreferences()
+    protected abstract fun writeValueToSharedPreferences(value: V)
 
 }

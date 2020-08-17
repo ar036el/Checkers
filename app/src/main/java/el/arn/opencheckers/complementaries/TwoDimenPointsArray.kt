@@ -3,10 +3,19 @@ package el.arn.opencheckers.complementaries
 import el.arn.opencheckers.game.game_core.game_core.structs.Point
 
 
-class TwoDimenPointsArray<T>(private val size: Int, init: (Point) -> T) {
-    private val array = Array(size) {
-        x -> Array<Any?>(size) { y -> init(Point(x, y)) }
-    }
+class TwoDimenPointsArray<T>(
+    val size: Int,
+    private val init: (index: Point) -> T)
+{
+
+    private val array =
+        Array(size) {
+            x ->
+            Array<Any?>(size) {
+                y ->
+                init(Point(x, y))
+            }
+        }
 
     operator fun get(x: Int, y: Int): T {
         return array[x][y] as T
@@ -41,7 +50,7 @@ class TwoDimenPointsArray<T>(private val size: Int, init: (Point) -> T) {
             private var y = 0
 
             override fun hasNext(): Boolean {
-                return x + y < array.lastIndex * 2
+                return y < array.size
             }
 
             override fun next(): T {

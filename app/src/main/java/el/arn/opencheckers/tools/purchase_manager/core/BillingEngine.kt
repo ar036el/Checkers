@@ -16,8 +16,8 @@ enum class PurchaseStatus(override val id: String) : EnumWithId { Unspecified("U
 
 class BillingEngine(
     val SKUs: Set<String>,
-    private val delegationMgr: ListenersManager<Listener> = ListenersManager()
-) : HoldsListeners<BillingEngine.Listener> by delegationMgr {
+    private val listenersMgr: ListenersManager<Listener> = ListenersManager()
+) : HoldsListeners<BillingEngine.Listener> by listenersMgr {
 
     fun reloadPurchases(): Boolean /** @return [false] if the billing client is not connected. In that case, it tried to reconnect. Listeners will be notified when purchases will reload*/ {
         if (billingClient.isReady) {
@@ -98,7 +98,7 @@ class BillingEngine(
                 }
             }
 
-            delegationMgr.notifyAll { it.onPurchaseStatusesLoadedOrChanged(SKUsWithPurchaseStatuses) }
+            listenersMgr.notifyAll { it.onPurchaseStatusesLoadedOrChanged(SKUsWithPurchaseStatuses) }
         }
     }
 
@@ -126,7 +126,7 @@ class BillingEngine(
                         }
                     }
 
-                    delegationMgr.notifyAll { it.onPricesLoadedOrChanged(SKUsWithPrices) }
+                    listenersMgr.notifyAll { it.onPricesLoadedOrChanged(SKUsWithPrices) }
                 }
                 else -> {
                     Log.e(this.toString(), billingResult.debugMessage)

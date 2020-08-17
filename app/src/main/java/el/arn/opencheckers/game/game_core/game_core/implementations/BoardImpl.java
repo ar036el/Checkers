@@ -126,6 +126,13 @@ public class BoardImpl implements PlayableBoard {
         return getTilesFor(player);
     }
 
+    @Override
+    public Set<Tile> getAllPiecesInBoard() {
+        Set<Tile> allPieces = new HashSet<>(whitePlayers);
+        allPieces.addAll(blackPlayers);
+        return allPieces;
+    }
+
     private Set<Tile> getTilesFor(Player team) {
         return (team == Player.White) ? whitePlayers : blackPlayers;
     }
