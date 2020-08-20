@@ -24,6 +24,12 @@
     <FrameLayout
         android:id="@+id/boardPiecesContainer"
         android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/boardTilesCoverContainer"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent">
     </FrameLayout>
 

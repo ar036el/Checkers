@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Open Checkers</string>
+    <string name="app_name">Checkers</string>
 
     <string name="title_activity_settings">Settings</string>
 
@@ -19,8 +19,15 @@
         <item>Never</item>
     </string-array>
 
+    <string name="mainActivity_sideDrawer_rateUs">Rate Checkers</string>
     <string name="mainActivity_sideDrawer_purchasePremiumVersion">Upgrade To Premium</string>
     <string name="mainActivity_sideDrawer_purchaseNoAds">Remove All Ads</string>
+    <string name="mainActivity_sideDrawer_contactUs">Contact Us</string>
+    <string name="mainActivity_sideDrawer_sendFeedback">Send Quick Feedback</string>
+    <string name="mainActivity_sideDrawer_privacyPolicy">Privacy Policy</string>
+    <string name="mainActivity_sideDrawer_settings">Settings</string>
+
+
 
 
     <string name="king_behaviour">King\'s behaviour</string>
@@ -33,7 +40,6 @@
         <item>Lands after capture</item>
         <item>No flying kings</item>
     </string-array>
-
 
 
     <string name="is_capturing_mandatory">Is capturing mandatory</string>
@@ -54,7 +60,7 @@
 
 
 
-    <string name="enable_custom_settings">Enable custom settings</string>
+    <string name="enable_custom_settings">Enable custom game settings</string>
 
     <string name="custom_board_size">Custom board size</string>
     <string-array name="custom_board_size_entries">
@@ -75,6 +81,7 @@
 
     <string name="board_theme">Board theme</string>
     <string name="players_theme">Players theme</string>
+    <string name="settings_soundEffectsTheme">Sound effects theme/ off</string>
 
 
 
@@ -121,14 +128,14 @@
     <string name="noAds_feature">Removing all ads, forever!!</string>
     <string name="noAds_purchaseButton">Remove All Ads - @pr</string>
 
-    <string name="fullVersion_descriptionHeader">Get Full Version</string>
-    <string name="fullVersion_descriptionHeaderaa">With purchasing full version, you will get:</string>
-    <string name="fullVersion_feature_0">Custom board size (4x4 up to 24X24)</string>
-    <string name="fullVersion_feature_1">Custom starting players</string>
-    <string name="fullVersion_feature_2">All board themes</string>
-    <string name="fullVersion_feature_3">All pieces themes</string>
-    <string name="fullVersion_feature_4">Virtual player bonus (Secret!)</string>
-    <string name="fullVersion_purchaseButton">Get Full Version - @pr</string>
+    <string name="premiumVersion_descriptionHeader">Get Premium Version</string>
+    <string name="premiumVersion_descriptionHeaderaa">With purchasing premium version, you will get:</string>
+    <string name="premiumVersion_feature_0">Custom board size (4x4 up to 24X24)</string>
+    <string name="premiumVersion_feature_1">Custom starting players</string>
+    <string name="premiumVersion_feature_2">All board themes</string>
+    <string name="premiumVersion_feature_3">All pieces themes</string>
+    <string name="premiumVersion_feature_4">Virtual player bonus (Secret!)</string>
+    <string name="premiumVersion_purchaseButton">Get Full Version - @pr</string>
 
 
     <string name="purchaseButtonHint">Purchase once, Lasts forever</string>
@@ -136,18 +143,26 @@
     <string name="purchasingNotAvailable">Sorries! Purchasing is not available right now.\nCheck your internet connection or try again later</string>
 
     <string name="sendFeedbackDialog_title">Send Feedback</string>
-    <string name="sendFeedbackDialog_desc">Thanks for giving feedback! Please write it below</string>
-    <string name="sendFeedbackDialog_submitButton">Submit Feedback</string>
-    <string name="sendFeedbackDialog_approved">Feedback was sent!</string>
+    <string name="sendFeedbackDialog_desc">Thanks for sharing, please write your feedback below:</string>
+    <string name="sendFeedbackDialog_submitButton">Send Feedback</string>
+    <string name="sendFeedbackDialog_approved">Thank you, feedback was sent!</string>
+
+    <string name="confirmPassTurnDialog_message">Are you sure you want to pass your turn?</string>
+    <string name="confirmPassTurnDialog_button_passTurn">Pass Turn</string>
 
 
-    <string name="rateUsDialog_header">How would you rate the app?</string>
+    <string name="rateUsDialog_header">How would you rate Checkers app?</string>
     <string name="rateUsDialog_button_later">Later</string>
     <string name="rateUsDialog_button_dontShowAgain">Never</string>
     <string name="rateUsDialog_button_rateInAppStore">Rate</string>
     <string name="rateUsDialog_button_sendFeedBack">Send</string>
     <string name="rateUsDialog_positiveRatingResponse">Thanks! ❤\nCare to rate us in the app store?</string>
-    <string name="rateUsDialog_negativeRatingResponse">We are sorry to hear that ☹\nCan you give us a feedback telling us why?</string>
+    <string name="rateUsDialog_negativeRatingResponse">We are sorry to hear that ☹\nCan you write us a short feedback telling us why?</string>
 
+    <string name="toolbar_title_noGameLoaded">Checkers</string>
+    <string name="toolbar_title_firstPlayersTurn">Player 1\'s turn</string>
+    <string name="toolbar_title_secondPlayersTurn">Player 2\'s turn</string>
+    <string name="toolbar_title_firstPlayerIsWinner">Player 1 - Winner</string>
+    <string name="toolbar_title_secondPlayerIsWinner">PPlayer 2 - Winner</string>
 
 </resources>

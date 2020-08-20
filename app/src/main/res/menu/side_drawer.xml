@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/group1">
+        <item
+            android:id="@+id/sideDrawerMenuItem_rateUs"
+            android:icon="@drawable/ic_thumb_up_black_24dp"
+            android:title="@string/mainActivity_sideDrawer_rateUs" />
+        <item
+            android:id="@+id/sideDrawerMenuItem_purchasePremiumVersion"
+            android:icon="@drawable/ic_star_black_24dp"
+            android:title="@string/mainActivity_sideDrawer_purchasePremiumVersion" />
+        <item
+            android:id="@+id/sideDrawerMenuItem_purchaseNoAds"
+            android:icon="@drawable/ic_x_black_24dp"
+            android:title="@string/mainActivity_sideDrawer_purchaseNoAds" />
+
+    </group>
+    <group android:id="@+id/group2">
+
+        <item
+            android:id="@+id/sideDrawerMenuItem_contactUs"
+            android:icon="@drawable/ic_mail_black_24dp"
+            android:title="@string/mainActivity_sideDrawer_contactUs" />
+        <item
+            android:id="@+id/sideDrawerMenuItem_sendFeedback"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="@string/mainActivity_sideDrawer_sendFeedback" />
+        <item
+            android:id="@+id/sideDrawerMenuItem_privacyPolicy"
+            android:icon="@drawable/ic_security_black_24dp"
+            android:title="@string/mainActivity_sideDrawer_privacyPolicy" />
+        <item
+            android:id="@+id/sideDrawerMenuItem_settings"
+            android:icon="@drawable/ic_settings_24px"
+            android:title="@string/mainActivity_sideDrawer_settings" />
+    </group>
+</menu>

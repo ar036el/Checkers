@@ -198,6 +198,14 @@
             android:text="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/testo1"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/testo3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            android:text="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/testo2"/>
 
 
 
@@ -211,6 +219,6 @@
         android:background="@color/white"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/element_navigation_drawer_header"
-        app:menu="@menu/navigation_drawer" />
+        app:menu="@menu/side_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

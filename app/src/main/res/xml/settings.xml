@@ -44,17 +44,24 @@
             app:title="@string/board_size"
             app:useSimpleSummaryProvider="true" />
 
-        <el.arn.opencheckers.android_widgets.settings_activity.BoardThemeSelectorPreference
+        <el.arn.checkers.android_widgets.settings_activity.BoardThemeSelectorPreference
             android:key="boardTheme"
             android:title="@string/board_theme"
             app:defaultValue="0"
             app:iconSpaceReserved="false" />
 
-        <el.arn.opencheckers.android_widgets.settings_activity.PlayerThemeSelectorPreference
+        <el.arn.checkers.android_widgets.settings_activity.PlayerThemeSelectorPreference
             android:key="playersTheme"
             android:title="@string/players_theme"
             app:defaultValue="0"
             app:iconSpaceReserved="false" />
+
+        <el.arn.checkers.android_widgets.settings_activity.SoundEffectsThemeSelectorPreference
+            android:key="soundEffectsTheme"
+            android:title="@string/settings_soundEffectsTheme"
+            app:defaultValue="1"
+            app:iconSpaceReserved="false" />
+
 
     </PreferenceCategory>
 
@@ -84,6 +91,23 @@
             app:key="startingRows"
             app:title="@string/starting_rows"
             app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="purchasePremiumVersionButtonOnly"
+            app:icon="@drawable/ic_star_gold_24dp"
+            app:iconSpaceReserved="false"
+            app:title="@string/mainActivity_sideDrawer_purchasePremiumVersion" />
+
+        <Preference
+            app:key="purchaseNoAdsButtonOnly"
+            app:icon="@drawable/ic_x_black_24dp"
+            app:iconSpaceReserved="false"
+            app:title="@string/mainActivity_sideDrawer_purchaseNoAds" />
 
     </PreferenceCategory>
 

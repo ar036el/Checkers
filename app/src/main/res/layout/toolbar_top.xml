@@ -28,13 +28,30 @@
         android:paddingBottom="10dp"
         android:src="@drawable/ic_menu_24px" />
 
-    <TextView
-        android:id="@+id/toolbarTitle"
-        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_weight="1"
-        android:text="White's turn" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_titlebar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:gravity="center"
+            android:paddingEnd="14dp"
+            android:textSize="@dimen/textView_middle_size"
+            android:textColor="@color/white"
+            android:text="White's turn" />
+
+        <TextView
+            android:id="@+id/timer_titlebar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="00:00"
+            android:textSize="@dimen/textView_middle_size"
+            android:textColor="@color/darker_gray" />
+    </LinearLayout>
 
 </androidx.appcompat.widget.Toolbar>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="el.arn.opencheckers">
+    package="el.arn.checkers">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
 
-        android:name=".AppRoot"
+        android:name="el.arn.checkers.AppRoot"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,18 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity"
+            android:name="el.arn.checkers.activities.MainActivity"
             android:theme="@style/FullScreenDark" />
         <activity
-            android:name=".activities.OnboardingActivity"
+            android:name="el.arn.checkers.activities.OnboardingActivity"
             android:theme="@style/fullScreenLight" />
         <activity
-            android:name=".activities.SettingsActivity" />
+            android:name="el.arn.checkers.activities.SettingsActivity" />
         <activity
-            android:name=".activities.BuyPremiumActivity"
+            android:name="el.arn.checkers.activities.BuyPremiumActivity"
             android:theme="@style/fullScreenLight" />
         <activity
-            android:name=".activities.StartingActivity"
+            android:name="el.arn.checkers.activities.StartingActivity"
             android:theme="@style/FullScreenDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

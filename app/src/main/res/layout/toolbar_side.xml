@@ -37,7 +37,9 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingTop="20dp"
-        android:text="White's turn" />
+        android:textSize="@dimen/textview_big_0_size"
+        android:textColor="@color/white"
+        android:text="@string/toolbar_title_noGameLoaded" />
 
     <TextView
         android:id="@+id/timerSidebar"
@@ -45,8 +47,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingTop="10dp"
-        android:text="11:11"
-        android:textColor="@android:color/darker_gray" />
+        android:text="00:00"
+        android:textSize="@dimen/textView_middle_size"
+        android:textColor="@color/darker_gray" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
