@@ -1,9 +1,9 @@
 package el.arn.checkers.game
 
-import el.arn.checkers.game.game_core.game_core.Game
-import el.arn.checkers.game.composites.SynchronizedSnapshotableGame
-import el.arn.checkers.game.composites.Undoable
-import el.arn.checkers.game.composites.UndoableWithSnapshots
+import el.arn.checkers.game.game_core.checkers_game.Game
+import el.arn.checkers.game.game_core.SynchronizedSnapshotableGame
+import el.arn.checkers.game.game_core.Undoable
+import el.arn.checkers.game.game_core.UndoableWithSnapshots
 
 
 interface GameCore : Game, Undoable

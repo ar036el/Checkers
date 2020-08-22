@@ -7,11 +7,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import el.arn.checkers.R
 import el.arn.checkers.appRoot
-import el.arn.checkers.complementaries.game.DifficultyEnum
-import el.arn.checkers.complementaries.game.GameTypeEnum
-import el.arn.checkers.complementaries.game.StartingPlayerEnum
-import el.arn.checkers.dialogs.composites.SingleSelectionButtonGroup
-import el.arn.checkers.tools.themed_resources.ThemedResources
+import el.arn.checkers.helpers.game_enums.DifficultyEnum
+import el.arn.checkers.helpers.game_enums.GameTypeEnum
+import el.arn.checkers.helpers.game_enums.StartingPlayerEnum
+import el.arn.checkers.dialogs.parts.SingleSelectionButtonGroup
+import el.arn.checkers.managers.themed_resources.ThemedResources
 
 class NewGameDialog(
     private val activity: Activity,

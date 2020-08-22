@@ -2,8 +2,8 @@ package el.arn.checkers.android_widgets.main_activity.toolbar
 
 import el.arn.checkers.R
 import el.arn.checkers.appRoot
-import el.arn.checkers.complementaries.listener_mechanism.ListenersManager
-import el.arn.checkers.complementaries.listener_mechanism.HoldsListeners
+import el.arn.checkers.helpers.listeners_engine.ListenersManager
+import el.arn.checkers.helpers.listeners_engine.HoldsListeners
 
 abstract class ToolbarAbstract(
     protected val listenersMgr: ListenersManager<Listener> = ListenersManager()

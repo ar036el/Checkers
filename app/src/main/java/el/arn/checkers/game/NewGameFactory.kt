@@ -2,13 +2,15 @@ package el.arn.checkers.game
 
 import el.arn.checkers.AppRoot
 import el.arn.checkers.android_widgets.main_activity.WinnerMessage
-import el.arn.checkers.game.game_core.game_core.implementations.BoardImpl
-import el.arn.checkers.game.game_core.game_core.implementations.GameImpl
-import el.arn.checkers.game.game_core.game_core.implementations.GameLogicConfigImpl
-import el.arn.checkers.game.game_core.game_core.structs.Player
+import el.arn.checkers.game.game_core.checkers_game.implementations.BoardImpl
+import el.arn.checkers.game.game_core.checkers_game.implementations.GameImpl
+import el.arn.checkers.game.game_core.checkers_game.implementations.GameLogicConfigImpl
+import el.arn.checkers.game.game_core.checkers_game.structs.Player
 import el.arn.checkers.android_widgets.main_activity.board.PiecesManager
 import el.arn.checkers.android_widgets.main_activity.board.TilesManager
 import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarAbstract
+import el.arn.checkers.game.game_core.VirtualPlayer
+import el.arn.checkers.game.game_core.VirtualPlayerImpl
 
 class NewGameFactory(private val appRoot: AppRoot) {
 
@@ -72,13 +74,13 @@ class NewGameFactory(private val appRoot: AppRoot) {
     }
 
     private fun createNewGame(startingPlayer: Player): GameCoreImpl {
-        val logicConfig = GameLogicConfigImpl(
+        val gameLogicConfig = GameLogicConfigImpl(
             appRoot.gamePreferencesManager.isCapturingMandatory.value,
             appRoot.gamePreferencesManager.kingBehaviour.value,
             appRoot.gamePreferencesManager.canPawnCaptureBackwards.value)
 
         val board = BoardImpl(appRoot.gamePreferencesManager.boardSize.value, appRoot.gamePreferencesManager.startingRows.value)
-        val game = GameImpl(logicConfig, board, startingPlayer, null) //todo why null?
+        val game = GameImpl(gameLogicConfig, board, startingPlayer, null) //todo why null?
         return GameCoreImpl(game)
     }
 }

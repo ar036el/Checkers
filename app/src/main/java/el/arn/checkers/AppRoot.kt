@@ -4,14 +4,14 @@ import android.content.Context
 import androidx.annotation.StringRes
 import el.arn.checkers.dialogs.RateUsDialogInvoker
 import el.arn.checkers.dialogs.RateUsDialogInvokerImpl
-import el.arn.checkers.tools.ACRA.CustomReportSenderFactory
-import el.arn.checkers.tools.feedback_manager.FeedbackManager
+import el.arn.checkers.managers.ACRA.CustomReportSenderFactory
+import el.arn.checkers.managers.feedback_manager.FeedbackManager
 import el.arn.checkers.game.*
 import el.arn.checkers.game.NewGameFactory
-import el.arn.checkers.tools.*
-import el.arn.checkers.tools.preferences_managers.GamePreferencesManager
-import el.arn.checkers.tools.preferences_managers.SettingsPreferencesManagerAsBridge
-import el.arn.checkers.tools.purchase_manager.PurchasesManager
+import el.arn.checkers.managers.*
+import el.arn.checkers.managers.preferences_managers.GamePreferencesManager
+import el.arn.checkers.managers.preferences_managers.SettingsPreferencesManagerAsBridge
+import el.arn.checkers.managers.purchase_manager.PurchasesManager
 import org.acra.annotation.AcraCore
 
 lateinit var appRoot: AppRoot

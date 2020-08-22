@@ -11,8 +11,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import el.arn.checkers.R
 import el.arn.checkers.appRoot
-import el.arn.checkers.complementaries.android.ALPHA_ICON_ENABLED
-import el.arn.checkers.complementaries.android.ALPHA_ICON_DISABLED
+import el.arn.checkers.helpers.consts.ALPHA_ICON_ENABLED
+import el.arn.checkers.helpers.consts.ALPHA_ICON_DISABLED
 
 class ToolbarTop(
     private val toolbarView: Toolbar,

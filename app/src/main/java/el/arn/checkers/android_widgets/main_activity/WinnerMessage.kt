@@ -6,14 +6,14 @@ import android.view.ViewPropertyAnimator
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import el.arn.checkers.R
-import el.arn.checkers.complementaries.android.AnimatorListener
-import el.arn.checkers.complementaries.game.WinningTypes
-import el.arn.checkers.complementaries.listener_mechanism.HoldsListeners
-import el.arn.checkers.complementaries.listener_mechanism.ListenersManager
+import el.arn.checkers.helpers.android.AnimatorListener
+import el.arn.checkers.helpers.game_enums.WinningTypeOptions
+import el.arn.checkers.helpers.listeners_engine.HoldsListeners
+import el.arn.checkers.helpers.listeners_engine.ListenersManager
 
 interface WinnerMessage : HoldsListeners<WinnerMessage.Listener> {
 
-    fun show(applyAnimation: Boolean, winningType: WinningTypes)
+    fun show(applyAnimation: Boolean, winningType: WinningTypeOptions)
     fun hide()
     val state: States
 
@@ -37,7 +37,7 @@ class WinnerMessageImpl(
 
     override var state: WinnerMessage.States = WinnerMessage.States.Hidden
 
-    override fun show(applyAnimation: Boolean, winningType: WinningTypes) {
+    override fun show(applyAnimation: Boolean, winningType: WinningTypeOptions) {
         if (state != WinnerMessage.States.Hidden) {
             return
         }
@@ -84,12 +84,12 @@ class WinnerMessageImpl(
     }
 
     class WinnerMessageDrawableStyleDecorator {
-        @DrawableRes fun get(winningType: WinningTypes): Int {
+        @DrawableRes fun get(winningType: WinningTypeOptions): Int {
             return when (winningType) {
-                WinningTypes.Win -> R.drawable.winner_message_win
-                WinningTypes.Lose -> R.drawable.winner_message_lose
-                WinningTypes.Player1Wins -> R.drawable.winner_message_player1
-                WinningTypes.Player2Wins -> R.drawable.winner_message_player2
+                WinningTypeOptions.Win -> R.drawable.winner_message_win
+                WinningTypeOptions.Lose -> R.drawable.winner_message_lose
+                WinningTypeOptions.Player1Wins -> R.drawable.winner_message_player1
+                WinningTypeOptions.Player2Wins -> R.drawable.winner_message_player2
             }
         }
     }

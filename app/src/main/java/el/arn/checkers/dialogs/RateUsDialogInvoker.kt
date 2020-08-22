@@ -3,7 +3,7 @@ package el.arn.checkers.dialogs
 import android.app.Activity
 import android.content.Context
 import el.arn.checkers.AppRoot
-import el.arn.checkers.tools.preferences_managers.PreferencesManager
+import el.arn.checkers.managers.preferences_managers.PreferencesManager
 
 interface RateUsDialogInvoker {
     fun tryToInvokeDialog(activity: Activity): RateUsDialog?

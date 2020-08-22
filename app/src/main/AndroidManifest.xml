@@ -26,7 +26,7 @@
             android:name="el.arn.checkers.activities.BuyPremiumActivity"
             android:theme="@style/fullScreenLight" />
         <activity
-            android:name="el.arn.checkers.activities.StartingActivity"
+            android:name="el.arn.checkers.activities.FirstContactActivity"
             android:theme="@style/FullScreenDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

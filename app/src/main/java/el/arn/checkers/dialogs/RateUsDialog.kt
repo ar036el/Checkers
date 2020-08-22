@@ -7,8 +7,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import el.arn.checkers.R
 import el.arn.checkers.appRoot
-import el.arn.checkers.dialogs.composites.FiveStarsLayout
-import el.arn.checkers.tools.external_activity_invoker.GooglePlayStoreAppPageInvoker
+import el.arn.checkers.dialogs.parts.FiveStarsLayout
+import el.arn.checkers.managers.external_activity_invoker.GooglePlayStoreAppPageInvoker
 
 class RateUsDialog(
     private val dialogInvoker: RateUsDialogInvoker,

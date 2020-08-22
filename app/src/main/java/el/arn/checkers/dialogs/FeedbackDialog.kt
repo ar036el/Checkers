@@ -5,7 +5,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import el.arn.checkers.R
-import el.arn.checkers.tools.feedback_manager.FeedbackManager
+import el.arn.checkers.managers.feedback_manager.FeedbackManager
 
 class FeedbackDialog(
     private val activity: Activity,

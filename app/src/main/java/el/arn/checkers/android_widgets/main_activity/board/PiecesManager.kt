@@ -6,17 +6,17 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewPropertyAnimator
 import android.widget.FrameLayout
-import el.arn.checkers.complementaries.listener_mechanism.ListenersManager
-import el.arn.checkers.complementaries.listener_mechanism.HoldsListeners
-import el.arn.checkers.complementaries.TwoDimenPointsArray
-import el.arn.checkers.complementaries.android.AnimatorListener
-import el.arn.checkers.complementaries.android.PixelCoordinate
-import el.arn.checkers.complementaries.game.TileCoordinates
+import el.arn.checkers.helpers.listeners_engine.ListenersManager
+import el.arn.checkers.helpers.listeners_engine.HoldsListeners
+import el.arn.checkers.helpers.TwoDimenPointsArray
+import el.arn.checkers.helpers.android.AnimatorListener
+import el.arn.checkers.helpers.points.PixelCoordinate
+import el.arn.checkers.helpers.points.TileCoordinates
 import el.arn.checkers.android_widgets.main_activity.board.parts.GenericPieceType
 import el.arn.checkers.android_widgets.main_activity.board.parts.Piece
 import kotlin.math.abs
 
-typealias PieceWithBoardCoordinates = el.arn.checkers.game.game_core.game_core.structs.Tile
+typealias PieceWithBoardCoordinates = el.arn.checkers.game.game_core.checkers_game.structs.Tile
 
 interface PiecesManager: HoldsListeners<PiecesManager.Listener> {
 

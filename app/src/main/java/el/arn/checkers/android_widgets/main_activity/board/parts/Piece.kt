@@ -6,13 +6,13 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import el.arn.checkers.R
-import el.arn.checkers.complementaries.android.activity
-import el.arn.checkers.complementaries.android.isAlive
-import el.arn.checkers.tools.themed_resources.ChangesStyleByTheme
-import el.arn.checkers.tools.themed_resources.ChangesStyleByTheme_implByDelegation
-import el.arn.checkers.tools.themed_resources.ThemedResources
+import el.arn.checkers.helpers.android.activity
+import el.arn.checkers.helpers.android.isAlive
+import el.arn.checkers.managers.themed_resources.ChangesStyleByTheme
+import el.arn.checkers.managers.themed_resources.ChangesStyleByTheme_implByDelegation
+import el.arn.checkers.managers.themed_resources.ThemedResources
 
-typealias GenericPieceType = el.arn.checkers.game.game_core.game_core.structs.Piece
+typealias GenericPieceType = el.arn.checkers.game.game_core.checkers_game.structs.Piece
 
 
 class Piece(

@@ -4,12 +4,12 @@ import android.app.Activity
 import android.widget.Button
 import androidx.annotation.StringRes
 import el.arn.checkers.*
-import el.arn.checkers.complementaries.android.activity
-import el.arn.checkers.complementaries.android.isAlive
-import el.arn.checkers.complementaries.listener_mechanism.LimitedListener
-import el.arn.checkers.complementaries.listener_mechanism.LimitedListenerImpl
-import el.arn.checkers.tools.purchase_manager.core.PurchasableItem
-import el.arn.checkers.tools.purchase_manager.core.PurchaseStatus
+import el.arn.checkers.helpers.android.activity
+import el.arn.checkers.helpers.android.isAlive
+import el.arn.checkers.helpers.listeners_engine.LimitedListener
+import el.arn.checkers.helpers.listeners_engine.LimitedListenerImpl
+import el.arn.checkers.managers.purchase_manager.core.PurchasableItem
+import el.arn.checkers.managers.purchase_manager.core.PurchaseStatus
 
 class PurchaseButton(
     private val buttonView: Button,

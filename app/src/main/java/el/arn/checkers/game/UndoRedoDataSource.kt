@@ -1,7 +1,7 @@
 package el.arn.checkers.game
 
-import el.arn.checkers.complementaries.listener_mechanism.ListenersManager
-import el.arn.checkers.complementaries.listener_mechanism.HoldsListeners
+import el.arn.checkers.helpers.listeners_engine.ListenersManager
+import el.arn.checkers.helpers.listeners_engine.HoldsListeners
 
 interface UndoRedoDataBridge : HoldsListeners<UndoRedoDataBridge.Listener>{
     val isEnabled: Boolean

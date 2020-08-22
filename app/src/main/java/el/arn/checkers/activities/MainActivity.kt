@@ -31,24 +31,25 @@ import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarAbstract
 import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarSide
 import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarTop
 import el.arn.checkers.appRoot
-import el.arn.checkers.complementaries.GateByNumberOfCalls
-import el.arn.checkers.complementaries.LateInvocationFunction
-import el.arn.checkers.complementaries.LimitedAccessFunction
-import el.arn.checkers.complementaries.android.Orientations
-import el.arn.checkers.complementaries.android.isDirectionRTL
-import el.arn.checkers.complementaries.android.orientation
-import el.arn.checkers.complementaries.developerEmail
-import el.arn.checkers.complementaries.game.GameTypeEnum
-import el.arn.checkers.complementaries.game.StartingPlayerEnum
+import el.arn.checkers.helpers.functions.late_invocation_function.GateByNumberOfCalls
+import el.arn.checkers.helpers.functions.late_invocation_function.LateInvocationFunction
+import el.arn.checkers.helpers.functions.LimitedAccessFunction
+import el.arn.checkers.helpers.android.OrientationOptions
+import el.arn.checkers.helpers.android.isDirectionRTL
+import el.arn.checkers.helpers.android.orientation
+import el.arn.checkers.helpers.developerEmail
+import el.arn.checkers.helpers.game_enums.GameTypeEnum
+import el.arn.checkers.helpers.game_enums.StartingPlayerEnum
 import el.arn.checkers.dialogs.ConfigHasChangedWarningDialog
 import el.arn.checkers.dialogs.Dialog
 import el.arn.checkers.dialogs.FeedbackDialog
 import el.arn.checkers.dialogs.NewGameDialog
 import el.arn.checkers.game.UndoRedoDataBridge
-import el.arn.checkers.game.game_core.game_core.structs.Player
-import el.arn.checkers.tools.Timer
-import el.arn.checkers.tools.external_activity_invoker.GooglePlayStoreAppPageInvoker
-import el.arn.checkers.tools.preferences_managers.Pref
+import el.arn.checkers.game.game_core.checkers_game.structs.Player
+import el.arn.checkers.helpers.android.stringFromRes
+import el.arn.checkers.managers.Timer
+import el.arn.checkers.managers.external_activity_invoker.GooglePlayStoreAppPageInvoker
+import el.arn.checkers.managers.preferences_managers.Pref
 
 
 class MainActivity : AppCompatActivity() {
@@ -145,7 +146,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (orientation == Orientations.Portrait) {
+        if (orientation == OrientationOptions.Portrait) {
             initToolbarTop(menu)
         }
         return true
@@ -328,7 +329,7 @@ class MainActivity : AppCompatActivity() {
         val progressBarTop: ProgressBar = findViewById(R.id.progressBarTop)
         val progressBarSide: ProgressBar = findViewById(R.id.progressBar_side)
 
-        if (orientation == Orientations.Portrait) {
+        if (orientation == OrientationOptions.Portrait) {
             toolbarLayoutSide.visibility = View.GONE
             progressBarSide.visibility = View.GONE
 
@@ -351,7 +352,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val initToolbarSide = LimitedAccessFunction({
-        if (orientation == Orientations.Landscape) {
+        if (orientation == OrientationOptions.Landscape) {
             if (this@MainActivity::toolbar.isInitialized) {
                 throw InternalError()
             }
@@ -432,7 +433,7 @@ class MainActivity : AppCompatActivity() {
     private fun openIntentSendEmailToDeveloper() {
         val i = Intent(Intent.ACTION_SEND)
         i.type = "message/rfc822"
-        i.putExtra(Intent.EXTRA_EMAIL, arrayOf(developerEmail))
+        i.putExtra(Intent.EXTRA_EMAIL, arrayOf(stringFromRes(R.string.internal_developerEmail)))
 //        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email")
 //        i.putExtra(Intent.EXTRA_TEXT, "body of email")
         try {
@@ -540,7 +541,10 @@ class MainActivity : AppCompatActivity() {
 
     private val preferenceChangedListenerForBoardSizeAndStartingRows = object : Pref.Listener<Int> {
         override fun prefHasChanged(pref: Pref<Int>, value: Int) {
-            openDialogConfigHasChangedWarningDialog.grantOneAccess()
+            if ((pref == appRoot.gamePreferencesManager.boardSize && value != appRoot.gameCoordinator?.gameCore?.boardSize)
+                || (pref == appRoot.gamePreferencesManager.startingRows && value != appRoot.gameCoordinator?.gameCore?.startingRows)) {
+                openDialogConfigHasChangedWarningDialog.grantOneAccess()
+            }
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                 openDialogConfigHasChangedWarningDialog.invokeIfHasAccess()
             }

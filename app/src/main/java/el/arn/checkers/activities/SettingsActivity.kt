@@ -12,8 +12,8 @@ import el.arn.checkers.android_widgets.settings_activity.ImageSelectorPreference
 import el.arn.checkers.android_widgets.settings_activity.PlayerThemeSelectorPreference
 import el.arn.checkers.android_widgets.settings_activity.SoundEffectsThemeSelectorPreference
 import el.arn.checkers.appRoot
-import el.arn.checkers.game.game_core.game_core.configurations.BoardConfig
-import el.arn.checkers.game.game_core.game_core.implementations.BoardConfigImpl
+import el.arn.checkers.game.game_core.checkers_game.configurations.BoardConfig
+import el.arn.checkers.game.game_core.checkers_game.implementations.BoardConfigImpl
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

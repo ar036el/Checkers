@@ -8,9 +8,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import el.arn.checkers.R
 import el.arn.checkers.appRoot
-import el.arn.checkers.complementaries.android.ALPHA_ICON_ENABLED
-import el.arn.checkers.complementaries.android.ALPHA_ICON_DISABLED
-import el.arn.checkers.complementaries.android.isDirectionRTL
+import el.arn.checkers.helpers.consts.ALPHA_ICON_ENABLED
+import el.arn.checkers.helpers.consts.ALPHA_ICON_DISABLED
+import el.arn.checkers.helpers.android.isDirectionRTL
 
 class ToolbarSide(
     private val layout: LinearLayout,

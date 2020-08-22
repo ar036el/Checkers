@@ -4,10 +4,10 @@ import android.app.Activity
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import el.arn.checkers.R
-import el.arn.checkers.complementaries.android.ALPHA_ICON_ENABLED
-import el.arn.checkers.complementaries.android.ALPHA_ICON_DISABLED
-import el.arn.checkers.complementaries.listener_mechanism.HoldsListeners
-import el.arn.checkers.complementaries.listener_mechanism.ListenersManager
+import el.arn.checkers.helpers.consts.ALPHA_ICON_ENABLED
+import el.arn.checkers.helpers.consts.ALPHA_ICON_DISABLED
+import el.arn.checkers.helpers.listeners_engine.HoldsListeners
+import el.arn.checkers.helpers.listeners_engine.ListenersManager
 import el.arn.checkers.game.UndoRedoDataBridgeSideA
 
 /*

@@ -1,23 +1,24 @@
 package el.arn.checkers.game
 
 import el.arn.checkers.android_widgets.main_activity.WinnerMessage
-import el.arn.checkers.complementaries.game.TileCoordinates
-import el.arn.checkers.game.game_core.game_core.structs.*
+import el.arn.checkers.helpers.points.TileCoordinates
+import el.arn.checkers.game.game_core.checkers_game.structs.*
 import el.arn.checkers.android_widgets.main_activity.board.PiecesManager
 import el.arn.checkers.android_widgets.main_activity.board.PossibleMovesForTurnBuilder
 import el.arn.checkers.android_widgets.main_activity.board.TilesManager
 import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarAbstract
-import el.arn.checkers.complementaries.LimitedAccessFunction
-import el.arn.checkers.complementaries.game.GameTypeEnum
-import el.arn.checkers.complementaries.game.WinningTypes
-import el.arn.checkers.complementaries.listener_mechanism.LimitedListener
-import el.arn.checkers.complementaries.listener_mechanism.LimitedListenerImpl
-import el.arn.checkers.game.game_core.game_core.configurations.ConfigListener
-import el.arn.checkers.game.game_core.game_core.configurations.GameLogicConfig
-import el.arn.checkers.tools.SoundEffectsManager
-import el.arn.checkers.tools.Timer
-import el.arn.checkers.tools.preferences_managers.GamePreferencesManager
-import el.arn.checkers.tools.preferences_managers.Pref
+import el.arn.checkers.game.game_core.VirtualPlayer
+import el.arn.checkers.helpers.functions.LimitedAccessFunction
+import el.arn.checkers.helpers.game_enums.GameTypeEnum
+import el.arn.checkers.helpers.game_enums.WinningTypeOptions
+import el.arn.checkers.helpers.listeners_engine.LimitedListener
+import el.arn.checkers.helpers.listeners_engine.LimitedListenerImpl
+import el.arn.checkers.game.game_core.checkers_game.configurations.ConfigListener
+import el.arn.checkers.game.game_core.checkers_game.configurations.GameLogicConfig
+import el.arn.checkers.managers.SoundEffectsManager
+import el.arn.checkers.managers.Timer
+import el.arn.checkers.managers.preferences_managers.GamePreferencesManager
+import el.arn.checkers.managers.preferences_managers.Pref
 import java.lang.IllegalStateException
 
 //todo needs more synchronization work..
@@ -28,11 +29,12 @@ interface GameCoordinator {
     fun destroyGame()
     var isPaused: Boolean
     val isGameOn:  /**[false] means game was finished**/ Boolean
-    val winningTypeIfGameWasFinished: WinningTypes?
+    val winningTypeIfGameWasFinished: WinningTypeOptions?
+    val gameCore: GameCore
 }
 
 class GameCoordinatorImpl(
-    private val gameCore: GameCore,
+    override val gameCore: GameCore,
     private var piecesManager: PiecesManager, //todo weird name, too big. maybe piecesAnimationHandler
     private var tilesManager: TilesManager,
     private var toolbar: ToolbarAbstract,
@@ -89,7 +91,7 @@ class GameCoordinatorImpl(
     override val isGameOn: Boolean
         get() = state != State.GameIsFinished
 
-    override val winningTypeIfGameWasFinished: WinningTypes?
+    override val winningTypeIfGameWasFinished: WinningTypeOptions?
         get () {
             if (isGameOn || gameCore.winner == null) {
                 return null
@@ -97,15 +99,15 @@ class GameCoordinatorImpl(
             return if (gameType == GameTypeEnum.SinglePlayer) {
                 if ((virtualFirstPlayer == null && gameCore.winner == firstPlayer)
                     || (virtualSecondPlayer == null && gameCore.winner == firstPlayer.opponent())) {
-                    WinningTypes.Win
+                    WinningTypeOptions.Win
                 } else {
-                    WinningTypes.Lose
+                    WinningTypeOptions.Lose
                 }
             } else {
                 if (gameCore.winner == firstPlayer) {
-                    WinningTypes.Player1Wins
+                    WinningTypeOptions.Player1Wins
                 } else {
-                    WinningTypes.Player2Wins
+                    WinningTypeOptions.Player2Wins
                 }
             }
         }

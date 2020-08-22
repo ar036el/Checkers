@@ -8,10 +8,10 @@ import android.widget.ImageView
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import el.arn.checkers.R
-import el.arn.checkers.complementaries.android.ALPHA_ICON_DISABLED_AS_FLOAT
-import el.arn.checkers.complementaries.android.ALPHA_ICON_ENABLED_AS_FLOAT
-import el.arn.checkers.complementaries.listener_mechanism.HoldsListeners
-import el.arn.checkers.complementaries.listener_mechanism.ListenersManager
+import el.arn.checkers.helpers.consts.ALPHA_ICON_DISABLED_AS_FLOAT
+import el.arn.checkers.helpers.consts.ALPHA_ICON_ENABLED_AS_FLOAT
+import el.arn.checkers.helpers.listeners_engine.HoldsListeners
+import el.arn.checkers.helpers.listeners_engine.ListenersManager
 
 interface ImageSelectorPreference : HoldsListeners<ImageSelectorPreference.Listener> {
 
