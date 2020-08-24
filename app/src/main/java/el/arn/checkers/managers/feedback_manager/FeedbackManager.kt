@@ -1,27 +1,37 @@
 package el.arn.checkers.managers.feedback_manager
 
+import el.arn.checkers.R
+import el.arn.checkers.helpers.android.stringFromRes
+import java.lang.Exception
 
-class FeedbackManager {
 
-    private val mailSender =
-        MailSender(
-            "opencheckersfeedbacksender@gmail.com",
+interface FeedbackManager {
+    fun sendCrashReport(crashReportMessage: String)
+    fun sendFeedback(stars: Int?, message: String?)
+}
+
+class FeedbackManagerImpl : FeedbackManager {
+    private val emailSender =
+        EmailSender(
+            stringFromRes(R.string.internal_feedbackSenderEmail),
             "lalalala000",
             "smtp.gmail.com",
             "587"
         )
-    private val from = "openCheckersFeedbackSender"
-    private val to = "opencheckersfeedback@gmail.com"
+    private val from = stringFromRes(R.string.internal_feedbackSenderEmail)
+    private val to = stringFromRes(R.string.internal_feedbackRecipientEmail)
 
 
-    fun sendCrashReport(crashReportMessage: String) {
-        mailSender.sendMailAsync(from, to,"crashReport", crashReportMessage)
+    override fun sendCrashReport(crashReportMessage: String) {
+        try { //because it's a crash report, no unhandled exception is allowed
+            emailSender.sendMailAsync(from, to, "crashReport", crashReportMessage)
+        } catch (e: Throwable) { }
     }
 
-    fun sendFeedback(stars: Int?, message: String?) {
+    override fun sendFeedback(stars: Int?, message: String?) {
         val body = "stars:" + (stars?.toString() ?: "null") + "\nmessage:" + (message ?: "null")
 
-        mailSender.sendMailAsync(from, to,"user feedback", body)
+        emailSender.sendMailAsync(from, to,"user feedback", body)
     }
 
 

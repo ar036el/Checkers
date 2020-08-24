@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="internal_developerEmail">areal.apps@gmail.com</string>
+    <string name="internal_feedbackRecipientEmail">opencheckersfeedback@gmail.com</string>
+    <string name="internal_feedbackSenderEmail">opencheckersfeedbacksender@gmail.com</string>
+
+    <string name="internal_privacyPolicyURL">https://sites.google.com/view/arealapps-checkers/privacy-policy</string>
+
+    <string name="internal_prefFileKey_game">game</string>
+
+    <string name="internal_prefKey_boardSize">boardSize</string>
+    <string name="internal_prefKey_startingRows">startingRows</string>
+    <string name="internal_prefKey_areCustomStartingRowsEnabled">areCustomStartingRowsEnabled</string>
+    /////--------
+    <string name="internal_prefKey_isCapturingMandatory">isCapturingMandatory</string>
+    <string name="internal_prefKey_canPawnCaptureBackwards">canPawnCaptureBackwards</string>
+    <string name="internal_prefKey_kingBehaviour">kingBehaviour</string>
+    /////--------
+    <string name="internal_prefKey_boardTheme">boardTheme</string>
+    <string name="internal_prefKey_playersTheme">playersTheme</string>
+    <string name="internal_prefKey_soundEffectsTheme">soundEffectsTheme</string>
+    /////--------
+    <string name="internal_prefKey_gameType">gameType</string>
+    <string name="internal_prefKey_userPlaysFirst">userPlaysFirst</string>
+    <string name="internal_prefKey_startingPlayer">startingPlayer</string>
+    <string name="internal_prefKey_difficulty">difficulty</string>
+
+    <string name="internal_prefKey_settings_boardSizeRegular">boardSizeRegular</string>
+    <string name="internal_prefKey_settings_boardSizeCustom">boardSizeCustom</string>
+    <string name="internal_prefKey_settings_isCustomSettingsEnabled">isCustomSettingsEnabled</string>
+
+
+    <string-array name="internal_prefKey_kingBehaviour_entryValues">
+        <item>flyingKings</item>
+        <item>landsRightAfterCapture</item>
+        <item>noFlyingKings</item>
+    </string-array>
+
+    <string-array name="internal_prefKey_canPawnCaptureBackwards_entryValues">
+        <item>always</item>
+        <item>onlyWhenMultiCapture</item>
+        <item>never</item>
+    </string-array>
+
+
+    <string-array name="internal_prefKey_boardSize_entryValues">
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="internal_prefKey_customBoardSize_entryValues">
+        <item>4</item> <item>6</item> <item>8</item>
+        <item>10</item> <item>12</item> <item>14</item>
+        <item>16</item> <item>18</item> <item>20</item>
+        <item>22</item> <item>24</item>
+    </string-array>
+
+    <string name="internal_prefFileKey_onboarding">onboarding</string>
+    <string name="internal_prefFileKey_hasCompletedOnboarding">hasCompletedOnboarding</string>
+
+</resources>

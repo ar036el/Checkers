@@ -33,7 +33,7 @@ class FeedbackDialog(
         dialogBeingShown =
             AlertDialog.Builder(activity)
                 .setTitle(R.string.sendFeedbackDialog_approved)
-                .setPositiveButton(R.string.dialog_ok, null)
+                .setPositiveButton(R.string.general_dialog_ok, null)
                 .show()
     }
 

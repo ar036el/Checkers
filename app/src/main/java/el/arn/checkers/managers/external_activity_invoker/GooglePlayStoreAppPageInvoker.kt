@@ -7,7 +7,7 @@ import android.net.Uri
 
 class GooglePlayStoreAppPageInvoker(
     private val context: Context
-) : ExternalActivityInvoker() {
+) : ExternalActivityInvoker {
     override fun open() {
         val uri: Uri = Uri.parse("market://details?id=" + context.packageName)
         val goToMarket = Intent(Intent.ACTION_VIEW, uri)

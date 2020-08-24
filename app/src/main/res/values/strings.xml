@@ -1,123 +1,65 @@
 <resources>
     <string name="app_name">Checkers</string>
 
-    <string name="settings_category_game_rules">Game Rules</string>
-    <string name="settings_category_game_style">Game Style</string>
-    <string name="settings_category_custom">Custom Game Setting</string>
+    <string name="settingsActivity_prefCategory_gameRules">Game Rules</string>
+    <string name="settingsActivity_prefCategory_gameStyle">Game Style</string>
+    <string name="settingsActivity_prefCategory_customSettings">Custom Game Setting</string>
 
-    <string name="settings_toastMessage_premiumFeature">This feature is available only in premium version. Get it now!</string>
-    <string name="settings_toastMessage_premiumTheme">This theme is available only in premium version. Get it now!</string>
-
-    <string name="can_pawn_capture_backwards">Can Man capture backwards</string>
-    <string name="can_pawn_capture_backwards_question">Can Man (normal piece) capture backwards?</string>
-    <string-array name="can_pawn_capture_backwards_entries">
-        <item>Always</item>
-        <item>Only when capturing multiple pieces</item>
-        <item>Never</item>
-    </string-array>
-
-    <string name="mainActivity_sideDrawer_rateUs">Rate Checkers</string>
-    <string name="mainActivity_sideDrawer_purchasePremiumVersion">Upgrade To Premium</string>
-    <string name="mainActivity_sideDrawer_purchaseNoAds">Remove All Ads</string>
-    <string name="mainActivity_sideDrawer_contactUs">Contact Us</string>
-    <string name="mainActivity_sideDrawer_sendFeedback">Send Quick Feedback</string>
-    <string name="mainActivity_sideDrawer_privacyPolicy">Privacy Policy</string>
-    <string name="mainActivity_sideDrawer_settings">Settings</string>
+    <string name="settingsActivity_toastMessage_premiumFeature">This feature is available only in premium version. Get it now!</string>
+    <string name="settingsActivity_toastMessage_premiumTheme">This theme is available only in premium version. Get it now!</string>
 
 
+    <string name="mainActivity_sideDrawerHeader_title">Checkers Unlimited</string>
+    <string name="mainActivity_sideDrawerHeader_subtitle">Made with ♡ by Areal Apps</string>
+
+    <string name="mainActivity_sideDrawerMenuItem_rateUs">Rate Checkers</string>
+    <string name="mainActivity_sideDrawerMenuItem_purchasePremiumVersion">Upgrade To Premium</string>
+    <string name="mainActivity_sideDrawerMenuItem_purchaseNoAds">Remove All Ads</string>
+    <string name="mainActivity_sideDrawerMenuItem_contactUs">Contact Us</string>
+    <string name="mainActivity_sideDrawerMenuItem_sendFeedback">Send Quick Feedback</string>
+    <string name="mainActivity_sideDrawerMenuItem_privacyPolicy">Privacy Policy</string>
+    <string name="mainActivity_sideDrawerMenuItem_settings">Settings</string>
 
 
-    <string name="king_behaviour">King\'s behaviour</string>
-    <string name="king_behaviour_question">How kings moves?</string>
-    <string name="king_behaviour_flying_kings_desc">Can move by any distance</string>
-    <string name="king_behaviour_lands_after_capture_desc">Can jump by any distance, but when capturing, it must land after the captured piece</string>
-    <string name="king_behaviour_no_flying_kings_desc">like normal soldier- moves or captures by nearest tile</string>
-    <string-array name="king_behaviour_entries">
-        <item>Flying kings</item>
-        <item>Lands after capture</item>
-        <item>No flying kings</item>
-    </string-array>
+    <string name="settingsActivity_prefTitle_kingBehaviour">King\'s behaviour</string>
+    <string name="settingsActivity_prefTitle_canPawnCaptureBackwards">Can Pawn capture backwards</string>
+    <string name="settingsActivity_prefTitle_isCapturingMandatory">Is capturing mandatory</string>
+
+    <string name="settingsActivity_prefTitle_boardSize">Board size</string>
+    <string name="settingsActivity_prefTitle_boardTheme">Board theme</string>
+    <string name="settingsActivity_prefTitle_playersTheme">Players theme</string>
+    <string name="settingsActivity_prefTitle_soundEffectsTheme">Sound effects theme/ off</string>
+
+    <string name="settingsActivity_prefTitle_enableCustomSettings">Enable custom game settings</string>
+    <string name="settingsActivity_prefTitle_customBoardSize">Custom board size</string>
+    <string name="settingsActivity_prefTitle_startingRows">Starting soldier rows for each player</string>
+
+    <string name="settingsActivity_prefTitle_purchasePremiumVersion">Upgrade To Premium</string>
+    <string name="settingsActivity_prefTitle_purchaseNoAds">Remove All Ads</string>
 
 
-    <string name="is_capturing_mandatory">Is capturing mandatory</string>
-    <string name="is_capturing_mandatory_question">Is capturing mandatory?</string>
-    <string name="is_capturing_mandatory_yes">Mandatory</string>
-    <string name="is_capturing_mandatory_no">Not mandatory</string>
-    <string name="is_capturing_mandatory_no_desc">Passing extra turns is also allowed</string>
+    <string name="mainActivity_newGameDialog_title">New Game</string>
+    <string name="mainActivity_newGameDialog_confirm">Start Game!</string>
+
+    <string name="mainActivity_newGameDialog_selectDifficulty">Difficulty:</string>
+    <string name="mainActivity_newGameDialog_selectPlayer">Player</string>
+    <string name="mainActivity_newGameDialog_selectStartingPlayer">Starting Player</string>
+    <string name="mainActivity_newGameDialog_userPlaysFirst">User plays first</string>
+    <string name="mainActivity_newGameDialog_selectGameType">Game Type</string>
+
+    <string name="mainActivity_newGameDialog_selectGameType_singlePlayer">Single Player</string>
+    <string name="mainActivity_newGameDialog_selectGameType_multiplayer">Multiplayer</string>
+    <string name="mainActivity_newGameDialog_selectGameType_bonusVirtualGame">Bonus! Virtual Game</string>
+
+    <string name="mainActivity_configHasChangedWarningDialog_message">Board settings was changed. Start a new game?</string>
+
+    <string name="general_dialog_cancel">Cancel</string>
+    <string name="general_dialog_ok">OK</string>
 
 
-
-
-    <string name="board_size">Board size</string>
-    <string-array name="board_size_entries">
-        <item>8x8</item>
-        <item>10x10</item>
-        <item>12x12</item>
-    </string-array>
-
-
-
-    <string name="enable_custom_settings">Enable custom game settings</string>
-
-    <string name="custom_board_size">Custom board size</string>
-    <string-array name="custom_board_size_entries">
-        <item>4x4</item>
-        <item>6x6</item>
-        <item>8x8</item>
-        <item>10x10</item>
-        <item>12x12</item>
-        <item>14x14</item>
-        <item>16x16</item>
-        <item>18x18</item>
-        <item>20x20</item>
-        <item>22x22</item>
-        <item>24x24</item>
-    </string-array>
-
-    <string name="starting_rows">Starting soldier rows for each player</string>
-
-    <string name="board_theme">Board theme</string>
-    <string name="players_theme">Players theme</string>
-    <string name="settings_soundEffectsTheme">Sound effects theme/ off</string>
-
-
-
-    <string name="select_starting_player_title">Starting player</string>
-    <string name="select_difficulty">Difficulty:</string>
-    <string name="select_player_title">Player</string>
-
-
-
-
-    <string-array name="difficulty_entries">
-        <item>Easy</item>
-        <item>Medium</item>
-        <item>Hard</item>
-    </string-array>
-
-
-    <string name="newGameDialog_title">New Game</string>
-    <string name="newGameDialog_confirm">Start Game!</string>
-    <string name="newGameDialog_startingPlayer">Starting Player</string>
-    <string name="newGameDialog_checkbox_userPlaysFirst">User plays first</string>
-
-    <string name="newGameDialog_gameType">Game Type</string>
-    <string name="newGameDialog_gameType_singlePlayer">Single Player</string>
-    <string name="newGameDialog_gameType_multiplayer">Multiplayer</string>
-    <string name="newGameDialog_gameType_bonusVirtualGame">Bonus! Virtual Game</string>
-
-    <string name="configHasChangedWarningDialog_message">Board settings was changed. Start a new game?</string>
-
-
-
-
-    <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_ok">OK</string>
-
-
-    <string name="btn_next">Next</string>
-    <string name="btn_prev">Back</string>
-    <string name="onboarding_btn_finish">Get Started</string>
+    <string name="onboardingActivity_buttonNext">Next</string>
+    <string name="onboardingActivity_buttonPrev">Back</string>
+    <string name="onboardingActivity_buttonFinish">Get Started</string>
 
 
 
@@ -157,9 +99,62 @@
     <string name="rateUsDialog_negativeRatingResponse">We are sorry to hear that ☹\nCan you write us a short feedback telling us why?</string>
 
     <string name="toolbar_title_noGameLoaded">Checkers</string>
-    <string name="toolbar_title_firstPlayersTurn">Player 1\'s turn</string>
-    <string name="toolbar_title_secondPlayersTurn">Player 2\'s turn</string>
-    <string name="toolbar_title_firstPlayerIsWinner">Player 1 - Winner</string>
-    <string name="toolbar_title_secondPlayerIsWinner">PPlayer 2 - Winner</string>
+    <string name="toolbar_title_firstPlayersTurn">Player 1 turn</string>
+    <string name="toolbar_title_secondPlayersTurn">Player 2 turn</string>
+    <string name="toolbar_title_userTurn">Your turn</string>
+    <string name="toolbar_title_pcTurn">PC\'s turn</string>
+    <string name="toolbar_title_userWon">You won!</string>
+    <string name="toolbar_title_userLost">You Lost</string>
+    <string name="toolbar_title_firstPlayerIsWinner">Player 1 Won</string>
+    <string name="toolbar_title_secondPlayerIsWinner">Player 2 Won</string>
+
+
+
+<!--    for onboarding-->
+    <string name="can_pawn_capture_backwards_question">Can Pawn (normal piece) capture backwards?</string>
+    <string name="king_behaviour_question">How kings moves?</string>
+    <string name="king_behaviour_flying_kings_desc">Can move by any distance</string>
+    <string name="king_behaviour_lands_after_capture_desc">Can jump by any distance, but when capturing, it must land after the captured piece</string>
+    <string name="king_behaviour_no_flying_kings_desc">like normal soldier- moves or captures by nearest tile</string>
+    <string name="is_capturing_mandatory_question">Is capturing mandatory?</string>
+    <string name="is_capturing_mandatory_yes">Mandatory</string>
+    <string name="is_capturing_mandatory_no">Not mandatory</string>
+    <string name="is_capturing_mandatory_no_desc">Passing extra turns is also allowed</string>
+
+
+
+    <string-array name="settingsActivity_prefEntries_boardSizeCustom">
+        <item>4x4</item> <item>6x6</item>
+        <item>8x8</item> <item>10x10</item>
+        <item>12x12</item> <item>14x14</item>
+        <item>16x16</item> <item>18x18</item>
+        <item>20x20</item> <item>22x22</item>
+        <item>24x24</item>
+    </string-array>
+
+    <string-array name="settingsActivity_prefEntries_boardSizeRegular">
+        <item>8x8</item>
+        <item>10x10</item>
+        <item>12x12</item>
+    </string-array>
+
+    <string-array name="mainActivity_newGameDialog_difficultyEntries">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
+
+    <string-array name="settingsActivity_prefEntries_kingBehaviour">
+        <item>Flying kings</item>
+        <item>Lands after capture</item>
+        <item>No flying kings</item>
+    </string-array>
+
+    <string-array name="settingsActivity_prefEntries_canPawnCaptureBackwards">
+        <item>Always</item>
+        <item>Only when capturing multiple pieces</item>
+        <item>Never</item>
+    </string-array>
+
 
 </resources>

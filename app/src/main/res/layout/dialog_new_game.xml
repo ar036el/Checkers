@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/newGameDialog_startingPlayer" />
+                    android:text="@string/mainActivity_newGameDialog_selectStartingPlayer" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/newGameDialog_startingPlayerButtonsContainer"
@@ -96,7 +96,7 @@
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/newGameDialog_gameType"
+                android:text="@string/mainActivity_newGameDialog_selectGameType"
                 app:layout_constraintBottom_toTopOf="@id/newGameDialog_GameType_singlePlayerOptionContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/newGameDialog_startingPlayerContainer">
@@ -121,7 +121,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="12dp"
                     android:backgroundTint="@color/buttonNotSelected"
-                    android:text="@string/newGameDialog_gameType_singlePlayer"/>
+                    android:text="@string/mainActivity_newGameDialog_selectGameType_singlePlayer"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -136,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="@string/select_difficulty" />
+                            android:text="@string/mainActivity_newGameDialog_selectDifficulty" />
 
                         <Spinner
                             android:id="@+id/newGameDialog_Difficulty"
@@ -144,7 +144,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:drawSelectorOnTop="true"
-                            android:entries="@array/difficulty_entries" />
+                            android:entries="@array/mainActivity_newGameDialog_difficultyEntries" />
 
                     </LinearLayout>
 
@@ -154,7 +154,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:text="@string/newGameDialog_checkbox_userPlaysFirst"
+                        android:text="@string/mainActivity_newGameDialog_userPlaysFirst"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/newGameDialog_SelectPlayerButton_Random"
@@ -169,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/buttonNotSelected"
-                android:text="@string/newGameDialog_gameType_multiplayer"
+                android:text="@string/mainActivity_newGameDialog_selectGameType_multiplayer"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/newGameDialog_GameType_singlePlayerOptionContainer" />
@@ -179,7 +179,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/buttonNotSelected"
-                android:text="@string/newGameDialog_gameType_bonusVirtualGame"
+                android:text="@string/mainActivity_newGameDialog_selectGameType_bonusVirtualGame"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/newGameDialog_GameType_twoPlayers" />
 

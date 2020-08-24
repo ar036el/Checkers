@@ -58,10 +58,10 @@ class OnboardingActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 prevBtn.visibility = if (position == 0) View.GONE else View.VISIBLE
                 if (position == totalPages - 1) {
-                    mainBtn.text = getString(R.string.onboarding_btn_finish)
+                    mainBtn.text = getString(R.string.onboardingActivity_buttonFinish)
                     tabIndicator.visibility = View.INVISIBLE
                 } else {
-                    mainBtn.text = getString(R.string.btn_next)
+                    mainBtn.text = getString(R.string.onboardingActivity_buttonNext)
                     tabIndicator.visibility = View.VISIBLE
                 }
             }
@@ -75,12 +75,11 @@ class OnboardingActivity : AppCompatActivity() {
             if (mPager.currentItem == totalPages - 1) {
                 val sharedPref: SharedPreferences =
                     applicationContext.getSharedPreferences(
-                        resources.getString(R.string.prefCategory_onboarding),
+                        resources.getString(R.string.internal_prefFileKey_onboarding),
                         Context.MODE_PRIVATE
                     )
-                //getString(R.string.saved_high_score_key) better practice TODO
                 val editor = sharedPref.edit()
-                editor.putBoolean(resources.getString(R.string.pref_hasCompletedOnboarding), true)
+                editor.putBoolean(resources.getString(R.string.internal_prefFileKey_hasCompletedOnboarding), true)
                 editor.apply()
 
 
@@ -114,7 +113,6 @@ class OnboardingActivity : AppCompatActivity() {
 //                    "onboarding",
 //                    Context.MODE_PRIVATE
 //                )
-//            //getString(R.string.saved_high_score_key) better practice TODO
 //            val editor = sharedPref.edit()
 //            editor.putBoolean(PrefKeys.ONBOARDING.HAS_COMPLETED_ONBOARDING, true)
 //            editor.apply()
@@ -163,5 +161,3 @@ class OnboardingActivity : AppCompatActivity() {
         ): View = inflater.inflate(fragmentID, container, false)
     }
 }
-
-//TODo most of android:/ res should be imported locally

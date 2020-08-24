@@ -1,29 +1,29 @@
 package el.arn.checkers.dialogs.parts
 
 import android.view.View
-import el.arn.checkers.managers.preferences_managers.Pref
+import el.arn.checkers.managers.preferences_managers.Preference
 
 
 class SingleSelectionButtonGroup<T>(
     private val buttonsId: Array<Int>,
     private val applyToSelectedButton: (View) -> Unit,
     private val applyToUnselectedButton: (View) -> Unit,
-    private val pref: Pref<T>,
+    private val preference: Preference<T>,
     private val dialogLayout: View
 ) {
 
     var value: T
         private set
 
-    private val values = pref.possibleValues!!.toList()
+    private val values = preference.possibleValues!!.toList()
     private var selected: View? = null
 
 
     init {
-        if (values != pref.possibleValues) { throw InternalError("values must match pref.possibleValues perfectly") }
+        if (values != preference.possibleValues) { throw InternalError("values must match pref.possibleValues perfectly") }
         if (buttonsId.size != values.size) { throw InternalError("buttons must match pref values") }
 
-        value = pref.value
+        value = preference.value
 
         for (buttonId in buttonsId) {
             dialogLayout.findViewById<View>(buttonId).setOnClickListener{ select(it) }
@@ -44,6 +44,6 @@ class SingleSelectionButtonGroup<T>(
 
 
     private fun saveValue(value: T) {
-        pref.value = value
+        preference.value = value
     }
 }

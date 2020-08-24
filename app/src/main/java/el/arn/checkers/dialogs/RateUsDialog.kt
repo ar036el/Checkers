@@ -65,7 +65,7 @@ class RateUsDialog(
     private fun setNeutralOrUnspecifiedFeedbackResponse() {
         positiveMessageTextView.visibility = View.GONE
         negativeMessageTextView.visibility = View.GONE
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.dialog_ok)
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.general_dialog_ok)
     }
 
     private var feedbackDialogWasOpened = false

@@ -8,28 +8,28 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import com.google.android.gms.ads.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import el.arn.checkers.R
-import el.arn.checkers.android_widgets.main_activity.UndoRedoFabs
-import el.arn.checkers.android_widgets.main_activity.UndoRedoFabsImpl
-import el.arn.checkers.android_widgets.main_activity.WinnerMessage
-import el.arn.checkers.android_widgets.main_activity.WinnerMessageImpl
-import el.arn.checkers.android_widgets.main_activity.board.PiecesManager
-import el.arn.checkers.android_widgets.main_activity.board.PiecesManagerImpl
-import el.arn.checkers.android_widgets.main_activity.board.TilesManager
-import el.arn.checkers.android_widgets.main_activity.board.TilesManager_impl
-import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarAbstract
-import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarSide
-import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarTop
+import el.arn.checkers.activity_widgets.main_activity.UndoRedoFabs
+import el.arn.checkers.activity_widgets.main_activity.UndoRedoFabsImpl
+import el.arn.checkers.activity_widgets.main_activity.WinnerMessage
+import el.arn.checkers.activity_widgets.main_activity.WinnerMessageImpl
+import el.arn.checkers.activity_widgets.main_activity.board.PiecesManager
+import el.arn.checkers.activity_widgets.main_activity.board.PiecesManagerImpl
+import el.arn.checkers.activity_widgets.main_activity.board.TilesManager
+import el.arn.checkers.activity_widgets.main_activity.board.TilesManager_impl
+import el.arn.checkers.activity_widgets.main_activity.toolbar.ToolbarAbstract
+import el.arn.checkers.activity_widgets.main_activity.toolbar.ToolbarSide
+import el.arn.checkers.activity_widgets.main_activity.toolbar.ToolbarTop
 import el.arn.checkers.appRoot
 import el.arn.checkers.helpers.functions.late_invocation_function.GateByNumberOfCalls
 import el.arn.checkers.helpers.functions.late_invocation_function.LateInvocationFunction
@@ -37,7 +37,6 @@ import el.arn.checkers.helpers.functions.LimitedAccessFunction
 import el.arn.checkers.helpers.android.OrientationOptions
 import el.arn.checkers.helpers.android.isDirectionRTL
 import el.arn.checkers.helpers.android.orientation
-import el.arn.checkers.helpers.developerEmail
 import el.arn.checkers.helpers.game_enums.GameTypeEnum
 import el.arn.checkers.helpers.game_enums.StartingPlayerEnum
 import el.arn.checkers.dialogs.ConfigHasChangedWarningDialog
@@ -49,7 +48,9 @@ import el.arn.checkers.game.game_core.checkers_game.structs.Player
 import el.arn.checkers.helpers.android.stringFromRes
 import el.arn.checkers.managers.Timer
 import el.arn.checkers.managers.external_activity_invoker.GooglePlayStoreAppPageInvoker
-import el.arn.checkers.managers.preferences_managers.Pref
+import el.arn.checkers.managers.external_activity_invoker.UrlInvoker
+import el.arn.checkers.managers.preferences_managers.Preference
+import el.arn.checkers.managers.purchase_manager.core.PurchaseStatus
 
 
 class MainActivity : AppCompatActivity() {
@@ -64,62 +65,30 @@ class MainActivity : AppCompatActivity() {
 
     private var dialogBeingShown: Dialog? = null
 
-    init { //TODo remove later
-        lifecycle.addObserver(object : LifecycleObserver {
-            @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-            fun ON_CREATE() = println("gaga ON_CREATE " + lifecycle.currentState)
+    private val areDebugButtonsEnabled = true
 
-            @OnLifecycleEvent(Lifecycle.Event.ON_START)
-            fun ON_START() = println("gaga ON_START " + lifecycle.currentState)
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-            fun ON_RESUME() = println("gaga onResume " + lifecycle.currentState)
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-            fun ON_PAUSE() = println("gaga ON_PAUSE " + lifecycle.currentState)
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-            fun ON_STOP() = println("gaga ON_STOP " + lifecycle.currentState)
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun ON_DESTROY() = println("gaga ON_DESTROY " + lifecycle.currentState)
-        })
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
         setSupportActionBar(findViewById(R.id.toolbar_top))
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        initMobileAds()
         initActivityLayout()
         initSideDrawer()
         initToolbarAsync()
         initTheCheckersBoardAsync()
         initUndoRedoFabsAsync()
         initWinnerMessage()
+        initTimer()
+        initDebugButtons()
 
-        appRoot.timer.activity = this
-        appRoot.timer.addListener(timerListener) //maybe timer needs to be instantiated in gameCoordinator
         appRoot.undoRedoDataBridge.addListener(undoRedoDataBridgeListener)
-        appRoot.gamePreferencesManager.boardSize.addListener(
-            preferenceChangedListenerForBoardSizeAndStartingRows
-        )
-        appRoot.gamePreferencesManager.startingRows.addListener(
-            preferenceChangedListenerForBoardSizeAndStartingRows
-        )
-
-
-        findViewById<FloatingActionButton>(R.id.testo1).setOnClickListener{
-            appRoot.timer.start()
-        }
-        findViewById<FloatingActionButton>(R.id.testo2).setOnClickListener{
-            appRoot.timer.stop()
-        }
-        findViewById<FloatingActionButton>(R.id.testo3).setOnClickListener{
-            appRoot.timer.reset()
-        }
+        appRoot.gamePreferencesManager.boardSize.addListener(preferenceChangedListenerForBoardSizeAndStartingRows)
+        appRoot.gamePreferencesManager.startingRows.addListener(preferenceChangedListenerForBoardSizeAndStartingRows)
     }
 
     override fun onDestroy() {
@@ -136,6 +105,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         appRoot.gameCoordinator?.isPaused = false
         openDialogConfigHasChangedWarningDialog.invokeIfHasAccess()
+        tryToLoadBannerAd()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -143,6 +113,7 @@ class MainActivity : AppCompatActivity() {
         initUndoAndRedoFabs.invokeIfHasAccess()
         initPiecesManager.invokeIfHasAccess()
         initToolbarSide.invokeIfHasAccess()
+        hideNavigationBarOrKeepHidden()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -156,6 +127,89 @@ class MainActivity : AppCompatActivity() {
         moveTaskToBack(true)
     }
 
+
+    private fun initDebugButtons() {
+        val debugButtonA: FloatingActionButton = findViewById(R.id.debugButtonA)
+        val debugButtonB: FloatingActionButton = findViewById(R.id.debugButtonB)
+        val debugButtonC: FloatingActionButton = findViewById(R.id.debugButtonC)
+        val debugButtonAContainer: ViewGroup = findViewById(R.id.debugButtonAContainer)
+        val debugButtonBContainer: ViewGroup = findViewById(R.id.debugButtonBContainer)
+        val debugButtonCContainer: ViewGroup = findViewById(R.id.debugButtonCContainer)
+
+        if (!areDebugButtonsEnabled) {
+            debugButtonAContainer.visibility = View.GONE
+            debugButtonBContainer.visibility = View.GONE
+            debugButtonCContainer.visibility = View.GONE
+        } else {
+
+            debugButtonA.setOnClickListener{
+                val newPurchaseStatus = if (appRoot.purchasesManager.purchasedNoAds) PurchaseStatus.UnspecifiedOrNotPurchased else PurchaseStatus.Purchased
+                appRoot.purchasesManager.noAds.forceDebug(newPurchaseStatus)
+                appRoot.toastManager.showShort("debug: no ads purchase status: " + newPurchaseStatus.name)
+            }
+            debugButtonB.setOnClickListener{
+                val newPurchaseStatus = if (appRoot.purchasesManager.purchasedPremiumVersion) PurchaseStatus.UnspecifiedOrNotPurchased else PurchaseStatus.Purchased
+                appRoot.purchasesManager.premiumVersion.forceDebug(newPurchaseStatus)
+                appRoot.toastManager.showShort("debug: premium version purchase status: " + newPurchaseStatus.name)
+            }
+//        findViewById<FloatingActionButton>(R.id.testo3).setOnClickListener{
+//            throw InternalError("erroru")
+//        }
+        }
+    }
+
+    private fun initTimer() {
+        appRoot.timer.hostingActivityForUiThread = this
+        appRoot.timer.addListener(timerListener)
+    }
+
+    private fun hideNavigationBarOrKeepHidden() {
+        val decorView: View = window.decorView
+        val uiOptions: Int = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+        decorView.systemUiVisibility = uiOptions
+    }
+
+    private fun initMobileAds() {
+        MobileAds.initialize(this) {}
+        rotateSideAdView90DegreesAndAlignToLayoutStart()
+        updateBannerAdViewsVisibility()
+    }
+
+    private fun updateBannerAdViewsVisibility() {
+        val adViewSide: AdView = findViewById(R.id.mainActivity_bannerAdViewSide)
+        val adViewBottom: AdView = findViewById(R.id.mainActivity_bannerAdViewBottom)
+
+        if (appRoot.purchasesManager.purchasedNoAds) {
+            adViewSide.visibility = View.GONE
+            adViewBottom.visibility = View.GONE
+        }
+        if (orientation == OrientationOptions.Portrait) {
+            adViewSide.visibility = View.GONE
+        } else {
+            adViewBottom.visibility = View.GONE
+        }
+    }
+
+    private fun rotateSideAdView90DegreesAndAlignToLayoutStart() {
+        val adViewSide: AdView = findViewById(R.id.mainActivity_bannerAdViewSide)
+        val h = AdSize.BANNER.getHeightInPixels(this)
+        val w = AdSize.BANNER.getWidthInPixels(this)
+        adViewSide.rotation = 90f
+        adViewSide.x += if (!isDirectionRTL) -(w-h)/2 else (w-h)/2
+    }
+
+    private fun tryToLoadBannerAd() {
+        updateBannerAdViewsVisibility()
+        if (appRoot.purchasesManager.purchasedNoAds) {
+            return
+        }
+        val id = if (orientation == OrientationOptions.Portrait) R.id.mainActivity_bannerAdViewBottom else R.id.mainActivity_bannerAdViewSide
+        val bannerAdView: AdView = findViewById(id)
+        val adRequest = AdRequest.Builder().build()
+        bannerAdView.loadAd(adRequest)
+    }
 
     private fun initWinnerMessage() {
         winnerMessage = WinnerMessageImpl(findViewById(R.id.winnerMessage))
@@ -171,20 +225,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val winnerMessageListener = object : WinnerMessage.Listener {
+        var postDelayedHandler: Handler? = null
         override fun messageAnimationWasFinished() {
-            Handler().postDelayed({
+            postDelayedHandler = Handler()
+            postDelayedHandler!!.postDelayed({
                 val dialog = appRoot.rateUsDialogInvoker.tryToInvokeDialog(this@MainActivity)
                 if (dialog != null) {
                     this@MainActivity.dialogBeingShown = dialog
                 } else {
                     openDialogNewGame()
                 }
-            }, 1000) //todo change
+            }, 1000)
         }
 
-        override fun messageWasClickedWhenStateIsShown() {
+        override fun messageWasClickedWhenMessageIsShown() {
             winnerMessage.hide()
             openDialogNewGame()
+        }
+
+        override fun stateWasChanged(state: WinnerMessage.States) {
+            if (state == WinnerMessage.States.Hidden) {
+                postDelayedHandler?.removeCallbacksAndMessages(null)
+            }
         }
 
     }
@@ -205,15 +267,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initSideDrawerMenuItems(sideDrawerMenu: Menu) {
-        sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_rateUs).setOnMenuItemClickListener { GooglePlayStoreAppPageInvoker(
-            this
+        sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_rateUs).setOnMenuItemClickListener { GooglePlayStoreAppPageInvoker(this
         ).open(); closeSideDrawer(); true }
         sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_purchasePremiumVersion).setOnMenuItemClickListener { openActivityBuyPremiumActivity(); closeSideDrawer(); true }
         sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_purchaseNoAds).setOnMenuItemClickListener { openActivityBuyPremiumActivity(); closeSideDrawer(); true }
-
+        ///-------------------
         sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_contactUs).setOnMenuItemClickListener { openIntentSendEmailToDeveloper(); closeSideDrawer(); true }
         sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_sendFeedback).setOnMenuItemClickListener { openDialogSendFeedback(); closeSideDrawer(); true }
-        sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_privacyPolicy).setOnMenuItemClickListener { openActivityBuyPremiumActivity(); closeSideDrawer(); true } //todo
+        sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_privacyPolicy).setOnMenuItemClickListener { openUrlAppPrivacyPolicy(); closeSideDrawer(); true }
         sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_settings).setOnMenuItemClickListener { openActivitySettingsActivity(); closeSideDrawer(); true }
     }
 
@@ -447,6 +508,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun openUrlAppPrivacyPolicy() {
+        UrlInvoker(stringFromRes(R.string.internal_privacyPolicyURL), this).open()
+    }
+
     private fun openSideDrawer() {
         if (!this::activityLayout.isInitialized) {
             Log.d(
@@ -527,7 +592,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openDialogNewGame() {
         dismissDialogIfOneIsOpen()
-        dialogBeingShown = NewGameDialog(this) { startingPlayer, gameType, _, doesUserPlayFirst ->
+        dialogBeingShown = NewGameDialog(this, appRoot.purchasesManager.purchasedPremiumVersion) { startingPlayer, gameType, _, doesUserPlayFirst ->
             startANewGame(startingPlayer, gameType, doesUserPlayFirst)
         }
     }
@@ -537,14 +602,9 @@ class MainActivity : AppCompatActivity() {
         dialogBeingShown = FeedbackDialog(this, appRoot.userFeedbackManager, null)
     }
 
-
-
-    private val preferenceChangedListenerForBoardSizeAndStartingRows = object : Pref.Listener<Int> {
-        override fun prefHasChanged(pref: Pref<Int>, value: Int) {
-            if ((pref == appRoot.gamePreferencesManager.boardSize && value != appRoot.gameCoordinator?.gameCore?.boardSize)
-                || (pref == appRoot.gamePreferencesManager.startingRows && value != appRoot.gameCoordinator?.gameCore?.startingRows)) {
-                openDialogConfigHasChangedWarningDialog.grantOneAccess()
-            }
+    private val preferenceChangedListenerForBoardSizeAndStartingRows = object : Preference.Listener<Int> {
+        override fun prefHasChanged(preference: Preference<Int>, value: Int) {
+            openDialogConfigHasChangedWarningDialog.grantOneAccess()
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
                 openDialogConfigHasChangedWarningDialog.invokeIfHasAccess()
             }

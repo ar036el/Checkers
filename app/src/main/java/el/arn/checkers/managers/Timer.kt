@@ -12,7 +12,7 @@ interface Timer : HoldsListeners<Timer.Listener> {
     fun reset()
     val state: States
     val timeInSeconds: Int
-    var activity: Activity?
+    var hostingActivityForUiThread: Activity?
 
     interface Listener {
         fun timeWasChanged(timer: Timer, timeInSeconds: Int) {}
@@ -23,7 +23,7 @@ interface Timer : HoldsListeners<Timer.Listener> {
 }
 
 class TimerImpl(
-    override var activity: Activity?,
+    override var hostingActivityForUiThread: Activity?,
     val listenersMgr: ListenersManager<Timer.Listener> = ListenersManager()
 ) : Timer, HoldsListeners<Timer.Listener> by listenersMgr {
 
@@ -39,7 +39,7 @@ class TimerImpl(
         }
         timerObj.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                activity?.runOnUiThread {
+                hostingActivityForUiThread?.runOnUiThread {
                     timeInSecondsFloat += 0.25f
                     if (timeInSecondsFloat.toInt() != timeInSeconds) {
                         timeInSeconds = timeInSecondsFloat.toInt()

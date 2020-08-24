@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.OnboardingActivity"
-    android:background="#ffffff"
+    android:background="@color/white"
     >
 
     <androidx.viewpager.widget.ViewPager
@@ -36,7 +36,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="64dp"
         android:background="@drawable/gardient_button"
-        android:text="@string/btn_next"
+        android:text="@string/onboardingActivity_buttonNext"
         android:textColor="#fff"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +47,7 @@
         android:id="@+id/btn_prev"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="@string/btn_prev"
+        android:text="@string/onboardingActivity_buttonPrev"
         android:textColor="@android:color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

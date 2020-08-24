@@ -12,14 +12,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-enum class PurchaseStatus(override val id: String) : EnumWithId { Unspecified("UnspecifiedOrError"), Pending("Pending"), Purchased("Purchased")}
+enum class PurchaseStatus(override val id: String) : EnumWithId { UnspecifiedOrNotPurchased("UnspecifiedOrError"), Pending("Pending"), Purchased("Purchased")}
 
-class BillingEngine(
+interface BillingEngine : HoldsListeners<BillingEngine.Listener>{
+
+    fun reloadPurchases(): Boolean /** @return [false] if the billing client is not connected. In that case, it tried to reconnect. Listeners will be notified when purchases will reload*/
+    fun reloadPrices(): Boolean /** @return [false] if the billing client is not connected. In that case, it tried to reconnect. Listeners will be notified when purchases will reload*/
+    fun tryToLaunchBillingFlow(activity: Activity, SKU: String): Boolean /** @return [true] if successful, [false] otherwise (fails because SKU is not found or hasn't finished loading)*/
+
+        interface Listener {
+        /** Is being called when: (1)billing client connects to the server, (2)a purchase was just made, (3)[reloadPurchases] was called.*/
+        fun onPurchaseStatusesLoadedOrChanged(SKUsWithPurchaseStatuses: Map<String, PurchaseStatus>) {}
+        /** Is being called when: (1)billing client connects to the server, (2)[reloadPrices] was called.*/
+        fun onPricesLoadedOrChanged(SKUsWithPrices: Map<String, String>) {}
+    }
+}
+
+class BillingEngineImpl(
     val SKUs: Set<String>,
-    private val listenersMgr: ListenersManager<Listener> = ListenersManager()
-) : HoldsListeners<BillingEngine.Listener> by listenersMgr {
+    private val listenersMgr: ListenersManager<BillingEngine.Listener> = ListenersManager()
+) : BillingEngine, HoldsListeners<BillingEngine.Listener> by listenersMgr {
 
-    fun reloadPurchases(): Boolean /** @return [false] if the billing client is not connected. In that case, it tried to reconnect. Listeners will be notified when purchases will reload*/ {
+    override fun reloadPurchases(): Boolean /** @return [false] if the billing client is not connected. In that case, it tried to reconnect. Listeners will be notified when purchases will reload*/ {
         if (billingClient.isReady) {
             queryPurchasesAsync()
             return true
@@ -28,7 +42,7 @@ class BillingEngine(
         return false
     }
 
-    fun reloadPrices(): Boolean /** @return [false] if the billing client is not connected. In that case, it tried to reconnect. Listeners will be notified when purchases will reload*/ {
+    override fun reloadPrices(): Boolean /** @return [false] if the billing client is not connected. In that case, it tried to reconnect. Listeners will be notified when purchases will reload*/ {
         if (billingClient.isReady) {
             querySkuDetailsAsync()
             return true
@@ -37,11 +51,11 @@ class BillingEngine(
         return false
     }
 
-    interface Listener {
-        /** Is being called when: (1)billing client connects to the server, (2)a purchase was just made, (3)[reloadPurchases] was called.*/
-        fun onPurchaseStatusesLoadedOrChanged(SKUsWithPurchaseStatuses: Map<String, PurchaseStatus>) {}
-        /** Is being called when: (1)billing client connects to the server, (2)[reloadPrices] was called.*/
-        fun onPricesLoadedOrChanged(SKUsWithPrices: Map<String, String>) {}
+    override fun tryToLaunchBillingFlow(activity: Activity, SKU: String): Boolean /** @return [true] if successful, [false] otherwise (fails because SKU is not found or hasn't finished loading)*/ {
+        val skuDetails = skuWithSkuDetails[SKU] ?: return false
+        val purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
+        billingClient.launchBillingFlow(activity, purchaseParams)
+        return true
     }
 
     private lateinit var billingClient: BillingClient
@@ -72,7 +86,7 @@ class BillingEngine(
 
             purchases.forEach { purchase ->
                 var purchaseStatus: PurchaseStatus =
-                    PurchaseStatus.Unspecified
+                    PurchaseStatus.UnspecifiedOrNotPurchased
 
                 if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
                     if (isSignatureValid(purchase)) {
@@ -179,13 +193,6 @@ class BillingEngine(
             Log.d(this.toString(), "onBillingServiceDisconnected")
             billingClient.tryToConnect()
         }
-    }
-
-    fun tryToLaunchBillingFlow(activity: Activity, SKU: String): Boolean /** @return [true] if successful, [false] otherwise (fails because SKU is not found or hasn't finished loading)*/ {
-        val skuDetails = skuWithSkuDetails[SKU] ?: return false
-        val purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
-        billingClient.launchBillingFlow(activity, purchaseParams)
-        return true
     }
 
     init {

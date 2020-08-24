@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 import el.arn.checkers.R
 import el.arn.checkers.appRoot
+import el.arn.checkers.helpers.android.stringFromRes
 
 
 class ConfigHasChangedWarningDialog(
@@ -24,9 +25,9 @@ class ConfigHasChangedWarningDialog(
     init {
         dialog =
             AlertDialog.Builder(activity)
-                .setMessage(appRoot.getStringRes(R.string.configHasChangedWarningDialog_message))
-                .setPositiveButton(appRoot.getStringRes(R.string.dialog_ok)) { _,_ ->  applyIfConfirmed.invoke() }
-                .setNegativeButton(appRoot.getStringRes(R.string.dialog_cancel), null)
+                .setMessage(stringFromRes(R.string.mainActivity_configHasChangedWarningDialog_message))
+                .setPositiveButton(stringFromRes(R.string.general_dialog_ok)) { _, _ ->  applyIfConfirmed.invoke() }
+                .setNegativeButton(stringFromRes(R.string.general_dialog_cancel), null)
                 .show()
 
     }

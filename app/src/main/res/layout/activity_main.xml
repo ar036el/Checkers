@@ -141,8 +141,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--            TOdo change all occurenced of rightOf/LeftOf - start/end-->
-
             <include layout="@layout/toolbar_side" />
 
             <ProgressBar
@@ -181,32 +179,113 @@
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_undo_24px" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/testo1"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/debugButtonAContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fabSize="mini"
-            android:text="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/testo2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fabSize="mini"
-            android:text="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/testo1"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/testo3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fabSize="mini"
-            android:text="3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/testo2"/>
+            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/debugButtonA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:fabSize="mini"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A"
+                android:textSize="@dimen/textview_big_1_size"
+                android:elevation="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/debugButtonBContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/debugButtonAContainer">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/debugButtonB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:fabSize="mini"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B"
+                android:textSize="@dimen/textview_big_1_size"
+                android:elevation="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/debugButtonCContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/debugButtonBContainer">
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/debugButtonC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:fabSize="mini"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C"
+                android:textSize="@dimen/textview_big_1_size"
+                android:elevation="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/mainActivity_bannerAdViewBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:adSize="BANNER"
+            android:elevation="-300dp"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+<!--            ads:adUnitId="ca-app-pub-7911360858808619/5683654137">-->
+        </com.google.android.gms.ads.AdView>
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/mainActivity_bannerAdViewSide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintTop_toTopOf="parent"
+            ads:adSize="BANNER"
+            android:elevation="-300dp"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+<!--            ads:adUnitId="ca-app-pub-7911360858808619/3743778708">-->
+        </com.google.android.gms.ads.AdView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -218,7 +297,7 @@
         android:layout_gravity="start"
         android:background="@color/white"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/element_navigation_drawer_header"
+        app:headerLayout="@layout/element_navigation_side_drawer_header"
         app:menu="@menu/side_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

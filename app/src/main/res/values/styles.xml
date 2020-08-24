@@ -21,9 +21,9 @@
 
     <!-- TODo is this style really necessary? the sidebar can get the darkActionBarDirectly -->
     <style name="toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!-- Color used for the title of the Toolbar - as long as not overridden -->
+        <!-- used for the title of the Toolbar - as long as not overridden -->
         <item name="android:textColorPrimary">#d1afa1</item>
-        <!-- Used to color back button and three dots -->
+        <!-- Used for color back button and three dots -->
         <item name="android:background">?colorPrimary</item>
     </style>
 

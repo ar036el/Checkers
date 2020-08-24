@@ -3,6 +3,7 @@ package el.arn.checkers.helpers.android
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.text.Layout
 import android.view.View
 import el.arn.checkers.helpers.points.PixelCoordinate
 

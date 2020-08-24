@@ -9,12 +9,16 @@ import el.arn.checkers.managers.feedback_manager.FeedbackManager
 import el.arn.checkers.game.*
 import el.arn.checkers.game.NewGameFactory
 import el.arn.checkers.managers.*
+import el.arn.checkers.managers.feedback_manager.FeedbackManagerImpl
 import el.arn.checkers.managers.preferences_managers.GamePreferencesManager
 import el.arn.checkers.managers.preferences_managers.SettingsPreferencesManagerAsBridge
 import el.arn.checkers.managers.purchase_manager.PurchasesManager
+import el.arn.checkers.managers.purchase_manager.PurchasesManagerImpl
+import el.arn.checkers.managers.purchase_manager.core.PurchaseStatus
+import org.acra.ACRA
 import org.acra.annotation.AcraCore
 
-lateinit var appRoot: AppRoot
+lateinit var appRoot: AppRoot //todo try to remove this usage as many as possible. only activities are supoosed to use that
 
 @AcraCore(
     buildConfigClass = BuildConfig::class,
@@ -24,13 +28,12 @@ class AppRoot : android.app.Application() { //todo organize all this.. appRoot d
 
     lateinit var userFeedbackManager: FeedbackManager
     lateinit var purchasesManager: PurchasesManager
-    lateinit var toastMessageManager: ToastManager
+    lateinit var toastManager: ToastManager
     lateinit var gamePreferencesManager: GamePreferencesManager
     lateinit var settingsPreferencesManager: SettingsPreferencesManagerAsBridge
     lateinit var rateUsDialogInvoker: RateUsDialogInvoker
     lateinit var timer: Timer
     lateinit var soundEffectsManager: SoundEffectsManager
-
 
     //todo I think all needs to be lateinit for safety sake and general rule
     val undoRedoDataBridge: UndoRedoDataBridge = UndoRedoDataBridgeImpl()
@@ -38,31 +41,29 @@ class AppRoot : android.app.Application() { //todo organize all this.. appRoot d
     val undoRedoDataBridgeSideB: UndoRedoDataBridgeSideB = undoRedoDataBridge as UndoRedoDataBridgeSideB
     var newGameFactory = NewGameFactory(this)
 
-
-    fun getStringRes(@StringRes stringRes: Int) = resources.getString(stringRes)
-
-
     var gameCoordinator: GameCoordinator? = null
+
 
     override fun onCreate() {
         super.onCreate()
-
         appRoot = this
+        initAllVars()
+    }
 
-        userFeedbackManager = FeedbackManager()
-        purchasesManager = PurchasesManager(this)
-        toastMessageManager = ToastManager(this)
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        ACRA.init(this)
+    }
+
+    private fun initAllVars() {
+        userFeedbackManager = FeedbackManagerImpl()
+        purchasesManager = PurchasesManagerImpl(this)
+        toastManager = ToastManagerImpl(this)
         gamePreferencesManager = GamePreferencesManager()
         settingsPreferencesManager = SettingsPreferencesManagerAsBridge(gamePreferencesManager, purchasesManager)
         rateUsDialogInvoker = RateUsDialogInvokerImpl(this)
         timer = TimerImpl(null)
         soundEffectsManager = SoundEffectsManagerImplBySoundPool(gamePreferencesManager)
     }
-
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-//        ACRA.init(this)
-    }
-
 
 }

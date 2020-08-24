@@ -4,236 +4,245 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:fadeScrollbars="false">
+    android:layout_height="match_parent"
+    tools:context=".activities.BuyPremiumActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/buyPremiumActivityBackground"
-        tools:context=".activities.FirstContactActivity">
+        android:layout_height="match_parent">
 
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="30dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="30dp"
-            android:paddingBottom="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/linearLayout">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lineSpacingExtra="12sp"
-                android:paddingBottom="12dp"
-                android:text="@string/noAds_descriptionHeader"
-                android:textSize="@dimen/textview_big_0_size"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_check_black_24dp"
-                android:drawablePadding="6dp"
-                android:lineSpacingExtra="12sp"
-                android:paddingBottom="12sp"
-                android:text="@string/noAds_feature"
-                android:textSize="@dimen/textView_middle_size"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/purchasePremiumActivity_noAdsButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/noAds_purchaseButton" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/purchaseButtonHint"
-                    android:textSize="@dimen/textview_small_size"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <View
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintBottom_toTopOf="@id/linearLayout"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/buy_premium_activity_background"
+            android:scaleType="centerCrop"/>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="30dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="20dp"
-            android:paddingEnd="30dp"
-            app:layout_constraintBottom_toTopOf="@id/linearLayout3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fadeScrollbars="false">
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lineSpacingExtra="12sp"
-                android:paddingBottom="18dp"
-                android:text="@string/premiumVersion_descriptionHeader"
-                android:textSize="@dimen/textview_big_1_size"
-                android:textStyle="bold" />
-
-            <!--        todo check all texts for all using sp-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_check_black_24dp"
-                android:drawablePadding="6dp"
-                android:lineSpacingExtra="12sp"
-                android:paddingBottom="12sp"
-                android:text="@string/premiumVersion_feature_0"
-                android:textSize="@dimen/textView_middle_size"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_check_black_24dp"
-                android:drawablePadding="6dp"
-                android:lineSpacingExtra="12sp"
-                android:paddingBottom="12sp"
-                android:text="@string/premiumVersion_feature_1"
-                android:textSize="@dimen/textView_middle_size"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_check_black_24dp"
-                android:drawablePadding="6dp"
-                android:lineSpacingExtra="12sp"
-                android:paddingBottom="12sp"
-                android:text="@string/premiumVersion_feature_2"
-                android:textSize="@dimen/textView_middle_size"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_check_black_24dp"
-                android:drawablePadding="6dp"
-                android:lineSpacingExtra="12sp"
-                android:paddingBottom="12sp"
-                android:text="@string/premiumVersion_feature_3"
-                android:textSize="@dimen/textView_middle_size"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_check_black_24dp"
-                android:drawablePadding="6dp"
-                android:lineSpacingExtra="12sp"
-                android:paddingBottom="12sp"
-                android:text="@string/premiumVersion_feature_4"
-                android:textSize="@dimen/textView_middle_size"
-                android:textStyle="bold" />
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/purchasePremiumActivity_premiumVersionButton"
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/premiumVersion_purchaseButton" />
+                    android:orientation="vertical"
+                    android:paddingStart="30dp"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="30dp"
+                    android:paddingBottom="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/linearLayout">
 
-                <TextView
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingExtra="12sp"
+                        android:paddingBottom="12dp"
+                        android:text="@string/noAds_descriptionHeader"
+                        android:textSize="@dimen/textview_big_0_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_check_black_24dp"
+                        android:drawablePadding="6dp"
+                        android:lineSpacingExtra="12sp"
+                        android:paddingBottom="12sp"
+                        android:text="@string/noAds_feature"
+                        android:textSize="@dimen/textView_middle_size"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/purchasePremiumActivity_noAdsButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/noAds_purchaseButton" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/purchaseButtonHint"
+                            android:textSize="@dimen/textview_small_size"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintBottom_toTopOf="@id/linearLayout"/>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/purchaseButtonHint"
-                    android:textSize="@dimen/textview_small_size"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:orientation="vertical"
+                    android:paddingStart="30dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="20dp"
+                    android:paddingEnd="30dp"
+                    app:layout_constraintBottom_toTopOf="@id/linearLayout3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingExtra="12sp"
+                        android:paddingBottom="18dp"
+                        android:text="@string/premiumVersion_descriptionHeader"
+                        android:textSize="@dimen/textview_big_1_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_check_black_24dp"
+                        android:drawablePadding="6dp"
+                        android:lineSpacingExtra="12sp"
+                        android:paddingBottom="12sp"
+                        android:text="@string/premiumVersion_feature_0"
+                        android:textSize="@dimen/textView_middle_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_check_black_24dp"
+                        android:drawablePadding="6dp"
+                        android:lineSpacingExtra="12sp"
+                        android:paddingBottom="12sp"
+                        android:text="@string/premiumVersion_feature_1"
+                        android:textSize="@dimen/textView_middle_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_check_black_24dp"
+                        android:drawablePadding="6dp"
+                        android:lineSpacingExtra="12sp"
+                        android:paddingBottom="12sp"
+                        android:text="@string/premiumVersion_feature_2"
+                        android:textSize="@dimen/textView_middle_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_check_black_24dp"
+                        android:drawablePadding="6dp"
+                        android:lineSpacingExtra="12sp"
+                        android:paddingBottom="12sp"
+                        android:text="@string/premiumVersion_feature_3"
+                        android:textSize="@dimen/textView_middle_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_check_black_24dp"
+                        android:drawablePadding="6dp"
+                        android:lineSpacingExtra="12sp"
+                        android:paddingBottom="12sp"
+                        android:text="@string/premiumVersion_feature_4"
+                        android:textSize="@dimen/textView_middle_size"
+                        android:textStyle="bold" />
 
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            android:gravity="center"
-            android:layoutDirection="locale">
 
-            <ImageButton
-                android:id="@+id/purchasePremiumActivity_gallery_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_back_24dp"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:contentDescription="@string/btn_prev" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/purchasePremiumActivity_gallery_imageView"
-                android:layout_width="250dp"
-                android:layout_height="match_parent"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                        <Button
+                            android:id="@+id/purchasePremiumActivity_premiumVersionButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/premiumVersion_purchaseButton" />
 
-            <ImageButton
-                android:id="@+id/purchasePremiumActivity_gallery_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_forward_24dp"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:contentDescription="@string/btn_next" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/purchaseButtonHint"
+                            android:textSize="@dimen/textview_small_size"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
-        </LinearLayout>
+                </LinearLayout>
 
 
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    android:gravity="center"
+                    android:layoutDirection="locale">
+
+                    <ImageButton
+                        android:id="@+id/purchasePremiumActivity_gallery_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_back_24dp"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/onboardingActivity_buttonPrev" />
+
+                    <ImageView
+                        android:id="@+id/purchasePremiumActivity_gallery_imageView"
+                        android:layout_width="250dp"
+                        android:layout_height="match_parent"
+                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+                    <ImageButton
+                        android:id="@+id/purchasePremiumActivity_gallery_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_forward_24dp"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/onboardingActivity_buttonNext" />
+
+                </LinearLayout>
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
 
 </LinearLayout>

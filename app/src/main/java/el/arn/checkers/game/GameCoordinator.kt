@@ -1,12 +1,12 @@
 package el.arn.checkers.game
 
-import el.arn.checkers.android_widgets.main_activity.WinnerMessage
+import el.arn.checkers.activity_widgets.main_activity.WinnerMessage
 import el.arn.checkers.helpers.points.TileCoordinates
 import el.arn.checkers.game.game_core.checkers_game.structs.*
-import el.arn.checkers.android_widgets.main_activity.board.PiecesManager
-import el.arn.checkers.android_widgets.main_activity.board.PossibleMovesForTurnBuilder
-import el.arn.checkers.android_widgets.main_activity.board.TilesManager
-import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarAbstract
+import el.arn.checkers.activity_widgets.main_activity.board.PiecesManager
+import el.arn.checkers.activity_widgets.main_activity.board.PossibleMovesForTurnBuilder
+import el.arn.checkers.activity_widgets.main_activity.board.TilesManager
+import el.arn.checkers.activity_widgets.main_activity.toolbar.ToolbarAbstract
 import el.arn.checkers.game.game_core.VirtualPlayer
 import el.arn.checkers.helpers.functions.LimitedAccessFunction
 import el.arn.checkers.helpers.game_enums.GameTypeEnum
@@ -15,10 +15,11 @@ import el.arn.checkers.helpers.listeners_engine.LimitedListener
 import el.arn.checkers.helpers.listeners_engine.LimitedListenerImpl
 import el.arn.checkers.game.game_core.checkers_game.configurations.ConfigListener
 import el.arn.checkers.game.game_core.checkers_game.configurations.GameLogicConfig
+import el.arn.checkers.helpers.selections.OutOf2
 import el.arn.checkers.managers.SoundEffectsManager
 import el.arn.checkers.managers.Timer
 import el.arn.checkers.managers.preferences_managers.GamePreferencesManager
-import el.arn.checkers.managers.preferences_managers.Pref
+import el.arn.checkers.managers.preferences_managers.Preference
 import java.lang.IllegalStateException
 
 //todo needs more synchronization work..
@@ -35,7 +36,7 @@ interface GameCoordinator {
 
 class GameCoordinatorImpl(
     override val gameCore: GameCore,
-    private var piecesManager: PiecesManager, //todo weird name, too big. maybe piecesAnimationHandler
+    private var piecesManager: PiecesManager,
     private var tilesManager: TilesManager,
     private var toolbar: ToolbarAbstract,
     private var winnerMessage: WinnerMessage,
@@ -46,6 +47,7 @@ class GameCoordinatorImpl(
     private val gamePreferencesManager: GamePreferencesManager,
     private val soundEffectsManager: SoundEffectsManager,
     private val firstPlayer: Player,
+    private val boardSize: Int,
     private val whitePiecesStartOnBoardTop: Boolean
 ) : GameCoordinator {
 
@@ -65,7 +67,7 @@ class GameCoordinatorImpl(
             this.tilesManager.addListener(tilesManagerListener)
 
             initActivityComponents()
-            determineCurrentPlayer()
+            determineCurrentPlayerAndState()
         }
     }
 
@@ -97,8 +99,7 @@ class GameCoordinatorImpl(
                 return null
             }
             return if (gameType == GameTypeEnum.SinglePlayer) {
-                if ((virtualFirstPlayer == null && gameCore.winner == firstPlayer)
-                    || (virtualSecondPlayer == null && gameCore.winner == firstPlayer.opponent())) {
+                if (usersTeamIfGameTypeIsSinglePlayer!! == gameCore.winner) {
                     WinningTypeOptions.Win
                 } else {
                     WinningTypeOptions.Lose
@@ -144,8 +145,8 @@ class GameCoordinatorImpl(
             synchronized(this@GameCoordinatorImpl) {
                 if (state != State.ReadyForUserInput) { throw InternalError() }
                 tilesManager.disableSelectionAndRemoveHighlight()
-                gameCore.passTurn() //todo that's it?
-                determineCurrentPlayer()
+                gameCore.passTurn()
+                determineCurrentPlayerAndState()
             }
         }
     }
@@ -163,7 +164,7 @@ class GameCoordinatorImpl(
                     gameCore.saveSnapshotAsLatest()
                 }
                 updateIfCanUndoOrRedo()
-                determineCurrentPlayer()
+                determineCurrentPlayerAndState()
             }
         }
 
@@ -176,22 +177,22 @@ class GameCoordinatorImpl(
         soundEffectsManager.playSoundEffectIfAny(SoundEffectsManager.SoundEffectOptions.TurnedIntoKing)
     })
 
-    private val preferenceChangedListenerKingBehaviour = object : Pref.Listener<GameLogicConfig.KingBehaviourOptions> {
-        override fun prefHasChanged(pref: Pref<GameLogicConfig.KingBehaviourOptions>, value: GameLogicConfig.KingBehaviourOptions) {
+    private val preferenceChangedListenerKingBehaviour = object : Preference.Listener<GameLogicConfig.KingBehaviourOptions> {
+        override fun prefHasChanged(preference: Preference<GameLogicConfig.KingBehaviourOptions>, value: GameLogicConfig.KingBehaviourOptions) {
             synchronized(this@GameCoordinatorImpl) {
                 gameCore.config.kingBehaviour = value
             }
         }
     }
-    private val preferenceChangedListenerCanPawnCaptureBackwards = object : Pref.Listener<GameLogicConfig.CanPawnCaptureBackwardsOptions> {
-        override fun prefHasChanged(pref: Pref<GameLogicConfig.CanPawnCaptureBackwardsOptions>, value: GameLogicConfig.CanPawnCaptureBackwardsOptions) {
+    private val preferenceChangedListenerCanPawnCaptureBackwards = object : Preference.Listener<GameLogicConfig.CanPawnCaptureBackwardsOptions> {
+        override fun prefHasChanged(preference: Preference<GameLogicConfig.CanPawnCaptureBackwardsOptions>, value: GameLogicConfig.CanPawnCaptureBackwardsOptions) {
             synchronized(this@GameCoordinatorImpl) {
                 gameCore.config.canPawnCaptureBackwards = value
             }
         }
     }
-    private val preferenceChangedListenerIsCapturingMandatory = object : Pref.Listener<Boolean> {
-        override fun prefHasChanged(pref: Pref<Boolean>, value: Boolean) {
+    private val preferenceChangedListenerIsCapturingMandatory = object : Preference.Listener<Boolean> {
+        override fun prefHasChanged(preference: Preference<Boolean>, value: Boolean) {
             synchronized(this@GameCoordinatorImpl) {
                 gameCore.config.isCapturingMandatory = value
             }
@@ -201,22 +202,12 @@ class GameCoordinatorImpl(
     private val undoRedoDataBridgeListener = object : UndoRedoDataBridge.Listener {
         override fun undoWasInvoked() {
             synchronized(this@GameCoordinatorImpl) {
-                if (state != State.ReadyForUserInput || !undoRedoDataBridgeSideB.isEnabled) { throw IllegalStateException() }
-                tilesManager.disableSelectionAndRemoveHighlight()
-                val successful = gameCore.undo()
-                if (!successful) { throw InternalError() }
-                piecesManager.loadPieces()
-                tilesManager.loadAndHighlightPossibleMoves()
+                undoOrRedo(OutOf2(0))
             }
         }
         override fun redoWasInvoked() {
             synchronized(this@GameCoordinatorImpl) {
-                if (state != State.ReadyForUserInput || !undoRedoDataBridgeSideB.isEnabled) { throw IllegalStateException() }
-                tilesManager.disableSelectionAndRemoveHighlight()
-                val successful = gameCore.redo()
-                if (!successful) { throw InternalError() }
-                piecesManager.loadPieces()
-                tilesManager.loadAndHighlightPossibleMoves()
+                undoOrRedo(OutOf2(1))
             }
         }
     }
@@ -225,7 +216,7 @@ class GameCoordinatorImpl(
         override fun configurationHasChanged() {
             synchronized(this@GameCoordinatorImpl) {
                 stopCurrentCycleAndRefreshGame()
-                determineCurrentPlayer()
+                determineCurrentPlayerAndState()
             }
         }
     }
@@ -241,13 +232,26 @@ class GameCoordinatorImpl(
             }
         }
 
+    private fun undoOrRedo(isUndoOrRedo: OutOf2) {
+        if (state == State.GameIsFinished) {
+            state = State.ReadyForUserInput
+            winnerMessage.hide()
+        }
+        if (state != State.ReadyForUserInput || !undoRedoDataBridgeSideB.isEnabled) { throw IllegalStateException() }
+        tilesManager.disableSelectionAndRemoveHighlight()
+        val successful = if (isUndoOrRedo.isFirst()) gameCore.undo() else gameCore.redo()
+        if (!successful) { throw InternalError() }
+        piecesManager.loadPieces()
+        determineCurrentPlayerAndState()
+    }
+
     private fun pauseGame() {
         stopCurrentCycleAndRefreshGame()
         state = State.GameIsPaused
     }
     private fun resumeGame() {
         state = State.GameIsResumed
-        determineCurrentPlayer()
+        determineCurrentPlayerAndState()
     }
 
     private fun isPlayerVirtual(player: Player): Boolean {
@@ -355,8 +359,51 @@ class GameCoordinatorImpl(
         virtualSecondPlayer?.removeListener(virtualPlayerListener)
         undoRedoDataBridgeSideB.removeListener(undoRedoDataBridgeListener)
     }
+
+    private val usersTeamIfGameTypeIsSinglePlayer: Player? get() {
+        if (gameType != GameTypeEnum.SinglePlayer) {
+            return null
+        }
+        if (virtualFirstPlayer != null) {
+            return virtualFirstPlayer.playerOrTeam.opponent()
+        } else {
+            return virtualSecondPlayer!!.playerOrTeam.opponent()
+        }
+    }
+
+    private fun updateToolbarText() {
+        if (gameType == GameTypeEnum.SinglePlayer) {
+            if (state == State.GameIsFinished) {
+                if (gameCore.winner!! == usersTeamIfGameTypeIsSinglePlayer!!) {
+                    toolbar.titleText = ToolbarAbstract.TitleTextOptions.USER_WON
+                } else {
+                    toolbar.titleText = ToolbarAbstract.TitleTextOptions.USER_LOST
+                }
+            } else {
+                if (gameCore.currentPlayer == usersTeamIfGameTypeIsSinglePlayer!!) {
+                    toolbar.titleText = ToolbarAbstract.TitleTextOptions.USER_TURN
+                } else {
+                    toolbar.titleText = ToolbarAbstract.TitleTextOptions.PC_TURN
+                }
+            }
+        } else {
+            if (state == State.GameIsFinished) {
+                if (gameCore.winner!! == firstPlayer) {
+                    toolbar.titleText = ToolbarAbstract.TitleTextOptions.FIRST_PLAYER_WON
+                } else {
+                    toolbar.titleText = ToolbarAbstract.TitleTextOptions.SECOND_PLAYER_WON
+                }
+            } else {
+                if (gameCore.currentPlayer == firstPlayer) {
+                    toolbar.titleText = ToolbarAbstract.TitleTextOptions.FIRST_PLAYER_TURN
+                } else {
+                    toolbar.titleText = ToolbarAbstract.TitleTextOptions.SECOND_PLAYER_TURN
+                }
+            }
+        }
+    }
     
-    private fun determineCurrentPlayer() {
+    private fun determineCurrentPlayerAndState() {
         if (state == State.GameIsPaused || state == State.GameIsFinished) {
             return
         }
@@ -367,26 +414,31 @@ class GameCoordinatorImpl(
             state = State.GameIsFinished
             showWinnerMessage()
             timer.stop()
+            toolbar.titleText = if (gameCore.winner == firstPlayer) ToolbarAbstract.TitleTextOptions.FIRST_PLAYER_WON else ToolbarAbstract.TitleTextOptions.SECOND_PLAYER_WON
             //that's it. game it dead
         } else if (isFirstPlayerTurn() && virtualFirstPlayer != null) {
             state = State.VirtualPlayerIsCalculating
             virtualFirstPlayer.startCalculation()
             timer.stop()
+            toolbar.titleText = ToolbarAbstract.TitleTextOptions.FIRST_PLAYER_TURN
         } else if (isSecondPlayerTurn() && virtualSecondPlayer != null) {
             state = State.VirtualPlayerIsCalculating
             virtualSecondPlayer.startCalculation()
             timer.stop()
+            toolbar.titleText = ToolbarAbstract.TitleTextOptions.SECOND_PLAYER_TURN
         } else {
             state = State.ReadyForUserInput
             tilesManager.loadAndHighlightPossibleMoves()
             timer.start()
         }
+
+        updateToolbarText()
     }
     private fun isFirstPlayerTurn() = (firstPlayer == gameCore.currentPlayer)
     private fun isSecondPlayerTurn() = (firstPlayer != gameCore.currentPlayer)
 
-    private fun TilesManager.buildLayout() = this.buildLayout(gamePreferencesManager.boardSize.value, whitePiecesStartOnBoardTop)
-    private fun PiecesManager.loadPieces() = this.loadPieces(gameCore.allPiecesInBoard, tilesManager.tilesLocationInWindow, tilesManager.tileLengthInPx, gamePreferencesManager.boardSize.value)
+    private fun TilesManager.buildLayout() = this.buildLayout(boardSize, whitePiecesStartOnBoardTop)
+    private fun PiecesManager.loadPieces() = this.loadPieces(gameCore.allPiecesInBoard, tilesManager.tilesLocationInWindow, tilesManager.tileLengthInPx, boardSize)
     private fun TilesManager.loadAndHighlightPossibleMoves() = this.enableTileSelection(PossibleMovesForTurnBuilder.build(gameCore))
     private fun VirtualPlayer.startCalculation() = this.calculateNextMoveAsync(gameCore.clone())
 
@@ -418,7 +470,7 @@ class GameCoordinatorImpl(
         addAllListeners()
         initGameItself()
         initActivityComponents()
-        determineCurrentPlayer()
+        determineCurrentPlayerAndState()
     }
 
 }

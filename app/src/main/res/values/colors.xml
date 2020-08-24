@@ -3,13 +3,12 @@
     <color name="colorPrimary">#b71c1c</color>
     <color name="colorPrimaryDark">#7f0000</color>
     <color name="colorAccent">#9c27b0</color>
-
-    <color name="buyPremiumActivityBackground">#FFD98C</color>
-
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
 
     <color name="darker_gray">#aaa</color>
+
+    <color name="ic_launcher_background">#00FFFFFF</color>
 
     <color name="buttonNotSelected">@android:color/secondary_text_dark_nodisable</color>
     <color name="buttonSelected">#4965FB</color>
@@ -27,10 +26,12 @@
     <color name="tileHighlight_canCapture">#FF5722</color>
 
 
+    <color name="tile_playable_0">#8f4e22</color>
     <color name="tile_playable_1">#a33222</color>
     <color name="tile_playable_2">#00A2E8</color>
     <color name="tile_playable_3">#7F7F7F</color>
     <color name="tile_playable_4">#C3C3C3</color>
+    <color name="tile_notPlayable_0">#f8e1c4</color>
     <color name="tile_notPlayable_1">#dfd23a</color>
     <color name="tile_notPlayable_2">#B5E61D</color>
     <color name="tile_notPlayable_3">#C3C3C3</color>

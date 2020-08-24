@@ -15,6 +15,7 @@ import el.arn.checkers.managers.themed_resources.ThemedResources
 
 class NewGameDialog(
     private val activity: Activity,
+    showBonusVirtualGame: Boolean,
     private val applyWhenConfirmed: (startingPlayer: StartingPlayerEnum, gameType: GameTypeEnum, difficulty: DifficultyEnum, userPlaysFirst: Boolean) -> Unit
 ) : Dialog {
 
@@ -40,37 +41,49 @@ class NewGameDialog(
     init {
 
         val builder = AlertDialog.Builder(activity)
-            .setTitle(activity.resources.getString(R.string.newGameDialog_title))
+            .setTitle(activity.resources.getString(R.string.mainActivity_newGameDialog_title))
             .setView(dialogLayout)
 //            .setMessage("Are you sure you want to delete this entry?") // Specifying a listener allows you to take an action before dismissing the dialog.
-
-        val whitePlayer = dialogLayout.findViewById<ImageButton>(R.id.newGameDialog_SelectPlayerButton_WhitePlayer)
-        val blackPlayer = dialogLayout.findViewById<ImageButton>(R.id.newGameDialog_SelectPlayerButton_BlackPlayer)
-        val randomPlayer = dialogLayout.findViewById<ImageButton>(R.id.newGameDialog_SelectPlayerButton_Random)
 
         difficultySpinner = dialogLayout.findViewById(R.id.newGameDialog_Difficulty)
         userPlaysFirstCheckbox = dialogLayout.findViewById(R.id.newGameDialog_userPlaysFirst_checkbox)
 
-        whitePlayer.setImageResource(ThemedResources.Drawables.whitePawn.getResource())
-        blackPlayer.setImageResource(ThemedResources.Drawables.blackPawn.getResource())
-        randomPlayer.setImageResource(ThemedResources.Drawables.mixedPawn.getResource())
+        initPiecesButtonsImageResources()
+        initBonusVirtualGameButtonAndSelectionPref(showBonusVirtualGame)
+        initUserPlaysFirstCheckbox()
+        initDifficultySpinnerSelectedItem()
 
         startingPlayerButtonGroup = initStartingPlayerPrefButtons()
         gameTypeButtonGroup = initGameTypePrefButtons()
 
-        initUserPlaysFirstCheckbox()
-        initDifficultySpinnerSelectedItem()
 
         //TODO check for all typos (found stating instead of starting
 
         builder.let {
             it.setPositiveButton(
-                activity.resources.getString(R.string.newGameDialog_confirm)
+                activity.resources.getString(R.string.mainActivity_newGameDialog_confirm)
             ) { _, _ -> pressedOk() }
 
-            it.setNegativeButton(activity.resources.getString(R.string.dialog_cancel), null)
+            it.setNegativeButton(activity.resources.getString(R.string.general_dialog_cancel), null)
 
             dialog = it.show()
+        }
+    }
+    private fun initPiecesButtonsImageResources() {
+        val whitePlayer = dialogLayout.findViewById<ImageButton>(R.id.newGameDialog_SelectPlayerButton_WhitePlayer)
+        val blackPlayer = dialogLayout.findViewById<ImageButton>(R.id.newGameDialog_SelectPlayerButton_BlackPlayer)
+        val randomPlayer = dialogLayout.findViewById<ImageButton>(R.id.newGameDialog_SelectPlayerButton_Random)
+        whitePlayer.setImageResource(ThemedResources.Drawables.whitePawn.getResource())
+        blackPlayer.setImageResource(ThemedResources.Drawables.blackPawn.getResource())
+        randomPlayer.setImageResource(ThemedResources.Drawables.mixedPawn.getResource())
+    }
+
+    private fun initBonusVirtualGameButtonAndSelectionPref(showBonusVirtualGame: Boolean) {
+        if (!showBonusVirtualGame) {
+            dialogLayout.findViewById<Button>(R.id.newGameDialog_GameType_virtualGame).visibility = View.GONE
+            if (appRoot.gamePreferencesManager.gameType.value == GameTypeEnum.VirtualGame) {
+                appRoot.gamePreferencesManager.gameType.restoreToDefault()
+            }
         }
     }
 

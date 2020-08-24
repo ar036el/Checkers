@@ -58,7 +58,7 @@ class UndoableWithSnapshots<S>(
     override fun undo(): Boolean {
         if (!canUndo) { return false }
         --currentSnapshotIndex
-        val a = history[currentSnapshotIndex]
+        history[currentSnapshotIndex]
         snapshotable.loadFromSnapshot(history[currentSnapshotIndex])
 
         return true
@@ -66,7 +66,7 @@ class UndoableWithSnapshots<S>(
     override fun redo(): Boolean {
         if (!canRedo) { return false }
         ++currentSnapshotIndex
-        val a = history[currentSnapshotIndex]
+        history[currentSnapshotIndex]
         snapshotable.loadFromSnapshot(history[currentSnapshotIndex])
         return true
     }

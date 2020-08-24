@@ -4,7 +4,7 @@ import android.media.MediaPlayer
 import android.media.SoundPool
 import el.arn.checkers.appRoot
 import el.arn.checkers.managers.preferences_managers.GamePreferencesManager
-import el.arn.checkers.managers.preferences_managers.Pref
+import el.arn.checkers.managers.preferences_managers.Preference
 import el.arn.checkers.managers.themed_resources.ThemedResources
 
 interface SoundEffectsManager {
@@ -61,8 +61,8 @@ class SoundEffectsManagerImplBySoundPool(gamePreferencesManager: GamePreferences
     private val soundPool: SoundPool = SoundPool.Builder().setMaxStreams(maxStreams).build()
     init {
         loadSoundEffectsToSoundPool()
-        gamePreferencesManager.soundEffectsTheme.addListener( object : Pref.Listener<Int> {
-            override fun prefHasChanged(pref: Pref<Int>, value: Int) {
+        gamePreferencesManager.soundEffectsTheme.addListener( object : Preference.Listener<Int> {
+            override fun prefHasChanged(preference: Preference<Int>, value: Int) {
                 loadSoundEffectsToSoundPool()
             }
         })

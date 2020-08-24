@@ -10,7 +10,7 @@ import org.acra.sender.ReportSenderFactory
 
 class CustomReportSender(private val appRoot: AppRoot) : ReportSender {
     override fun send(context: Context, errorContent: CrashReportData) {
-        appRoot.userFeedbackManager.sendCrashReport(errorContent.toJSON())
+        //appRoot.userFeedbackManager.sendCrashReport(errorContent.toJSON())
     }
 }
 

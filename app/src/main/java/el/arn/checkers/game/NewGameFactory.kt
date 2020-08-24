@@ -1,14 +1,14 @@
 package el.arn.checkers.game
 
 import el.arn.checkers.AppRoot
-import el.arn.checkers.android_widgets.main_activity.WinnerMessage
+import el.arn.checkers.activity_widgets.main_activity.WinnerMessage
 import el.arn.checkers.game.game_core.checkers_game.implementations.BoardImpl
 import el.arn.checkers.game.game_core.checkers_game.implementations.GameImpl
 import el.arn.checkers.game.game_core.checkers_game.implementations.GameLogicConfigImpl
 import el.arn.checkers.game.game_core.checkers_game.structs.Player
-import el.arn.checkers.android_widgets.main_activity.board.PiecesManager
-import el.arn.checkers.android_widgets.main_activity.board.TilesManager
-import el.arn.checkers.android_widgets.main_activity.toolbar.ToolbarAbstract
+import el.arn.checkers.activity_widgets.main_activity.board.PiecesManager
+import el.arn.checkers.activity_widgets.main_activity.board.TilesManager
+import el.arn.checkers.activity_widgets.main_activity.toolbar.ToolbarAbstract
 import el.arn.checkers.game.game_core.VirtualPlayer
 import el.arn.checkers.game.game_core.VirtualPlayerImpl
 
@@ -22,13 +22,13 @@ class NewGameFactory(private val appRoot: AppRoot) {
         val gameCore = createNewGame(firstPlayer)
 
         appRoot.gameCoordinator?.destroyGame()
-        appRoot.gameCoordinator = GameCoordinatorImpl(gameCore, piecesManager, tilesManager, toolbar, winnerMessage, undoRedoDataBridgeSideB, virtualFirstPlayer, virtualSecondPlayer, appRoot.timer, appRoot.gamePreferencesManager, appRoot.soundEffectsManager, firstPlayer, whitePiecesStartOnBoardTop)
+        appRoot.gameCoordinator = GameCoordinatorImpl(gameCore, piecesManager, tilesManager, toolbar, winnerMessage, undoRedoDataBridgeSideB, virtualFirstPlayer, virtualSecondPlayer, appRoot.timer, appRoot.gamePreferencesManager, appRoot.soundEffectsManager, firstPlayer, appRoot.gamePreferencesManager.boardSize.value, whitePiecesStartOnBoardTop)
     }
 
     fun startNewMultiplayerGame(firstPlayerTeam: Player, piecesManager: PiecesManager, tilesManager: TilesManager, toolbar: ToolbarAbstract, winnerMessage: WinnerMessage, undoRedoDataBridgeSideB: UndoRedoDataBridgeSideB) {
         val gameCore = createNewGame(firstPlayerTeam)
         appRoot.gameCoordinator?.destroyGame()
-        appRoot.gameCoordinator = GameCoordinatorImpl(gameCore, piecesManager, tilesManager, toolbar, winnerMessage, undoRedoDataBridgeSideB, null, null, appRoot.timer, appRoot.gamePreferencesManager, appRoot.soundEffectsManager, firstPlayerTeam, (firstPlayerTeam == Player.Black))
+        appRoot.gameCoordinator = GameCoordinatorImpl(gameCore, piecesManager, tilesManager, toolbar, winnerMessage, undoRedoDataBridgeSideB, null, null, appRoot.timer, appRoot.gamePreferencesManager, appRoot.soundEffectsManager, firstPlayerTeam, appRoot.gamePreferencesManager.boardSize.value, (firstPlayerTeam == Player.Black))
     }
 
     fun startNewVirtualGame(firstPlayerTeam: Player, piecesManager: PiecesManager, tilesManager: TilesManager, toolbar: ToolbarAbstract, winnerMessage: WinnerMessage, undoRedoDataBridgeSideB: UndoRedoDataBridgeSideB) {
@@ -40,7 +40,7 @@ class NewGameFactory(private val appRoot: AppRoot) {
         val virtualSecondPlayer = VirtualPlayerImpl(firstPlayerTeam.opponent(), difficulty, boardSize)
 
         appRoot.gameCoordinator?.destroyGame()
-        appRoot.gameCoordinator = GameCoordinatorImpl(gameCore, piecesManager, tilesManager, toolbar, winnerMessage, undoRedoDataBridgeSideB, virtualFirstPlayer, virtualSecondPlayer, appRoot.timer, appRoot.gamePreferencesManager, appRoot.soundEffectsManager, firstPlayerTeam, (firstPlayerTeam == Player.Black))
+        appRoot.gameCoordinator = GameCoordinatorImpl(gameCore, piecesManager, tilesManager, toolbar, winnerMessage, undoRedoDataBridgeSideB, virtualFirstPlayer, virtualSecondPlayer, appRoot.timer, appRoot.gamePreferencesManager, appRoot.soundEffectsManager, firstPlayerTeam, appRoot.gamePreferencesManager.boardSize.value, (firstPlayerTeam == Player.Black))
     }
 
     private fun setPlayersForSingleGame(userTeam: Player, userPlaysFirst: Boolean): Triple<Player, VirtualPlayer?, VirtualPlayer?> {

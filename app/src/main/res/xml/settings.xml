@@ -3,63 +3,56 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/settings_category_game_rules">
+        app:title="@string/settingsActivity_prefCategory_gameRules">
 
         <ListPreference
-            app:entries="@array/king_behaviour_entries"
-            app:entryValues="@array/pref_kingBehaviour_entryValues"
-            app:defaultValue="noFlyingKings"
+            app:entries="@array/settingsActivity_prefEntries_kingBehaviour"
+            app:entryValues="@array/internal_prefKey_kingBehaviour_entryValues"
             app:iconSpaceReserved="false"
             app:key="kingBehaviour"
-            app:title="@string/king_behaviour"
+            app:title="@string/settingsActivity_prefTitle_kingBehaviour"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:entries="@array/can_pawn_capture_backwards_entries"
-            app:entryValues="@array/pref_canPawnCaptureBackwards_entryValues"
-            app:defaultValue="never"
+            app:entries="@array/settingsActivity_prefEntries_canPawnCaptureBackwards"
+            app:entryValues="@array/internal_prefKey_canPawnCaptureBackwards_entryValues"
             app:iconSpaceReserved="false"
             app:key="canPawnCaptureBackwards"
-            app:title="@string/can_pawn_capture_backwards"
+            app:title="@string/settingsActivity_prefTitle_canPawnCaptureBackwards"
             app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
-            app:defaultValue="false"
             app:key="isCapturingMandatory"
-            app:title="@string/is_capturing_mandatory" />
+            app:title="@string/settingsActivity_prefTitle_isCapturingMandatory" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/settings_category_game_style">
+        app:title="@string/settingsActivity_prefCategory_gameStyle">
 
         <ListPreference
-            app:entries="@array/board_size_entries"
-            app:entryValues="@array/boardSize_entryValues"
-            app:defaultValue="8"
+            app:entries="@array/settingsActivity_prefEntries_boardSizeRegular"
+            app:entryValues="@array/internal_prefKey_boardSize_entryValues"
             app:iconSpaceReserved="false"
             app:key="boardSizeRegular"
-            app:title="@string/board_size"
+            app:title="@string/settingsActivity_prefTitle_boardSize"
             app:useSimpleSummaryProvider="true" />
 
-        <el.arn.checkers.android_widgets.settings_activity.BoardThemeSelectorPreference
+        <el.arn.checkers.activity_widgets.settings_activity.BoardThemeSelectorPreference
             android:key="boardTheme"
-            android:title="@string/board_theme"
-            app:defaultValue="0"
+            android:title="@string/settingsActivity_prefTitle_boardTheme"
             app:iconSpaceReserved="false" />
 
-        <el.arn.checkers.android_widgets.settings_activity.PlayerThemeSelectorPreference
+        <el.arn.checkers.activity_widgets.settings_activity.PlayerThemeSelectorPreference
             android:key="playersTheme"
-            android:title="@string/players_theme"
-            app:defaultValue="0"
+            android:title="@string/settingsActivity_prefTitle_playersTheme"
             app:iconSpaceReserved="false" />
 
-        <el.arn.checkers.android_widgets.settings_activity.SoundEffectsThemeSelectorPreference
+        <el.arn.checkers.activity_widgets.settings_activity.SoundEffectsThemeSelectorPreference
             android:key="soundEffectsTheme"
-            android:title="@string/settings_soundEffectsTheme"
-            app:defaultValue="1"
+            android:title="@string/settingsActivity_prefTitle_soundEffectsTheme"
             app:iconSpaceReserved="false" />
 
 
@@ -67,29 +60,27 @@
 
     <PreferenceCategory
         app:iconSpaceReserved="false"
-        app:title="@string/settings_category_custom">
+        app:title="@string/settingsActivity_prefCategory_customSettings">
 
         <SwitchPreferenceCompat
             app:iconSpaceReserved="false"
-            app:defaultValue="false"
             app:key="isCustomSettingsEnabled"
-            app:title="@string/enable_custom_settings" />
+            app:title="@string/settingsActivity_prefTitle_enableCustomSettings" />
 
         <ListPreference
-            app:entries="@array/custom_board_size_entries"
-            app:entryValues="@array/customBoardSize_entryValues"
-            app:defaultValue="8"
+            app:entries="@array/settingsActivity_prefEntries_boardSizeCustom"
+            app:entryValues="@array/internal_prefKey_customBoardSize_entryValues"
             app:iconSpaceReserved="false"
             app:isPreferenceVisible="false"
             app:key="boardSizeCustom"
-            app:title="@string/custom_board_size"
+            app:title="@string/settingsActivity_prefTitle_customBoardSize"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
             app:isPreferenceVisible="false"
             app:iconSpaceReserved="false"
             app:key="startingRows"
-            app:title="@string/starting_rows"
+            app:title="@string/settingsActivity_prefTitle_startingRows"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
@@ -101,13 +92,13 @@
             app:key="purchasePremiumVersionButtonOnly"
             app:icon="@drawable/ic_star_gold_24dp"
             app:iconSpaceReserved="false"
-            app:title="@string/mainActivity_sideDrawer_purchasePremiumVersion" />
+            app:title="@string/settingsActivity_prefTitle_purchasePremiumVersion" />
 
         <Preference
             app:key="purchaseNoAdsButtonOnly"
             app:icon="@drawable/ic_x_black_24dp"
             app:iconSpaceReserved="false"
-            app:title="@string/mainActivity_sideDrawer_purchaseNoAds" />
+            app:title="@string/settingsActivity_prefTitle_purchaseNoAds" />
 
     </PreferenceCategory>
 

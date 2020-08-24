@@ -7,18 +7,24 @@ import android.widget.TextView
 import android.widget.Toast
 import java.lang.ref.WeakReference
 
-class ToastManager(private val applicationContext: Context) {
+interface ToastManager {
+    fun showLong(text: String)
+    fun showShort(text: String)
+    fun cancelIfAny()
+}
+
+class ToastManagerImpl(private val applicationContext: Context) : ToastManager {
     private var currentToast: WeakReference<Toast>? = null
 
-    fun showLong(text: String) {
+    override fun showLong(text: String) {
         makeToast(text, false)
     }
 
-    fun showShort(text: String) {
+    override fun showShort(text: String) {
         makeToast(text, true)
     }
 
-    fun cancelIfAny() {
+    override fun cancelIfAny() {
         currentToast?.get()?.cancel()
     }
 

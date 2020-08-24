@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import el.arn.checkers.AppRoot
 import el.arn.checkers.managers.preferences_managers.PreferencesManager
+import el.arn.checkers.managers.preferences_managers.PreferencesManagerImpl
 
 interface RateUsDialogInvoker {
     fun tryToInvokeDialog(activity: Activity): RateUsDialog?
@@ -21,7 +22,7 @@ class RateUsDialogInvokerImpl(appRoot: AppRoot) : RateUsDialogInvoker {
         val MAX_VALUE = listOf(FEEDBACK_IS_NEUTRAL, FEEDBACK_IS_POSITIVE, FEEDBACK_IS_NEGATIVE).max()!!
     }
 
-    private val purchasesPrefsManager = object: PreferencesManager(appRoot.getSharedPreferences("rateUsDialog", Context.MODE_PRIVATE)) {
+    private val purchasesPrefsManager = object: PreferencesManagerImpl(appRoot.getSharedPreferences("rateUsDialog", Context.MODE_PRIVATE)) {
         val callsUntilInvocation = createIntPref("callsUntilPrompt", 0..InvokeAfterXCalls.MAX_VALUE, InvokeAfterXCalls.FIRST_TIME)
     }
 

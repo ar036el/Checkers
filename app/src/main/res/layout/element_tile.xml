@@ -8,7 +8,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.7"/>
-<!--    TODO is there any id that's just written without "@+id/"?-->
-    <!--    android:background="#aaa44a"-->
 </FrameLayout>
 

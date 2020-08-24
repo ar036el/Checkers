@@ -7,7 +7,6 @@ import el.arn.checkers.R
 import el.arn.checkers.helpers.listeners_engine.ListenersManager
 import el.arn.checkers.helpers.listeners_engine.HoldsListeners
 
-//TODo renen: should I put the tringRes in ctor or inside?
 class FiveStarsLayout(
     layout: ViewGroup,
     context: Context,
@@ -41,7 +40,7 @@ class FiveStarsLayout(
         val empty = stars until 5
 
         filled.forEach { i -> starButtons[i].setImageResource(R.drawable.ic_star_filled_32dp) }
-        empty.forEach { i -> starButtons[i].setImageResource(R.drawable.ic_star_empty_32dpcrap) }
+        empty.forEach { i -> starButtons[i].setImageResource(R.drawable.ic_star_empty_32dp) }
 
         listenersMgr.notifyAll { it.onRatingChanged(stars) }
     }

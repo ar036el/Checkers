@@ -15,9 +15,9 @@ class FirstContactActivity : Activity() {
 
     private fun goToMatchingActivity() {
         val hasCompletedOnboarding = applicationContext.getSharedPreferences(
-            resources.getString(R.string.prefCategory_onboarding),
+            resources.getString(R.string.internal_prefFileKey_onboarding),
             Context.MODE_PRIVATE
-        ).getBoolean(resources.getString(R.string.pref_hasCompletedOnboarding), false)
+        ).getBoolean(resources.getString(R.string.internal_prefFileKey_hasCompletedOnboarding), true) //todo make it false and complete onboarding
 
         val intent = if (!hasCompletedOnboarding) {
             Intent(this, OnboardingActivity::class.java)

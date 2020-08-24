@@ -13,7 +13,7 @@
         android:id="@+id/boardBackground"
         android:layout_width="1dp"
         android:layout_height="1dp"
-        android:src="@drawable/background_board_theme1"
+        android:src="@drawable/background_board"
         android:scaleType="centerCrop"/>
     <GridLayout
         android:id="@+id/boardTilesContainer"

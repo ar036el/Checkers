@@ -7,13 +7,14 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.*
 import el.arn.checkers.R
-import el.arn.checkers.android_widgets.settings_activity.BoardThemeSelectorPreference
-import el.arn.checkers.android_widgets.settings_activity.ImageSelectorPreference
-import el.arn.checkers.android_widgets.settings_activity.PlayerThemeSelectorPreference
-import el.arn.checkers.android_widgets.settings_activity.SoundEffectsThemeSelectorPreference
+import el.arn.checkers.activity_widgets.settings_activity.BoardThemeSelectorPreference
+import el.arn.checkers.activity_widgets.settings_activity.ImageSelectorPreference
+import el.arn.checkers.activity_widgets.settings_activity.PlayerThemeSelectorPreference
+import el.arn.checkers.activity_widgets.settings_activity.SoundEffectsThemeSelectorPreference
 import el.arn.checkers.appRoot
 import el.arn.checkers.game.game_core.checkers_game.configurations.BoardConfig
 import el.arn.checkers.game.game_core.checkers_game.implementations.BoardConfigImpl
+import el.arn.checkers.helpers.android.stringFromRes
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +81,7 @@ class SettingsActivity : AppCompatActivity() {
                 val isChecked = isChecked as Boolean
                 if (isChecked && arePremiumFeaturedLocked) {
                     Handler().postDelayed({
-                        appRoot.toastMessageManager.showShort(appRoot.getStringRes(R.string.settings_toastMessage_premiumFeature))
+                        appRoot.toastManager.showShort(stringFromRes(R.string.settingsActivity_toastMessage_premiumFeature))
                         enableOrDisableCustomSettingsPref(false)
                     },500)
                 }
@@ -90,6 +91,8 @@ class SettingsActivity : AppCompatActivity() {
 
             regularBoardSizePref.setOnPreferenceChangeListener { _, boardSize -> updateStartingRowsPrefEntries(boardSize.toString().toInt()); true}
             customBoardSizePref.setOnPreferenceChangeListener {_, boardSize -> updateStartingRowsPrefEntries(boardSize.toString().toInt()); true}
+
+            updateStartingRowsPrefEntries(enableCustomSettingsPref.isEnabled)
         }
 
         private fun initPurchasePremiumPreferences() {
@@ -126,7 +129,7 @@ class SettingsActivity : AppCompatActivity() {
         private val imageSelectorPreferenceListener = object : ImageSelectorPreference.Listener {
             override fun imageWasChanged(imageSelectorPreference: ImageSelectorPreference, currentImageIndex: Int) {
                 if (imageSelectorPreference.isCurrentImageLocked) {
-                    appRoot.toastMessageManager.showShort(appRoot.getStringRes(R.string.settings_toastMessage_premiumTheme))
+                    appRoot.toastManager.showShort(stringFromRes(R.string.settingsActivity_toastMessage_premiumTheme))
                 }
             }
         }

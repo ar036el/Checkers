@@ -7,7 +7,7 @@ import android.net.Uri
 class UrlInvoker(
     private val url: String,
     private val context: Context
-) : ExternalActivityInvoker() {
+) : ExternalActivityInvoker {
     override fun open() {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(browserIntent)
