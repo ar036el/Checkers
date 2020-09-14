@@ -2,114 +2,120 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:fadeScrollbars="false">
+    android:fadeScrollbars="false"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/onboarding_bottom_text"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/onboarding_bottom_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/onboarding_page3_title"
+                android:textSize="@dimen/onboarding_question_title"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/onboarding_page3_titleDesc"
+                android:textSize="@dimen/onboarding_question_desc"
+                app:autoSizeTextType="uniform" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:visibility="invisible" />
+
+
+            <RadioGroup
+                android:id="@+id/preferenceRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="@string/internal_prefKey_kingBehaviour">
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-4sp"
+                    android:text="@string/onboarding_page3_optionA"
+                    android:tag="@string/internal_prefKey_kingBehaviour_flyingKings"
+                    android:textSize="@dimen/onboarding_question_selection" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/onboarding_question_selectionDesc_padding"
+                    android:layout_marginBottom="10sp"
+                    android:text="@string/onboarding_page3_optionA_desc"
+                    android:textSize="@dimen/onboarding_question_selectionDesc" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-4sp"
+                    android:text="@string/onboarding_page3_optionB"
+                    android:tag="@string/internal_prefKey_kingBehaviour_landsRightAfterCapture"
+                    android:textSize="@dimen/onboarding_question_selection" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/onboarding_question_selectionDesc_padding"
+                    android:layout_marginBottom="10sp"
+                    android:text="@string/onboarding_page3_optionB_desc"
+                    android:textSize="@dimen/onboarding_question_selectionDesc" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-4sp"
+                    android:text="@string/onboarding_page3_optionC"
+                    android:tag="@string/internal_prefKey_kingBehaviour_noFlyingKings"
+                    android:textSize="@dimen/onboarding_question_selection" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/onboarding_question_selectionDesc_padding"
+                    android:layout_marginBottom="10sp"
+                    android:text="@string/onboarding_page3_optionC_desc"
+                    android:textSize="@dimen/onboarding_question_selectionDesc" />
+
+            </RadioGroup>
+
+
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/onboarding_bottom_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:text="@string/onboarding_bottomMessage"
+            android:textSize="@dimen/onboarding_bottomMessage"
             app:autoSizeTextType="uniform"
-            android:text="@string/onboarding_page3_title"
-            android:textSize="@dimen/onboarding_question_title"/>
+            app:layout_constraintBottom_toBottomOf="parent"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            app:autoSizeTextType="uniform"
-            android:text="@string/onboarding_page3_titleDesc"
-            android:textSize="@dimen/onboarding_question_desc"/>
-
-        <View
-            android:visibility="invisible"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"/>
-
-
-        <RadioGroup
-            android:id="@+id/preferenceRadioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-4sp"
-                android:textSize="@dimen/onboarding_question_selection"
-                android:text="@string/onboarding_page3_optionA" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/onboarding_question_selectionDesc_padding"
-                android:layout_marginBottom="10sp"
-                android:textSize="@dimen/onboarding_question_selectionDesc"
-                android:text="@string/onboarding_page3_optionA_desc"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-4sp"
-                android:textSize="@dimen/onboarding_question_selection"
-
-                android:text="@string/onboarding_page3_optionB" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/onboarding_question_selectionDesc_padding"
-                android:layout_marginBottom="10sp"
-                android:textSize="@dimen/onboarding_question_selectionDesc"
-                android:text="@string/onboarding_page3_optionB_desc"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-4sp"
-                android:textSize="@dimen/onboarding_question_selection"
-                android:text="@string/onboarding_page3_optionC" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/onboarding_question_selectionDesc_padding"
-                android:layout_marginBottom="10sp"
-                android:textSize="@dimen/onboarding_question_selectionDesc"
-                android:text="@string/onboarding_page3_optionC_desc"/>
-
-        </RadioGroup>
-
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/onboarding_bottom_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/onboarding_bottomMessage"
-        android:textSize="@dimen/onboarding_bottomMessage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:autoSizeTextType="uniform" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:fadeScrollbars="false">
+    android:fadeScrollbars="false"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,74 +19,79 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.2">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/onboarding_page5_title"
+                android:textSize="@dimen/onboarding_question_title"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/onboarding_page5_titleDesc"
+                android:textSize="@dimen/onboarding_question_desc"
+                app:autoSizeTextType="uniform" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:visibility="invisible" />
+
+
+            <RadioGroup
+                android:id="@+id/preferenceRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:tag="@string/internal_prefKey_boardSize">
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:tag="@string/internal_prefKey_boardSize_8"
+                    android:text="@string/onboarding_page5_optionA"
+                    android:textSize="@dimen/onboarding_question_selection" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:tag="@string/internal_prefKey_boardSize_10"
+                    android:text="@string/onboarding_page5_optionB"
+                    android:textSize="@dimen/onboarding_question_selection" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="@string/internal_prefKey_boardSize_12"
+                    android:text="@string/onboarding_page5_optionC"
+                    android:textSize="@dimen/onboarding_question_selection" />
+
+            </RadioGroup>
+
+
+        </LinearLayout>
+
         <TextView
+            android:id="@+id/onboarding_bottom_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:text="@string/onboarding_bottomMessage"
+            android:textSize="@dimen/onboarding_bottomMessage"
             app:autoSizeTextType="uniform"
-            android:text="@string/onboarding_page5_title"
-            android:textSize="@dimen/onboarding_question_title"/>
+            app:layout_constraintBottom_toBottomOf="parent"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            app:autoSizeTextType="uniform"
-            android:text="@string/onboarding_page5_titleDesc"
-            android:textSize="@dimen/onboarding_question_desc"/>
-
-        <View
-            android:visibility="invisible"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"/>
-
-
-        <RadioGroup
-            android:layout_gravity="start"
-            android:id="@+id/preferenceRadioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textSize="@dimen/onboarding_question_selection"
-                android:text="@string/onboarding_page5_optionA" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textSize="@dimen/onboarding_question_selection"
-                android:text="@string/onboarding_page5_optionB" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/onboarding_page5_optionC"
-                android:textSize="@dimen/onboarding_question_selection" />
-
-        </RadioGroup>
-
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/onboarding_bottom_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/onboarding_bottomMessage"
-        android:textSize="@dimen/onboarding_bottomMessage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:autoSizeTextType="uniform" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
