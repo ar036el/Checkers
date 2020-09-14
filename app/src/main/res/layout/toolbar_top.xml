@@ -51,7 +51,7 @@
             android:layout_gravity="start"
             android:text="00:00"
             android:textSize="@dimen/textView_middle_size"
-            android:textColor="@color/darker_gray" />
+            android:textColor="@color/light_gray" />
     </LinearLayout>
 
 </androidx.appcompat.widget.Toolbar>

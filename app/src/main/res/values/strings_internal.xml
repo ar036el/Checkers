@@ -32,23 +32,34 @@
 
 
     <string-array name="internal_prefKey_kingBehaviour_entryValues">
-        <item>flyingKings</item>
-        <item>landsRightAfterCapture</item>
-        <item>noFlyingKings</item>
+        <item>@string/internal_prefKey_kingBehaviour_flyingKings</item>
+        <item>@string/internal_prefKey_kingBehaviour_landsRightAfterCapture</item>
+        <item>@string/internal_prefKey_kingBehaviour_noFlyingKings</item>
     </string-array>
+    <string name="internal_prefKey_kingBehaviour_flyingKings">flyingKings</string>
+    <string name="internal_prefKey_kingBehaviour_landsRightAfterCapture">landsRightAfterCapture</string>
+    <string name="internal_prefKey_kingBehaviour_noFlyingKings">noFlyingKings</string>
+
+
 
     <string-array name="internal_prefKey_canPawnCaptureBackwards_entryValues">
-        <item>always</item>
-        <item>onlyWhenMultiCapture</item>
-        <item>never</item>
+        <item>@string/internal_prefKey_canPawnCaptureBackwards_always</item>
+        <item>@string/internal_prefKey_canPawnCaptureBackwards_onlyWhenMultiCapture</item>
+        <item>@string/internal_prefKey_canPawnCaptureBackwards_never</item>
     </string-array>
+    <string name="internal_prefKey_canPawnCaptureBackwards_always">always</string>
+    <string name="internal_prefKey_canPawnCaptureBackwards_onlyWhenMultiCapture">onlyWhenMultiCapture</string>
+    <string name="internal_prefKey_canPawnCaptureBackwards_never">never</string>
 
 
     <string-array name="internal_prefKey_boardSize_entryValues">
-        <item>8</item>
-        <item>10</item>
-        <item>12</item>
+        <item>@string/internal_prefKey_boardSize_8</item>
+        <item>@string/internal_prefKey_boardSize_10</item>
+        <item>@string/internal_prefKey_boardSize_12</item>
     </string-array>
+    <string name="internal_prefKey_boardSize_8">8</string>
+    <string name="internal_prefKey_boardSize_10">10</string>
+    <string name="internal_prefKey_boardSize_12">12</string>
 
     <string-array name="internal_prefKey_customBoardSize_entryValues">
         <item>4</item> <item>6</item> <item>8</item>
@@ -59,5 +70,10 @@
 
     <string name="internal_prefFileKey_onboarding">onboarding</string>
     <string name="internal_prefFileKey_hasCompletedOnboarding">hasCompletedOnboarding</string>
+
+
+    <string name="internal_purchases_sku_noAds">no_ads</string>
+    <string name="internal_purchases_sku_premiumVersion">premium_version</string>
+
 
 </resources>

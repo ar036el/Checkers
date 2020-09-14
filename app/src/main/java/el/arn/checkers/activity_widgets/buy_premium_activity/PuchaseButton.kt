@@ -9,7 +9,7 @@ import el.arn.checkers.helpers.android.isAlive
 import el.arn.checkers.helpers.android.stringFromRes
 import el.arn.checkers.helpers.listeners_engine.LimitedListener
 import el.arn.checkers.helpers.listeners_engine.LimitedListenerImpl
-import el.arn.checkers.managers.purchase_manager.core.PurchasableItem
+import el.arn.checkers.managers.purchase_manager.PurchasableItem
 import el.arn.checkers.managers.purchase_manager.core.PurchaseStatus
 
 class PurchaseButton(

@@ -81,7 +81,7 @@ class PiecesManagerImpl(
         val piece = pieces[from]
         val destination = pieces[to]
         val capturedPiece = if (captures != null) pieces[captures] else null
-        if (piece == null || destination != null || (capturedPiece == null) != (captures == null) ) { throw InternalError("move piece error") }
+        if (piece == null || destination != null || (capturedPiece == null) != (captures == null) ) { throw InternalError("move piece error: piece[$piece], destination[$destination], capturedPiece[$capturedPiece], captured[$captures]") }
 
         val distanceBetweenTiles = abs(to.x - from.x)
         val animationDuration =  ANIMATION_MIN_DURATION + (ANIMATION_MAX_DURATION - ANIMATION_MIN_DURATION) / ((boardSize - 1) / distanceBetweenTiles)

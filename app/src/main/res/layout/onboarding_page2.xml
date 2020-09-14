@@ -1,11 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fadeScrollbars="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/onboarding_bottom_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2">
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:autoSizeTextType="uniform"
+        android:text="@string/onboarding_page2_title"
+        android:textSize="@dimen/onboarding_question_title"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="hello maz2"/>
-</LinearLayout>
+        android:gravity="center"
+        app:autoSizeTextType="uniform"
+        android:text="@string/onboarding_page2_titleDesc"
+        android:textSize="@dimen/onboarding_question_desc"/>
+
+        <View
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+
+
+        <RadioGroup
+            android:id="@+id/preferenceRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="@string/internal_prefKey_isCapturingMandatory">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="@dimen/onboarding_question_selection"
+                android:onClick="onPreferenceRadioButtonClick"
+                android:tag="true"
+                android:text="@string/onboarding_page2_optionA" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="@dimen/onboarding_question_selection"
+                android:onClick="onPreferenceRadioButtonClick"
+                android:tag="false"
+                android:text="@string/onboarding_page2_optionB" />
+        </RadioGroup>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/onboarding_bottom_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/onboarding_bottomMessage"
+        android:textSize="@dimen/onboarding_bottomMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:autoSizeTextType="uniform" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

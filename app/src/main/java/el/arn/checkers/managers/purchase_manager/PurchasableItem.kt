@@ -1,10 +1,12 @@
-package el.arn.checkers.managers.purchase_manager.core
+package el.arn.checkers.managers.purchase_manager
 
 import android.app.Activity
 import el.arn.checkers.helpers.listeners_engine.HoldsListeners
 import el.arn.checkers.helpers.listeners_engine.ListenersManager
 import el.arn.checkers.managers.preferences_managers.Preference
 import el.arn.checkers.managers.preferences_managers.PreferencesManager
+import el.arn.checkers.managers.purchase_manager.core.BillingEngine
+import el.arn.checkers.managers.purchase_manager.core.PurchaseStatus
 
 
 interface PurchasableItem : HoldsListeners<PurchasableItem.Listener> {
@@ -34,7 +36,9 @@ class PurchasableItemImpl(
     override val price: String
         get() = prefForPrice.value
 
-    private val prefForPurchaseStatus = purchasesPreferencesManager.createEnumPref(SKU + "PurchaseStatus", PurchaseStatus.values(), PurchaseStatus.UnspecifiedOrNotPurchased)
+    private val prefForPurchaseStatus = purchasesPreferencesManager.createEnumPref(SKU + "PurchaseStatus", PurchaseStatus.values(),
+        PurchaseStatus.UnspecifiedOrNotPurchased
+    )
     private val prefForPrice = purchasesPreferencesManager.createStringPref(SKU + "Price", null, "")
     private var purchaseStatusDebug: PurchaseStatus? = null
 

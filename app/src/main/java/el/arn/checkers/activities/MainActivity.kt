@@ -1,5 +1,6 @@
 package el.arn.checkers.activities
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
@@ -31,6 +32,7 @@ import el.arn.checkers.activity_widgets.main_activity.toolbar.ToolbarAbstract
 import el.arn.checkers.activity_widgets.main_activity.toolbar.ToolbarSide
 import el.arn.checkers.activity_widgets.main_activity.toolbar.ToolbarTop
 import el.arn.checkers.appRoot
+import el.arn.checkers.dialogs.*
 import el.arn.checkers.helpers.functions.late_invocation_function.GateByNumberOfCalls
 import el.arn.checkers.helpers.functions.late_invocation_function.LateInvocationFunction
 import el.arn.checkers.helpers.functions.LimitedAccessFunction
@@ -39,10 +41,6 @@ import el.arn.checkers.helpers.android.isDirectionRTL
 import el.arn.checkers.helpers.android.orientation
 import el.arn.checkers.helpers.game_enums.GameTypeEnum
 import el.arn.checkers.helpers.game_enums.StartingPlayerEnum
-import el.arn.checkers.dialogs.ConfigHasChangedWarningDialog
-import el.arn.checkers.dialogs.Dialog
-import el.arn.checkers.dialogs.FeedbackDialog
-import el.arn.checkers.dialogs.NewGameDialog
 import el.arn.checkers.game.UndoRedoDataBridge
 import el.arn.checkers.game.game_core.checkers_game.structs.Player
 import el.arn.checkers.helpers.android.stringFromRes
@@ -50,6 +48,8 @@ import el.arn.checkers.managers.Timer
 import el.arn.checkers.managers.external_activity_invoker.GooglePlayStoreAppPageInvoker
 import el.arn.checkers.managers.external_activity_invoker.UrlInvoker
 import el.arn.checkers.managers.preferences_managers.Preference
+import el.arn.checkers.managers.purchase_manager.PurchasableItem
+import el.arn.checkers.managers.purchase_manager.PurchasesManager
 import el.arn.checkers.managers.purchase_manager.core.PurchaseStatus
 
 
@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         appRoot.undoRedoDataBridge.addListener(undoRedoDataBridgeListener)
         appRoot.gamePreferencesManager.boardSize.addListener(preferenceChangedListenerForBoardSizeAndStartingRows)
         appRoot.gamePreferencesManager.startingRows.addListener(preferenceChangedListenerForBoardSizeAndStartingRows)
+
     }
 
     override fun onDestroy() {
@@ -99,6 +100,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         appRoot.gameCoordinator?.isPaused = true
+        removeListenersFromPurchasableItems()
     }
 
     override fun onResume() {
@@ -106,6 +108,7 @@ class MainActivity : AppCompatActivity() {
         appRoot.gameCoordinator?.isPaused = false
         openDialogConfigHasChangedWarningDialog.invokeIfHasAccess()
         tryToLoadBannerAd()
+        addListenersToPurchasableItems()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -663,6 +666,33 @@ class MainActivity : AppCompatActivity() {
                 toolbar.timerTimeInSeconds = timeInSeconds
             }
         }
+    }
+
+    private val noAdsListener = object : PurchasableItem.Listener {
+        override fun purchaseStatusHasChanged(purchaseStatus: PurchaseStatus) {
+            if (purchaseStatus == PurchaseStatus.Purchased) {
+                dismissDialogIfOneIsOpen()
+                dialogBeingShown = ThanksForPurchasingDialog(this@MainActivity, PurchasesManager.PurchasableItems.NoAds)
+            }
+        }
+        override fun priceHasChanged(purchaseStatus: String) {}
+    }
+    private val premiumVersionListener = object : PurchasableItem.Listener {
+        override fun purchaseStatusHasChanged(purchaseStatus: PurchaseStatus) {
+            if (purchaseStatus == PurchaseStatus.Purchased) {
+                dismissDialogIfOneIsOpen()
+                dialogBeingShown = ThanksForPurchasingDialog(this@MainActivity, PurchasesManager.PurchasableItems.PremiumVersion)
+            }
+        }
+        override fun priceHasChanged(purchaseStatus: String) {}
+    }
+    private fun addListenersToPurchasableItems() {
+        appRoot.purchasesManager.noAds.addListener(noAdsListener)
+        appRoot.purchasesManager.premiumVersion.addListener(premiumVersionListener)
+    }
+    private fun removeListenersFromPurchasableItems() {
+        appRoot.purchasesManager.noAds.removeListener(noAdsListener)
+        appRoot.purchasesManager.premiumVersion.removeListener(premiumVersionListener)
     }
 
 

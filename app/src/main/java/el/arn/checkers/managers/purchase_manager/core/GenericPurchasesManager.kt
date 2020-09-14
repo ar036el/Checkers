@@ -6,6 +6,8 @@ import el.arn.checkers.helpers.listeners_engine.*
 import el.arn.checkers.helpers.NonNullMap
 import el.arn.checkers.managers.preferences_managers.PreferencesManager
 import el.arn.checkers.managers.preferences_managers.PreferencesManagerImpl
+import el.arn.checkers.managers.purchase_manager.PurchasableItem
+import el.arn.checkers.managers.purchase_manager.PurchasableItemImpl
 
 interface GenericPurchasesManager {
     fun getPurchasableItem(SKU: String): PurchasableItem

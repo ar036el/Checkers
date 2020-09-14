@@ -10,7 +10,7 @@
 
 
     <string name="mainActivity_sideDrawerHeader_title">Checkers Unlimited</string>
-    <string name="mainActivity_sideDrawerHeader_subtitle">Made with ♡ by Areal Apps</string>
+    <string name="mainActivity_sideDrawerHeader_subtitle">Made with ♡ by ArealApps</string>
 
     <string name="mainActivity_sideDrawerMenuItem_rateUs">Rate Checkers</string>
     <string name="mainActivity_sideDrawerMenuItem_purchasePremiumVersion">Upgrade To Premium</string>
@@ -52,6 +52,9 @@
     <string name="mainActivity_newGameDialog_selectGameType_bonusVirtualGame">Bonus! Virtual Game</string>
 
     <string name="mainActivity_configHasChangedWarningDialog_message">Board settings was changed. Start a new game?</string>
+
+    <string name="dialog_thanksForPurchasing_noAds_message">Thanks for purchasing! Enjoy no ads forever!</string>
+    <string name="dialog_thanksForPurchasing_premiumVersion_message">Thanks for purchasing! Enjoy your premium version!\nCheck out all the awesome perks on settings</string>
 
     <string name="general_dialog_cancel">Cancel</string>
     <string name="general_dialog_ok">OK</string>
@@ -99,14 +102,14 @@
     <string name="rateUsDialog_negativeRatingResponse">We are sorry to hear that ☹\nCan you write us a short feedback telling us why?</string>
 
     <string name="toolbar_title_noGameLoaded">Checkers</string>
-    <string name="toolbar_title_firstPlayersTurn">Player 1 turn</string>
-    <string name="toolbar_title_secondPlayersTurn">Player 2 turn</string>
+    <string name="toolbar_title_firstPlayersTurn">Player1 turn</string>
+    <string name="toolbar_title_secondPlayersTurn">Player2 turn</string>
     <string name="toolbar_title_userTurn">Your turn</string>
     <string name="toolbar_title_pcTurn">PC\'s turn</string>
     <string name="toolbar_title_userWon">You won!</string>
     <string name="toolbar_title_userLost">You Lost</string>
-    <string name="toolbar_title_firstPlayerIsWinner">Player 1 Won</string>
-    <string name="toolbar_title_secondPlayerIsWinner">Player 2 Won</string>
+    <string name="toolbar_title_firstPlayerIsWinner">Player1 Won</string>
+    <string name="toolbar_title_secondPlayerIsWinner">Player2 Won</string>
 
 
 
@@ -122,6 +125,37 @@
     <string name="is_capturing_mandatory_no_desc">Passing extra turns is also allowed</string>
 
 
+    <string name="onboarding_bottomMessage">You can always change this on settings</string>
+    <string name="onboarding_page1_titleA">Welcome to</string>
+    <string name="onboarding_page1_titleB">Ultimate Checkers</string>
+    <string name="onboarding_page1_bodyA">Everyone plays checkers a little different,\nSo first, let us configure your board.</string>
+    <string name="onboarding_page1_bodyB">Choose how you normally play</string>
+    <string name="onboarding_page2_title">Is capturing mandatory?</string>
+    <string name="onboarding_page2_titleDesc">Do you have to capture your opponent\'s piece when it\'s available?</string>
+    <string name="onboarding_page2_optionA">Yes, it\'s mandatory</string>
+    <string name="onboarding_page2_optionB">No, it\'s not mandatory</string>
+    <string name="onboarding_page3_title">King\'s Behaviour</string>
+    <string name="onboarding_page3_titleDesc">How do kings jump and capture?</string>
+    <string name="onboarding_page3_optionA">Flying Kings</string>
+    <string name="onboarding_page3_optionA_desc">King can jump and land anywhere</string>
+    <string name="onboarding_page3_optionB">Lands After Capture</string>
+    <string name="onboarding_page3_optionB_desc">Like flying kings, but when captures, it always lands right after the captured piece</string>
+    <string name="onboarding_page3_optionC">No Flying Kings</string>
+    <string name="onboarding_page3_optionC_desc">King can jump only 1 tile per turn, and always lands right after the captured piece. Difference than regular pawn is that it can move backwards</string>
+    <string name="onboarding_page4_title">Can pawn capture backwards?</string>
+    <string name="onboarding_page4_titleDesc">Can pawn (normal piece) capture backwards?</string>
+    <string name="onboarding_page4_optionA">Yes, always</string>
+    <string name="onboarding_page4_optionB">No, never</string>
+    <string name="onboarding_page4_optionC">Yes, but only when multi-capture</string>
+    <string name="onboarding_page4_optionC_desc">If your\'e eating double, you can capture backwards (starting from the second capture)</string>
+    <string name="onboarding_page5_title">What\'s your board size?</string>
+    <string name="onboarding_page5_titleDesc">In what board you normally play?</string>
+    <string name="onboarding_page5_optionA">8x8 board (most popular)</string>
+    <string name="onboarding_page5_optionB">10x10 board</string>
+    <string name="onboarding_page5_optionC">12x12 board</string>
+    <string name="onboarding_page6_title">That\'s it!"</string>
+    <string name="onboarding_page6_titleDesc">Finally, choose your pieces theme</string>
+    <string name="onboarding_page6_titleDesc2">More themes are in options menu,\nbe sure to check them out!</string>
 
     <string-array name="settingsActivity_prefEntries_boardSizeCustom">
         <item>4x4</item> <item>6x6</item>

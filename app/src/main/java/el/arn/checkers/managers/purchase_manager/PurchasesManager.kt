@@ -3,7 +3,6 @@ package el.arn.checkers.managers.purchase_manager
 import android.content.Context
 import el.arn.checkers.managers.purchase_manager.core.GenericPurchasesManager
 import el.arn.checkers.managers.purchase_manager.core.GenericPurchasesManagerImpl
-import el.arn.checkers.managers.purchase_manager.core.PurchasableItem
 import el.arn.checkers.managers.purchase_manager.core.PurchaseStatus
 
 interface PurchasesManager : GenericPurchasesManager {
@@ -12,15 +11,18 @@ interface PurchasesManager : GenericPurchasesManager {
 
     val noAds: PurchasableItem
     val premiumVersion: PurchasableItem
+
+    enum class PurchasableItems { NoAds, PremiumVersion }
 }
+
 
 class PurchasesManagerImpl (
     context: Context
 ) : PurchasesManager, GenericPurchasesManagerImpl(context, setOf(noAdsSKU, premiumVersionSKU))  {
 
     private companion object {
-        const val noAdsSKU = "noAdsCrap"
-        const val premiumVersionSKU = "premiumVersionCrap"
+        const val noAdsSKU = "no_ads" //todo not using resources because of const val. doesn't matter that much...
+        const val premiumVersionSKU = "premium_version"
     }
 
 

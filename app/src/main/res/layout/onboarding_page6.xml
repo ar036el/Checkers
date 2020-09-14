@@ -1,0 +1,144 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fadeScrollbars="false">
+s
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:autoSizeTextType="uniform"
+            android:text="@string/onboarding_page6_title"
+            android:textSize="@dimen/onboarding_question_title"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:autoSizeTextType="uniform"
+            android:text="@string/onboarding_page6_titleDesc"
+            android:layout_marginBottom="6sp"
+            android:textSize="@dimen/onboarding_question_desc"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:autoSizeTextType="uniform"
+            android:text="@string/onboarding_page6_titleDesc2"
+            android:textSize="@dimen/onboarding_question_desc2"/>
+
+        <View
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/onboarding_selectPiece_container"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/newGameDialog_gameTypeTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/newGameDialog_startingPlayerTitle">
+
+            <FrameLayout
+                android:id="@+id/onboarding_selectPiece_0"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/onboarding_selectPiece_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+                <ImageView
+                    android:id="@+id/onboarding_selectPiece_0_selectionArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/buttonSelected"/>
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/piece_both_players_0"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/onboarding_selectPiece_1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toEndOf="@id/onboarding_selectPiece_0"
+                app:layout_constraintEnd_toStartOf="@id/onboarding_selectPiece_2"
+                app:layout_constraintTop_toTopOf="parent" >
+                <ImageView
+                    android:id="@+id/onboarding_selectPiece_1_selectionArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/buttonSelected"/>
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/piece_both_players_1"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/onboarding_selectPiece_2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toEndOf="@id/onboarding_selectPiece_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+                <ImageView
+                    android:id="@+id/onboarding_selectPiece_2_selectionArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/buttonSelected"/>
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/piece_both_players_2"/>
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

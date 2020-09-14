@@ -215,6 +215,7 @@
                         android:id="@+id/purchasePremiumActivity_gallery_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="12dp"
                         android:src="@drawable/ic_arrow_back_24dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:contentDescription="@string/onboardingActivity_buttonPrev" />
@@ -229,6 +230,8 @@
                         android:id="@+id/purchasePremiumActivity_gallery_next"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:padding="12dp"
+
                         android:src="@drawable/ic_arrow_forward_24dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:contentDescription="@string/onboardingActivity_buttonNext" />

@@ -5,6 +5,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:actionButtonStyle">@style/ActionButton</item>
     </style>
 
     <style name="FullScreenDark" parent="AppTheme">
@@ -25,6 +26,12 @@
         <item name="android:textColorPrimary">#d1afa1</item>
         <!-- Used for color back button and three dots -->
         <item name="android:background">?colorPrimary</item>
+    </style>
+
+
+    <style name="ActionButton" parent="@android:style/Widget.ActionButton">
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:minWidth">0dip</item>
     </style>
 
 

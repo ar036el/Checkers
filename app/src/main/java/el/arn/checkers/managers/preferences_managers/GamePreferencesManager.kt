@@ -22,7 +22,7 @@ class GamePreferencesManager : PreferencesManagerImpl(sharedPreferences) {
     val areCustomStartingRowsEnabled = createBooleanPref(stringFromRes(R.string.internal_prefKey_areCustomStartingRowsEnabled), false)
 
     val isCapturingMandatory = createBooleanPref(stringFromRes(R.string.internal_prefKey_isCapturingMandatory), true)
-    val canPawnCaptureBackwards = createEnumPref(stringFromRes(R.string.internal_prefKey_canPawnCaptureBackwards), CanPawnCaptureBackwardsOptions.values(), CanPawnCaptureBackwardsOptions.Always)
+    val canPawnCaptureBackwards = createEnumPref(stringFromRes(R.string.internal_prefKey_canPawnCaptureBackwards), CanPawnCaptureBackwardsOptions.values(), CanPawnCaptureBackwardsOptions.Never)
     val kingBehaviour = createEnumPref(stringFromRes(R.string.internal_prefKey_kingBehaviour), KingBehaviourOptions.values(), KingBehaviourOptions.FlyingKings)
 
     val boardTheme = createIntPref(stringFromRes(R.string.internal_prefKey_boardTheme), 0..4, 0)

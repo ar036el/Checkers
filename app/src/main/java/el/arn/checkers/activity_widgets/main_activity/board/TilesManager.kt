@@ -281,7 +281,7 @@ class TilesManager_impl(
         tileCover.layoutParams = FrameLayout.LayoutParams(tileLengthInPx.toInt(), tileLengthInPx.toInt())
         tileCover.x = tilesLocationInWindow[tile.tileCoordinates].x.toFloat()
         tileCover.y = tilesLocationInWindow[tile.tileCoordinates].y.toFloat()
-        val image = tileCover.findViewById<ImageView>(R.id.tile) //todo needs to be another id name.. not suitable
+        val image = tileCover.findViewById<ImageView>(R.id.tile) //utodo needs to be another id name.. not suitable
         image.setImageResource(R.drawable.pass_turn_highlight)
 
         currentTileCover = tileCover

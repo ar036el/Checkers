@@ -52,14 +52,14 @@ class BillingEngineImpl(
     }
 
     override fun tryToLaunchBillingFlow(activity: Activity, SKU: String): Boolean /** @return [true] if successful, [false] otherwise (fails because SKU is not found or hasn't finished loading)*/ {
-        val skuDetails = skuWithSkuDetails[SKU] ?: return false
+        val skuDetails = SKUWithSkuDetails[SKU] ?: return false
         val purchaseParams = BillingFlowParams.newBuilder().setSkuDetails(skuDetails).build()
         billingClient.launchBillingFlow(activity, purchaseParams)
         return true
     }
 
     private lateinit var billingClient: BillingClient
-    private var skuWithSkuDetails = emptyMap<String, SkuDetails>()
+    private var SKUWithSkuDetails = mutableMapOf<String, SkuDetails>()
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
             when (billingResult.responseCode) {
@@ -76,18 +76,17 @@ class BillingEngineImpl(
                     billingClient.tryToConnect()
                 }
             }
-        Log.d(this.toString(), billingResult.debugMessage)
+        Log.d("billing client", billingResult.debugMessage)
     }
 
     private fun processPurchases(purchases: List<Purchase>) {
         CoroutineScope(Job() + Dispatchers.IO).launch {
-            Log.d(this.toString(), "processPurchases called")
+            Log.d("billing client", "processPurchases called")
             val SKUsWithPurchaseStatuses = mutableMapOf<String, PurchaseStatus>()
 
             purchases.forEach { purchase ->
-                var purchaseStatus: PurchaseStatus =
-                    PurchaseStatus.UnspecifiedOrNotPurchased
-
+                var purchaseStatus: PurchaseStatus = PurchaseStatus.UnspecifiedOrNotPurchased
+                val sku = purchase.sku
                 if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
                     if (isSignatureValid(purchase)) {
                         purchaseStatus =
@@ -96,17 +95,16 @@ class BillingEngineImpl(
                             acknowledgePurchase(purchase)
                         }
                     } else {
-                        Log.w(this.toString(), "Purchase is not verified!!!: ${purchase.sku}")
+                        Log.w("billing client", "Purchase is not verified!!!: ${purchase.sku}")
                     }
 
                 } else if (purchase.purchaseState == Purchase.PurchaseState.PENDING) {
-                    Log.d(this.toString(), "Received a pending purchase of SKU: ${purchase.sku}")
-                    purchaseStatus =
-                        PurchaseStatus.Pending
+                    Log.d("billing client", "Received a pending purchase of SKU: ${purchase.sku}")
+                    purchaseStatus = PurchaseStatus.Pending
                 }
 
                 if (purchase.sku !in SKUs || SKUsWithPurchaseStatuses[purchase.sku] != null ) {
-                    Log.w(this.toString(), "unlisted sku ${purchase.sku} detected")
+                    Log.w("billing client", "unlisted sku ${purchase.sku} detected")
                 } else {
                     SKUsWithPurchaseStatuses[purchase.sku] =  purchaseStatus
                 }
@@ -118,13 +116,13 @@ class BillingEngineImpl(
 
     private fun acknowledgePurchase(purchase: Purchase) {
         val params = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken).build()
-        billingClient.acknowledgePurchase(params) { billingResult -> Log.d(this.toString(), "acknowledgeNonConsumablePurchasesAsync response is ${billingResult.responseCode} ${billingResult.debugMessage}") }
+        billingClient.acknowledgePurchase(params) { billingResult -> Log.d("billing client", "acknowledgeNonConsumablePurchasesAsync response is ${billingResult.responseCode} ${billingResult.debugMessage}") }
     }
 
 
     private fun querySkuDetailsAsync() {
         val params = SkuDetailsParams.newBuilder().setSkusList(SKUs.toList()).setType(BillingClient.SkuType.INAPP).build()
-        Log.d(this.toString(), "querySkuDetailsAsync for ${BillingClient.SkuType.INAPP}")
+        Log.d("billing client", "querySkuDetailsAsync for ${BillingClient.SkuType.INAPP}")
 
         billingClient.querySkuDetailsAsync(params) { billingResult, skuDetailsList ->
             when (billingResult.responseCode) {
@@ -134,16 +132,18 @@ class BillingEngineImpl(
                     skuDetailsList.forEach { skuDetails ->
 
                         if (skuDetails.sku !in SKUs || SKUsWithPrices[skuDetails.sku] != null) {
-                            Log.w(this.toString(), "unlisted sku ${skuDetails.sku} detected")
+                            Log.w("billing client", "unlisted sku ${skuDetails.sku} detected")
                         } else {
+                            Log.d("billing client", "SKU found: ${skuDetails.sku} with price of ${skuDetails.price}${skuDetails.priceCurrencyCode}")
                             SKUsWithPrices[skuDetails.sku] = skuDetails.price
+                            SKUWithSkuDetails[skuDetails.sku] = skuDetails
                         }
                     }
 
                     listenersMgr.notifyAll { it.onPricesLoadedOrChanged(SKUsWithPrices) }
                 }
                 else -> {
-                    Log.e(this.toString(), billingResult.debugMessage)
+                    Log.e("billing client", billingResult.debugMessage)
                 }
             }
         }
@@ -158,15 +158,15 @@ class BillingEngineImpl(
     }
 
     private fun queryPurchasesAsync() {
-        Log.d(this.toString(), "queryPurchasesAsync called")
+        Log.d("billing client", "queryPurchasesAsync called")
         val result = billingClient.queryPurchases(BillingClient.SkuType.INAPP)
-        Log.d(this.toString(), "queryPurchasesAsync INAPP results: ${result.purchasesList?.size}")
+        Log.d("billing client", "queryPurchasesAsync INAPP results: ${result.purchasesList?.size}")
         // will handle server verification, consumables, and updating the local cache
         processPurchases(result.purchasesList.orEmpty().filterNotNull())
     }
 
     private fun BillingClient.tryToConnect(): Boolean {
-        Log.d(this.toString(), "connectToPlayBillingService")
+        Log.d("billing client", "connectToPlayBillingService")
         if (!this.isReady) {
             this.startConnection(billingClientStateListener)
             return true
@@ -178,19 +178,19 @@ class BillingEngineImpl(
         override fun onBillingSetupFinished(billingResult: BillingResult) { //trivial
             when (billingResult.responseCode) {
                 BillingClient.BillingResponseCode.OK -> {
-                    Log.d(this.toString(), "onBillingSetupFinished successfully")
+                    Log.d("billing client", "onBillingSetupFinished successfully")
                     querySkuDetailsAsync()
                     queryPurchasesAsync()
                 }
                 else -> {
                     //do nothing. Someone else will connect it through retry policy. May choose to send to server though
-                    Log.d(this.toString(), billingResult.debugMessage)
+                    Log.d("billing client", billingResult.debugMessage)
                 }
             }
         }
 
         override fun onBillingServiceDisconnected() { //trivial
-            Log.d(this.toString(), "onBillingServiceDisconnected")
+            Log.d("billing client", "onBillingServiceDisconnected")
             billingClient.tryToConnect()
         }
     }

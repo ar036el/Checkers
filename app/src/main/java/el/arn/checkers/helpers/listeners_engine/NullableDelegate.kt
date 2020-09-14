@@ -1,16 +1,16 @@
 package el.arn.checkers.helpers.listeners_engine
 
 interface HoldsListener<D> {
-    fun setListener(Listener: D?)
+    fun setListener(listener: D?)
     fun removeListener()
 }
 
 class ListenerManager<D>(Listener: D? = null) : HoldsListener<D> {
-    private val handler = if (Listener != null) ListenersHandlerEngine(Listener) else ListenersHandlerEngine()
+    private val handler: ListenersHandlerEngine<D> = if (Listener != null) ListenersHandlerEngine(Listener) else ListenersHandlerEngine()
 
-    override fun setListener(Listener: D?) {
+    override fun setListener(listener: D?) {
         handler.clear()
-        Listener?.let { handler.add(it) }
+        listener?.let { handler.add(it) }
     }
     override fun removeListener() {
         handler.clear()

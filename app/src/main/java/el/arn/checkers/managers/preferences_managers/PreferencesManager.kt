@@ -3,17 +3,22 @@ package el.arn.checkers.managers.preferences_managers
 import android.content.SharedPreferences
 import el.arn.checkers.helpers.listeners_engine.*
 import el.arn.checkers.helpers.EnumWithId
+import kotlin.reflect.KClass
 
 interface PreferencesManager : HoldsListeners<PreferencesManager.Listener> {
     fun createIntPref(key: String, possibleValues: Iterable<Int>?, defaultValue: Int): Preference<Int>
     fun createStringPref(key: String, possibleValues: Iterable<String>?, defaultValue: String): Preference<String>
     fun createBooleanPref(key: String, defaultValue: Boolean): Preference<Boolean>
     fun <E:EnumWithId> createEnumPref(key: String, possibleValues: Array<E>, defaultValue: E): Preference<E>
+    fun getPrefByKey(key: String): Preference<Any>
 
     interface Listener {
         /**called only when a pref's value is actually changed. assigning a pref with the same value invokes nothing*/
         fun prefsHaveChanged(changedPreference: Preference<*>)
     }
+
+    enum class PrefTypes(val classType: KClass<out Any>) { IntPref(Int::class), StringPref(String::class), BooleanPref(Boolean::class), EnumPref(EnumWithId::class) }
+
 
 }
 
@@ -22,7 +27,7 @@ open class PreferencesManagerImpl(
     private val listenersMgr: ListenersManager<PreferencesManager.Listener> = ListenersManager()
 ): PreferencesManager, HoldsListeners<PreferencesManager.Listener> by listenersMgr {
 
-    private val _prefs = mutableSetOf<Preference<*>>()
+    private val keysWithPrefs = mutableMapOf<String, Preference<*>>()
 
     override fun createIntPref(key: String, possibleValues: Iterable<Int>?, defaultValue: Int): Preference<Int> {
         val intPref = IntPreferenceImpl(key, possibleValues, defaultValue)
@@ -45,18 +50,25 @@ open class PreferencesManagerImpl(
         return enumPref
     }
 
+    override fun getPrefByKey(key: String): Preference<Any> {
+        return keysWithPrefs[key] as Preference<Any>? ?: error("key[$key] is not mapped to a pref")
+    }
+
     private val onSharedPreferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener {
-            _: SharedPreferences, prefKey: String ->
-        try {
-            val changedPref = _prefs.first { it.key == prefKey }
+        _: SharedPreferences, prefKey: String ->
+        val changedPref = keysWithPrefs[prefKey]
+        if (changedPref != null) {
+            //todo  ?: error("sharedPrefLeak/unhandledPref for prefKey[$prefKey]")???
             listenersMgr.notifyAll { it.prefsHaveChanged(changedPref) }
-        } catch (e: NoSuchElementException) {
-            //TODO log: sharedPrefLeak/unhandledPref
         }
     }
 
     private fun registerPref(preference: Preference<*>) {
-        _prefs.add(preference)
+        if (keysWithPrefs.containsKey(preference.key)) {
+            throw InternalError("manager already contains key[${preference.key}]")
+        }
+        keysWithPrefs[preference.key] = preference
+
         listenersMgr.addListener(object : PreferencesManager.Listener {
             override fun prefsHaveChanged(changedPreference: Preference<*>) {
                 if (changedPreference == preference) {

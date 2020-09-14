@@ -1,11 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fadeScrollbars="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/onboarding_bottom_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:autoSizeTextType="uniform"
+            android:text="@string/onboarding_page4_title"
+            android:textSize="@dimen/onboarding_question_title"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:autoSizeTextType="uniform"
+            android:text="@string/onboarding_page4_title"
+            android:textSize="@dimen/onboarding_question_desc"/>
+
+        <View
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+
+
+        <RadioGroup
+            android:layout_gravity="start"
+            android:id="@+id/preferenceRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="@dimen/onboarding_question_selection"
+                android:text="@string/onboarding_page4_optionA" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="@dimen/onboarding_question_selection"
+                android:text="@string/onboarding_page4_optionB" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/onboarding_question_selection"
+                android:text="@string/onboarding_page4_optionC"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/onboarding_question_selectionDesc_padding"
+                android:layout_marginBottom="10sp"
+                android:textSize="@dimen/onboarding_question_selectionDesc"
+                android:text="@string/onboarding_page4_optionC_desc"/>
+
+        </RadioGroup>
+
+
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/onboarding_bottom_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="hello maz4"/>
-</LinearLayout>
+        android:gravity="center"
+        android:text="You can always change this on settings"
+        android:textSize="@dimen/onboarding_bottomMessage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:autoSizeTextType="uniform" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
