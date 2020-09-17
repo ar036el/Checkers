@@ -30,13 +30,16 @@
     <color name="tile_playable_0">#8f4e22</color>
     <color name="tile_playable_1">#a33222</color>
     <color name="tile_playable_2">#00A2E8</color>
-    <color name="tile_playable_3">#7F7F7F</color>
-    <color name="tile_playable_4">#C3C3C3</color>
+    <color name="tile_playable_3">#3F7542</color>
+    <color name="tile_playable_4">#404EA5</color>
+    <color name="tile_playable_5">#771A7E</color>
+
     <color name="tile_notPlayable_0">#f8e1c4</color>
     <color name="tile_notPlayable_1">#dfd23a</color>
     <color name="tile_notPlayable_2">#B5E61D</color>
-    <color name="tile_notPlayable_3">#C3C3C3</color>
-    <color name="tile_notPlayable_4">#FFAEC9</color>
+    <color name="tile_notPlayable_3">#FFE989</color>
+    <color name="tile_notPlayable_4">#F1F3FF</color>
+    <color name="tile_notPlayable_5">#FAECFD</color>
 
 
     <color name="rateUsDialog_negativeFeedbackMessage">#F44336</color>

@@ -12,10 +12,10 @@
     <dimen name="capturedPieceMaxPadding">6dp</dimen>
 
 
-    <dimen name="textview_small_size">11sp</dimen>
-    <dimen name="textView_middle_size">15sp</dimen>
-    <dimen name="textview_big_0_size">19sp</dimen>
-    <dimen name="textview_big_1_size">21sp</dimen>
+    <dimen name="textView_small">11sp</dimen>
+    <dimen name="textView_middle">15sp</dimen>
+    <dimen name="textView_big0">19sp</dimen>
+    <dimen name="textView_big1">21sp</dimen>
 
     <dimen name="onboarding_firstPage_title">40sp</dimen>
     <dimen name="onboarding_firstPage_desc">18sp</dimen>

@@ -40,7 +40,7 @@
             android:layout_gravity="start"
             android:gravity="center"
             android:paddingEnd="14dp"
-            android:textSize="@dimen/textView_middle_size"
+            android:textSize="@dimen/textView_middle"
             android:textColor="@color/white"
             android:text="White's turn" />
 
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:text="00:00"
-            android:textSize="@dimen/textView_middle_size"
+            android:textSize="@dimen/textView_middle"
             android:textColor="@color/light_gray" />
     </LinearLayout>
 

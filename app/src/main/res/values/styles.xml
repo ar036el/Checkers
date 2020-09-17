@@ -20,7 +20,7 @@
         <item name="android:windowBackground">@color/white</item>
     </style>
 
-    <!-- TODo is this style really necessary? the sidebar can get the darkActionBarDirectly -->
+    <!-- TODO is necessary? the sidebar can get the darkActionBar directly -->
     <style name="toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- used for the title of the Toolbar - as long as not overridden -->
         <item name="android:textColorPrimary">#d1afa1</item>

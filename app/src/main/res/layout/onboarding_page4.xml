@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/onboarding_page4_title"
+                android:text="@string/onboarding_page5_title"
                 android:textSize="@dimen/onboarding_question_title"
                 app:autoSizeTextType="uniform" />
 
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/onboarding_page4_title"
+                android:text="@string/onboarding_page5_titleDesc"
                 android:textSize="@dimen/onboarding_question_desc"
                 app:autoSizeTextType="uniform" />
 
@@ -44,42 +44,33 @@
 
 
             <RadioGroup
-                android:id="@+id/preferenceRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:tag="@string/internal_prefKey_canPawnCaptureBackwards">
+                android:layout_gravity="start">
+
 
                 <RadioButton
+                    android:id="@+id/onboardingPage4_boardSize_radioButton_8x8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:tag="@string/internal_prefKey_canPawnCaptureBackwards_always"
-                    android:text="@string/onboarding_page4_optionA"
+                    android:text="@string/onboarding_page5_optionA"
                     android:textSize="@dimen/onboarding_question_selection" />
 
                 <RadioButton
+                    android:id="@+id/onboardingPage4_boardSize_radioButton_10x10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:tag="@string/internal_prefKey_canPawnCaptureBackwards_never"
-                    android:text="@string/onboarding_page4_optionB"
+                    android:text="@string/onboarding_page5_optionB"
                     android:textSize="@dimen/onboarding_question_selection" />
 
                 <RadioButton
+                    android:id="@+id/onboardingPage4_boardSize_radioButton_12x12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:tag="@string/internal_prefKey_canPawnCaptureBackwards_onlyWhenMultiCapture"
-                    android:text="@string/onboarding_page4_optionC"
+                    android:text="@string/onboarding_page5_optionC"
                     android:textSize="@dimen/onboarding_question_selection" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/onboarding_question_selectionDesc_padding"
-                    android:layout_marginBottom="10sp"
-                    android:text="@string/onboarding_page4_optionC_desc"
-                    android:textSize="@dimen/onboarding_question_selectionDesc" />
 
             </RadioGroup>
 
@@ -92,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="You can always change this on settings"
+            android:text="@string/onboarding_bottomMessage"
             android:textSize="@dimen/onboarding_bottomMessage"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"

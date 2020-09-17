@@ -40,17 +40,17 @@
             app:title="@string/settingsActivity_prefTitle_boardSize"
             app:useSimpleSummaryProvider="true" />
 
-        <el.arn.checkers.activity_widgets.settings_activity.BoardThemeSelectorPreference
+        <el.arn.ultimatecheckers.activity_widgets.settings_activity.BoardThemeSelectorPreference
             android:key="boardTheme"
             android:title="@string/settingsActivity_prefTitle_boardTheme"
             app:iconSpaceReserved="false" />
 
-        <el.arn.checkers.activity_widgets.settings_activity.PlayerThemeSelectorPreference
+        <el.arn.ultimatecheckers.activity_widgets.settings_activity.PlayerThemeSelectorPreference
             android:key="playersTheme"
             android:title="@string/settingsActivity_prefTitle_playersTheme"
             app:iconSpaceReserved="false" />
 
-        <el.arn.checkers.activity_widgets.settings_activity.SoundEffectsThemeSelectorPreference
+        <el.arn.ultimatecheckers.activity_widgets.settings_activity.SoundEffectsThemeSelectorPreference
             android:key="soundEffectsTheme"
             android:title="@string/settingsActivity_prefTitle_soundEffectsTheme"
             app:iconSpaceReserved="false" />

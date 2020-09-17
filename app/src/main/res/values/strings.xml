@@ -144,7 +144,7 @@
     <string name="onboarding_page3_optionC_desc">King can jump only 1 tile per turn, and always lands right after the captured piece. Difference than regular pawn is that it can move backwards</string>
     <string name="onboarding_page4_title">Can pawn capture backwards?</string>
     <string name="onboarding_page4_titleDesc">Can pawn (normal piece) capture backwards?</string>
-    <string name="onboarding_page4_optionA">Yes, always</string>
+    <string name="onboarding_page4_optionA">Yes, always (not common)</string>
     <string name="onboarding_page4_optionB">No, never</string>
     <string name="onboarding_page4_optionC">Yes, but only when multi-capture</string>
     <string name="onboarding_page4_optionC_desc">If your\'e eating double, you can capture backwards (starting from the second capture)</string>

@@ -2,9 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadeScrollbars="false"
-    android:fillViewport="true">
-
+    android:fillViewport="true"
+    android:fadeScrollbars="false">
+s
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -15,83 +15,129 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/onboarding_bottom_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.2">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/onboarding_page5_title"
-                android:textSize="@dimen/onboarding_question_title"
-                app:autoSizeTextType="uniform" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/onboarding_page5_titleDesc"
-                android:textSize="@dimen/onboarding_question_desc"
-                app:autoSizeTextType="uniform" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:visibility="invisible" />
-
-
-            <RadioGroup
-                android:id="@+id/preferenceRadioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:tag="@string/internal_prefKey_boardSize">
-
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:tag="@string/internal_prefKey_boardSize_8"
-                    android:text="@string/onboarding_page5_optionA"
-                    android:textSize="@dimen/onboarding_question_selection" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:tag="@string/internal_prefKey_boardSize_10"
-                    android:text="@string/onboarding_page5_optionB"
-                    android:textSize="@dimen/onboarding_question_selection" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="@string/internal_prefKey_boardSize_12"
-                    android:text="@string/onboarding_page5_optionC"
-                    android:textSize="@dimen/onboarding_question_selection" />
-
-            </RadioGroup>
-
-
-        </LinearLayout>
-
         <TextView
-            android:id="@+id/onboarding_bottom_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/onboarding_bottomMessage"
-            android:textSize="@dimen/onboarding_bottomMessage"
             app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/onboarding_page6_title"
+            android:textSize="@dimen/onboarding_question_title"/>
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:autoSizeTextType="uniform"
+            android:text="@string/onboarding_page6_titleDesc"
+            android:layout_marginBottom="6sp"
+            android:textSize="@dimen/onboarding_question_desc"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:autoSizeTextType="uniform"
+            android:text="@string/onboarding_page6_titleDesc2"
+            android:textSize="@dimen/onboarding_question_desc2"/>
+
+        <View
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/newGameDialog_gameTypeTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/newGameDialog_startingPlayerTitle">
+
+            <FrameLayout
+                android:id="@+id/onboarding_selectPiece_0"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/onboarding_selectPiece_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+                <ImageView
+                    android:id="@+id/onboardingPage5_playersTheme_theme0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/buttonSelected"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/piece_both_players_0"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/onboarding_selectPiece_1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toEndOf="@id/onboarding_selectPiece_0"
+                app:layout_constraintEnd_toStartOf="@id/onboarding_selectPiece_2"
+                app:layout_constraintTop_toTopOf="parent" >
+                <ImageView
+                    android:id="@+id/onboardingPage5_playersTheme_theme1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/buttonSelected"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/piece_both_players_1"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/onboarding_selectPiece_2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toEndOf="@id/onboarding_selectPiece_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+                <ImageView
+                    android:id="@+id/onboardingPage5_playersTheme_theme2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/buttonSelected"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:padding="8dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/piece_both_players_2"/>
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -71,7 +71,6 @@
     <string name="internal_prefFileKey_onboarding">onboarding</string>
     <string name="internal_prefFileKey_hasCompletedOnboarding">hasCompletedOnboarding</string>
 
-
     <string name="internal_purchases_sku_noAds">no_ads</string>
     <string name="internal_purchases_sku_premiumVersion">premium_version</string>
 

@@ -37,7 +37,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingTop="20dp"
-        android:textSize="@dimen/textview_big_0_size"
+        android:textSize="@dimen/textView_big0"
         android:textColor="@color/white"
         android:text="@string/toolbar_title_noGameLoaded" />
 
@@ -48,7 +48,7 @@
         android:layout_gravity="center"
         android:paddingTop="10dp"
         android:text="00:00"
-        android:textSize="@dimen/textView_middle_size"
+        android:textSize="@dimen/textView_middle"
         android:textColor="@color/light_gray" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
