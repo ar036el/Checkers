@@ -7,6 +7,7 @@
 
 package el.arn.ultimatecheckers.activity_widgets.main_activity.board.parts
 
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -16,6 +17,7 @@ import androidx.annotation.DrawableRes
 import el.arn.ultimatecheckers.R
 import el.arn.ultimatecheckers.appRoot
 import el.arn.ultimatecheckers.helpers.android.activity
+import el.arn.ultimatecheckers.helpers.android.getFloatCompat
 import el.arn.ultimatecheckers.helpers.android.isAlive
 import el.arn.ultimatecheckers.helpers.points.TileCoordinates
 import el.arn.ultimatecheckers.managers.themed_resources.ChangesStyleByTheme
@@ -35,7 +37,7 @@ abstract class Tile(
     private val image: ImageView = layout.findViewById(R.id.tile)
     protected fun setTileImage(@DrawableRes imageRes: Int, @DimenRes alphaRes: Int) {
         image.setImageResource(imageRes)
-        image.alpha = appRoot.resources.getFloat(alphaRes)
+        image.alpha = appRoot.resources.getFloatCompat(alphaRes)
     }
 
     init {
@@ -66,11 +68,26 @@ class PlayableTile(
         States.Inactive
         set(value) {
             when (value) {
-                States.Inactive -> setTileImage(themedResource.getResource(), R.dimen.tileAlpha_Default)
-                States.Highlighted -> setTileImage(R.color.tileHighlight_available, R.dimen.tileAlpha_Highlighted)
-                States.Selected, States.SelectedAndCanPassTurn ->  setTileImage(R.color.tileHighlight_selected, R.dimen.tileAlpha_Highlighted)
-                States.CanLand ->  setTileImage(R.color.tileHighlight_canLand, R.dimen.tileAlpha_Highlighted)
-                States.CanCapture ->  setTileImage(R.color.tileHighlight_canCapture, R.dimen.tileAlpha_Highlighted)
+                States.Inactive -> setTileImage(
+                    themedResource.getResource(),
+                    R.dimen.tileAlpha_Default
+                )
+                States.Highlighted -> setTileImage(
+                    R.color.tileHighlight_available,
+                    R.dimen.tileAlpha_Highlighted
+                )
+                States.Selected, States.SelectedAndCanPassTurn -> setTileImage(
+                    R.color.tileHighlight_selected,
+                    R.dimen.tileAlpha_Highlighted
+                )
+                States.CanLand -> setTileImage(
+                    R.color.tileHighlight_canLand,
+                    R.dimen.tileAlpha_Highlighted
+                )
+                States.CanCapture -> setTileImage(
+                    R.color.tileHighlight_canCapture,
+                    R.dimen.tileAlpha_Highlighted
+                )
             }
             field = value
         }

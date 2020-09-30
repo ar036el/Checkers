@@ -276,8 +276,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initSideDrawerMenuItems(sideDrawerMenu: Menu) {
-        sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_rateUs).setOnMenuItemClickListener { GooglePlayStoreAppPageInvoker(this
-        ).open(); closeSideDrawer(); true }
+        sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_rateUs).setOnMenuItemClickListener { GooglePlayStoreAppPageInvoker(this).open(); closeSideDrawer(); true }
         sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_purchasePremiumVersion).setOnMenuItemClickListener { openActivityBuyPremiumActivity(); closeSideDrawer(); true }
         sideDrawerMenu.findItem(R.id.sideDrawerMenuItem_purchaseNoAds).setOnMenuItemClickListener { openActivityBuyPremiumActivity(); closeSideDrawer(); true }
         ///-------------------
