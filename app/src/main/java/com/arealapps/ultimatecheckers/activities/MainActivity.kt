@@ -47,8 +47,8 @@ import com.arealapps.ultimatecheckers.helpers.android.isDirectionRTL
 import com.arealapps.ultimatecheckers.helpers.android.orientation
 import com.arealapps.ultimatecheckers.helpers.game_enums.GameTypeEnum
 import com.arealapps.ultimatecheckers.helpers.game_enums.StartingPlayerEnum
-import com.arealapps.ultimatecheckers.game.UndoRedoDataBridge
-import com.arealapps.ultimatecheckers.game.game_core.checkers_game.structs.Player
+import com.arealapps.ultimatecheckers.gameCore.UndoRedoDataBridge
+import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.structs.Player
 import com.arealapps.ultimatecheckers.helpers.android.stringFromRes
 import com.arealapps.ultimatecheckers.managers.Timer
 import com.arealapps.ultimatecheckers.managers.external_activity_invoker.GooglePlayStoreAppPageInvoker

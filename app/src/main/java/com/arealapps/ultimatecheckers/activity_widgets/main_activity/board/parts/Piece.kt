@@ -19,7 +19,7 @@ import com.arealapps.ultimatecheckers.managers.themed_resources.ChangesStyleByTh
 import com.arealapps.ultimatecheckers.managers.themed_resources.ChangesStyleByTheme_implByDelegation
 import com.arealapps.ultimatecheckers.managers.themed_resources.ThemedResources
 
-typealias GenericPieceType = com.arealapps.ultimatecheckers.game.game_core.checkers_game.structs.Piece
+typealias GenericPieceType = com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.structs.Piece
 
 
 class Piece(

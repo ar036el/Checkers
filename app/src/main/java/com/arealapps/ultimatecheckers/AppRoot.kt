@@ -12,8 +12,8 @@ import com.arealapps.ultimatecheckers.dialogs.RateUsDialogInvoker
 import com.arealapps.ultimatecheckers.dialogs.RateUsDialogInvokerImpl
 import com.arealapps.ultimatecheckers.managers.acra.CustomReportSenderFactory
 import com.arealapps.ultimatecheckers.managers.feedback_manager.FeedbackManager
-import com.arealapps.ultimatecheckers.game.*
-import com.arealapps.ultimatecheckers.game.NewGameFactory
+import com.arealapps.ultimatecheckers.gameCore.*
+import com.arealapps.ultimatecheckers.gameCore.NewGameFactory
 import com.arealapps.ultimatecheckers.managers.*
 import com.arealapps.ultimatecheckers.managers.feedback_manager.FeedbackManagerImpl
 import com.arealapps.ultimatecheckers.managers.preferences_managers.GamePreferencesManager

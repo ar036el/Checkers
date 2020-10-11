@@ -12,8 +12,8 @@ import android.view.View
 import android.view.ViewPropertyAnimator
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import com.arealapps.timecalc.helpers.android.AnimatorListener
 import com.arealapps.ultimatecheckers.R
-import com.arealapps.ultimatecheckers.helpers.android.AnimatorListener
 import com.arealapps.ultimatecheckers.helpers.game_enums.WinningTypeOptions
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.HoldsListeners
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.ListenersManager

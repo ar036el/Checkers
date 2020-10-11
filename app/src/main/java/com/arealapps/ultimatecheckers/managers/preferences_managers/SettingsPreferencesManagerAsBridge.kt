@@ -11,7 +11,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.arealapps.ultimatecheckers.R
 import com.arealapps.ultimatecheckers.appRoot
-import com.arealapps.ultimatecheckers.game.game_core.checkers_game.configurations.GameLogicConfig
+import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.configurations.GameLogicConfig
 import com.arealapps.ultimatecheckers.helpers.android.stringFromRes
 import com.arealapps.ultimatecheckers.managers.purchase_manager.PurchasesManager
 

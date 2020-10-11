@@ -19,8 +19,8 @@ import com.arealapps.ultimatecheckers.activity_widgets.settings_activity.ImageSe
 import com.arealapps.ultimatecheckers.activity_widgets.settings_activity.PlayerThemeSelectorPreference
 import com.arealapps.ultimatecheckers.activity_widgets.settings_activity.SoundEffectsThemeSelectorPreference
 import com.arealapps.ultimatecheckers.appRoot
-import com.arealapps.ultimatecheckers.game.game_core.checkers_game.configurations.BoardConfig
-import com.arealapps.ultimatecheckers.game.game_core.checkers_game.implementations.BoardConfigImpl
+import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.configurations.BoardConfig
+import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.implementations.BoardConfigImpl
 import com.arealapps.ultimatecheckers.helpers.android.stringFromRes
 
 class SettingsActivity : AppCompatActivity() {

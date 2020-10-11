@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("el.arn.opencheckers", appContext.packageName)
+        assertEquals("com.arealapps.opencheckers", appContext.packageName)
     }
 }

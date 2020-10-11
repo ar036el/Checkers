@@ -17,8 +17,8 @@ import com.arealapps.ultimatecheckers.R
 import com.arealapps.ultimatecheckers.helpers.IntIteratorWithRemainderCorrection
 import com.arealapps.ultimatecheckers.helpers.TwoDimenPointsArray
 import com.arealapps.ultimatecheckers.helpers.points.PixelCoordinate
-import com.arealapps.ultimatecheckers.game.game_core.checkers_game.Game
-import com.arealapps.ultimatecheckers.game.game_core.checkers_game.structs.Move
+import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.Game
+import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.structs.Move
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.ListenersManager
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.HoldsListeners
 import com.arealapps.ultimatecheckers.helpers.points.TileCoordinates

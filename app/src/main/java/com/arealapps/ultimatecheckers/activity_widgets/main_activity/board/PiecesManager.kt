@@ -13,17 +13,17 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewPropertyAnimator
 import android.widget.FrameLayout
+import com.arealapps.timecalc.helpers.android.AnimatorListener
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.ListenersManager
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.HoldsListeners
 import com.arealapps.ultimatecheckers.helpers.TwoDimenPointsArray
-import com.arealapps.ultimatecheckers.helpers.android.AnimatorListener
 import com.arealapps.ultimatecheckers.helpers.points.PixelCoordinate
 import com.arealapps.ultimatecheckers.helpers.points.TileCoordinates
 import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.parts.GenericPieceType
 import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.parts.Piece
 import kotlin.math.abs
 
-typealias PieceWithBoardCoordinates = com.arealapps.ultimatecheckers.game.game_core.checkers_game.structs.Tile
+typealias PieceWithBoardCoordinates = com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.structs.Tile
 
 interface PiecesManager: HoldsListeners<PiecesManager.Listener> {
 

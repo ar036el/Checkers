@@ -15,7 +15,7 @@ import com.arealapps.ultimatecheckers.helpers.consts.ALPHA_ICON_ENABLED
 import com.arealapps.ultimatecheckers.helpers.consts.ALPHA_ICON_DISABLED
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.HoldsListeners
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.ListenersManager
-import com.arealapps.ultimatecheckers.game.UndoRedoDataBridgeSideA
+import com.arealapps.ultimatecheckers.gameCore.UndoRedoDataBridgeSideA
 
 /*
 

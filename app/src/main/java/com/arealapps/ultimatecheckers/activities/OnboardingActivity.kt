@@ -24,7 +24,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.arealapps.ultimatecheckers.R
 import com.arealapps.ultimatecheckers.appRoot
-import com.arealapps.ultimatecheckers.game.game_core.checkers_game.configurations.GameLogicConfig
+import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.configurations.GameLogicConfig
 import com.arealapps.ultimatecheckers.helpers.android.SingleSelectionButtonGroup
 import com.arealapps.ultimatecheckers.managers.preferences_managers.Preference
 import com.arealapps.ultimatecheckers.managers.preferences_managers.PreferencesManager
