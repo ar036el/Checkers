@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="el.arn.ultimatecheckers">
+    package="com.arealapps.ultimatecheckers">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
 
-        android:name="el.arn.ultimatecheckers.AppRoot"
+        android:name="com.arealapps.ultimatecheckers.AppRoot"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,18 +17,18 @@
         tools:ignore="LockedOrientationActivity"
         android:theme="@style/AppTheme">
         <activity
-            android:name="el.arn.ultimatecheckers.activities.MainActivity"
+            android:name="com.arealapps.ultimatecheckers.activities.MainActivity"
             android:theme="@style/FullScreenDark" />
         <activity
-            android:name="el.arn.ultimatecheckers.activities.OnboardingActivity"
+            android:name="com.arealapps.ultimatecheckers.activities.OnboardingActivity"
             android:theme="@style/fullScreenLight" />
         <activity
-            android:name="el.arn.ultimatecheckers.activities.SettingsActivity" />
+            android:name="com.arealapps.ultimatecheckers.activities.SettingsActivity" />
         <activity
-            android:name="el.arn.ultimatecheckers.activities.BuyPremiumActivity"
+            android:name="com.arealapps.ultimatecheckers.activities.BuyPremiumActivity"
             android:theme="@style/fullScreenLight" />
         <activity
-            android:name="el.arn.ultimatecheckers.activities.FirstContactActivity"
+            android:name="com.arealapps.ultimatecheckers.activities.FirstContactActivity"
             android:theme="@style/FullScreenDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
