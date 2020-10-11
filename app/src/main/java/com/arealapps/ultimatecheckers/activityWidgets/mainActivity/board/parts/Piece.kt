@@ -5,7 +5,7 @@
  * permission of ArealApps. All Rights Reserved.
  *******************************************************/
 
-package com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.parts
+package com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board.parts
 
 import android.view.LayoutInflater
 import android.view.View

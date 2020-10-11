@@ -5,7 +5,7 @@
  * permission of ArealApps. All Rights Reserved.
  *******************************************************/
 
-package com.arealapps.ultimatecheckers.activity_widgets.main_activity
+package com.arealapps.ultimatecheckers.activityWidgets.mainActivity
 
 import android.animation.Animator
 import android.view.View

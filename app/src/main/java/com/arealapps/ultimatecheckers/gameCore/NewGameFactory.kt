@@ -8,14 +8,14 @@
 package com.arealapps.ultimatecheckers.gameCore
 
 import com.arealapps.ultimatecheckers.AppRoot
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.WinnerMessage
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.WinnerMessage
 import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.implementations.BoardImpl
 import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.implementations.GameImpl
 import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.implementations.GameLogicConfigImpl
 import com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.structs.Player
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.PiecesManager
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.TilesManager
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.toolbar.ToolbarAbstract
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board.PiecesManager
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board.TilesManager
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.toolbar.ToolbarAbstract
 import com.arealapps.ultimatecheckers.gameCore.game_core.VirtualPlayer
 import com.arealapps.ultimatecheckers.gameCore.game_core.VirtualPlayerImpl
 

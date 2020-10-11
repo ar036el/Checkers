@@ -5,7 +5,7 @@
  * permission of ArealApps. All Rights Reserved.
  *******************************************************/
 
-package com.arealapps.ultimatecheckers.activity_widgets.buy_premium_activity
+package com.arealapps.ultimatecheckers.activityWidgets.buyPremiumActivity
 
 import android.app.Activity
 import android.widget.Button

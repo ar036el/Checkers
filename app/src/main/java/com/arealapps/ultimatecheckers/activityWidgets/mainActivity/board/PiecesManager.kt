@@ -5,7 +5,7 @@
  * permission of ArealApps. All Rights Reserved.
  *******************************************************/
 
-package com.arealapps.ultimatecheckers.activity_widgets.main_activity.board
+package com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board
 
 import android.animation.Animator
 import android.content.Context
@@ -19,8 +19,8 @@ import com.arealapps.ultimatecheckers.helpers.listeners_engine.HoldsListeners
 import com.arealapps.ultimatecheckers.helpers.TwoDimenPointsArray
 import com.arealapps.ultimatecheckers.helpers.points.PixelCoordinate
 import com.arealapps.ultimatecheckers.helpers.points.TileCoordinates
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.parts.GenericPieceType
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.parts.Piece
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board.parts.GenericPieceType
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board.parts.Piece
 import kotlin.math.abs
 
 typealias PieceWithBoardCoordinates = com.arealapps.ultimatecheckers.gameCore.game_core.checkers_game.structs.Tile

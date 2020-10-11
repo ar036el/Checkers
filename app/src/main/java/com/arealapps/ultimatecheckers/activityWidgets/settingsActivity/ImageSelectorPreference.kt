@@ -5,7 +5,7 @@
  * permission of ArealApps. All Rights Reserved.
  *******************************************************/
 
-package com.arealapps.ultimatecheckers.activity_widgets.settings_activity
+package com.arealapps.ultimatecheckers.activityWidgets.settingsActivity
 
 import android.content.Context
 import android.util.AttributeSet

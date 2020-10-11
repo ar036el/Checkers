@@ -5,7 +5,7 @@
  * permission of ArealApps. All Rights Reserved.
  *******************************************************/
 
-package com.arealapps.ultimatecheckers.activity_widgets.main_activity.board
+package com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board
 
 import android.app.AlertDialog
 import android.content.Context
@@ -23,9 +23,9 @@ import com.arealapps.ultimatecheckers.helpers.listeners_engine.ListenersManager
 import com.arealapps.ultimatecheckers.helpers.listeners_engine.HoldsListeners
 import com.arealapps.ultimatecheckers.helpers.points.TileCoordinates
 import com.arealapps.ultimatecheckers.helpers.points.Point
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.parts.PlayableTile
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.parts.Tile
-import com.arealapps.ultimatecheckers.activity_widgets.main_activity.board.parts.UnplayableTile
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board.parts.PlayableTile
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board.parts.Tile
+import com.arealapps.ultimatecheckers.activityWidgets.mainActivity.board.parts.UnplayableTile
 
 
 interface TilesManager : HoldsListeners<TilesManager.Listener>{

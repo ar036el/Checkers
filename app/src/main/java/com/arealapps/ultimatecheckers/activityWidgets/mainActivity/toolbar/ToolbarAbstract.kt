@@ -1,4 +1,4 @@
-package com.arealapps.ultimatecheckers.activity_widgets.main_activity.toolbar
+package com.arealapps.ultimatecheckers.activityWidgets.mainActivity.toolbar
 
 import com.arealapps.ultimatecheckers.R
 import com.arealapps.ultimatecheckers.helpers.android.stringFromRes

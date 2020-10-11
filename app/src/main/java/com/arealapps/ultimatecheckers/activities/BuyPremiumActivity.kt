@@ -10,7 +10,7 @@ package com.arealapps.ultimatecheckers.activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.arealapps.ultimatecheckers.*
-import com.arealapps.ultimatecheckers.activity_widgets.buy_premium_activity.PurchaseButton
+import com.arealapps.ultimatecheckers.activityWidgets.buyPremiumActivity.PurchaseButton
 import com.arealapps.ultimatecheckers.dialogs.ThanksForPurchasingDialog
 import com.arealapps.ultimatecheckers.managers.purchase_manager.PurchasableItem
 import com.arealapps.ultimatecheckers.managers.purchase_manager.PurchasesManager
