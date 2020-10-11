@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.arealapps.ultimatecheckers'
+        applicationId 'el.arn.ultimatecheckers'
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 2
