@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="el.arn.ultimatecheckers">
+    package="el.arn.opencheckers">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
 
-        android:name="el.arn.ultimatecheckers.AppRoot"
+        android:name="el.arn.opencheckers.AppRoot"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,18 +17,18 @@
         tools:ignore="LockedOrientationActivity"
         android:theme="@style/AppTheme">
         <activity
-            android:name="el.arn.ultimatecheckers.activities.MainActivity"
+            android:name="el.arn.opencheckers.activities.MainActivity"
             android:theme="@style/FullScreenDark" />
         <activity
-            android:name="el.arn.ultimatecheckers.activities.OnboardingActivity"
+            android:name="el.arn.opencheckers.activities.OnboardingActivity"
             android:theme="@style/fullScreenLight" />
         <activity
-            android:name="el.arn.ultimatecheckers.activities.SettingsActivity" />
+            android:name="el.arn.opencheckers.activities.SettingsActivity" />
         <activity
-            android:name="el.arn.ultimatecheckers.activities.BuyPremiumActivity"
+            android:name="el.arn.opencheckers.activities.BuyPremiumActivity"
             android:theme="@style/fullScreenLight" />
         <activity
-            android:name="el.arn.ultimatecheckers.activities.FirstContactActivity"
+            android:name="el.arn.opencheckers.activities.FirstContactActivity"
             android:theme="@style/FullScreenDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7911360858808619~7105079841"/>
+            android:value="ca-app-pub-9977856148079152~3885366003"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

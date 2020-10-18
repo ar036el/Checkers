@@ -164,7 +164,8 @@
             android:id="@+id/redoButton_FAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin_bottom"
+            android:layout_marginStart="@dimen/fab_margin_start"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -174,7 +175,8 @@
             android:id="@+id/undoButton_FAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin_bottom"
+            android:layout_marginStart="@dimen/fab_margin_start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_undo_24px" />
@@ -270,8 +272,8 @@
             ads:layout_constraintBottom_toBottomOf="parent"
             ads:adSize="BANNER"
             android:elevation="-300dp"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-<!--            ads:adUnitId="ca-app-pub-7911360858808619/5683654137">-->
+            ads:adUnitId="ca-app-pub-9977856148079152/2572284334">
+<!--            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">-->
         </com.google.android.gms.ads.AdView>
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -283,8 +285,8 @@
             ads:layout_constraintTop_toTopOf="parent"
             ads:adSize="BANNER"
             android:elevation="-300dp"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-<!--            ads:adUnitId="ca-app-pub-7911360858808619/3743778708">-->
+            ads:adUnitId="ca-app-pub-9977856148079152/8762288163">
+<!--            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">-->
         </com.google.android.gms.ads.AdView>
 
 

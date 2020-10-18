@@ -2,8 +2,6 @@
 <resources>
 
     <string name="internal_developerEmail">areal.apps@gmail.com</string>
-    <string name="internal_feedbackRecipientEmail">opencheckersfeedback@gmail.com</string>
-    <string name="internal_feedbackSenderEmail">opencheckersfeedbacksender@gmail.com</string>
 
     <string name="internal_privacyPolicyURL">https://sites.google.com/view/arealapps-checkers/privacy-policy</string>
 
