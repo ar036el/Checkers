@@ -82,7 +82,7 @@
 
     <string name="purchaseButtonHint">Purchase once, Lasts forever</string>
     <string name="alreadyPurchased">Already Purchased</string>
-    <string name="purchasingNotAvailable">Sorries! Purchasing is not available right now.\nCheck your internet connection or try again later</string>
+    <string name="purchasingNotAvailable">Sorry, Purchasing is not available right now.\nCheck your internet connection or try again later</string>
 
     <string name="sendFeedbackDialog_title">Send Feedback</string>
     <string name="sendFeedbackDialog_desc">Thanks for sharing, please write your feedback below:</string>

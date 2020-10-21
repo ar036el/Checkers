@@ -54,7 +54,7 @@ class PurchaseButton(
     private fun tryToLaunchBillingFlow() {
         val successful = purchasableItem.tryToLaunchBillingFlow(activity)
         if (!successful) {
-            appRoot.toastManager.showLong(stringFromRes(R.string.purchasingNotAvailable))
+            appRoot.toastManager.showLong(stringFromRes(cannotPurchaseMessageStringRes))
         }
     }
 

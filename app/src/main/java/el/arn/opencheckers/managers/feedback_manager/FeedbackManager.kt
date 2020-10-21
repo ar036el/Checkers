@@ -19,12 +19,12 @@ interface FeedbackManager {
 class FeedbackManagerImpl : FeedbackManager {
     private val emailSender =
         EmailSender(
-            "opencheckers@gmail.com",
-            "0CFF2E484DE5FAD11BFA1ACCA1DE4DB78373",
+            "thesandbox54@gmail.com", //todo problematic mail
+            "EE99034ADDC539BEE6561E2A18B2F88447EF",
             "smtp.elasticemail.com",
             "2525"
         )
-    private val from = "opencheckers@gmail.com"
+    private val from = "thesandbox54@gmail.com"
     private val to = "ultimatecheckersfeedback@protonmail.com"
 
 

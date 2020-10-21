@@ -12,12 +12,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import el.arn.opencheckers.R
+import el.arn.opencheckers.helpers.android.setIntervalRunOnUi
+import el.arn.opencheckers.helpers.android.setTimeoutUiCompat
 
 
 class FirstContactActivity : Activity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        goToMatchingActivity()
+        setTimeoutUiCompat(this, 100) { //doing that to prevent a bug reported from some users
+            goToMatchingActivity()
+        }
     }
 
     private fun goToMatchingActivity() {
